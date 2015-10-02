@@ -75,7 +75,14 @@ namespace kinectApp.Entities
                 entity.Unload();
             }
         }
-        #endregion
 
+        public void Load()
+        {
+            foreach (var entity in _entities)
+            {
+                entity.Load();
+            }
         }
+        #endregion
+     }
 }

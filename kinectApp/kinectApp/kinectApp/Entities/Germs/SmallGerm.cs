@@ -17,22 +17,22 @@ namespace kinectApp.Entities.Germs
 
         public override void Draw(GameTime aGameTime)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Load()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Unload()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Update(GameTime aGameTime)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
