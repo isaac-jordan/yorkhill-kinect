@@ -13,11 +13,6 @@ namespace kinectApp.Entities.Germs
     public interface IGerm : IEntity
     {
         int Id { get; }
-        Vector3 Pos { get; }
         bool IsDead { get; }
-
-        float PosX { get; }
-        float PosY { get; }
-        float PosZ { get; }
     }
 }
