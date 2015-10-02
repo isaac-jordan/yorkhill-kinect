@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using kinectApp.Entities;
+
 namespace kinectApp
 {
     /// <summary>
@@ -19,10 +21,14 @@ namespace kinectApp
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        readonly EntityManager entityManager;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            entityManager = new EntityManager();
         }
 
         /// <summary>
@@ -34,6 +40,7 @@ namespace kinectApp
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            entityManager.AddEntity(Entities.Germs.GermFactory.CreateSmallGerm());
 
             base.Initialize();
         }
@@ -47,7 +54,8 @@ namespace kinectApp
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // TODO: use this.Content to load your game content here#
+            entityManager.Load();
         }
 
         /// <summary>
@@ -57,6 +65,7 @@ namespace kinectApp
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            entityManager.Unload();
         }
 
         /// <summary>
@@ -72,6 +81,8 @@ namespace kinectApp
 
             // TODO: Add your update logic here
 
+            entityManager.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -84,6 +95,7 @@ namespace kinectApp
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            entityManager.Draw(gameTime);
 
             base.Draw(gameTime);
         }
