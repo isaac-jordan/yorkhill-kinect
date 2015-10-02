@@ -1,4 +1,6 @@
 using System;
+using Microsoft.Kinect;
+using System.Threading;
 
 namespace kinectApp
 {
@@ -14,6 +16,8 @@ namespace kinectApp
             {
                 game.Run();
             }
+
+
         }
     }
 #endif
