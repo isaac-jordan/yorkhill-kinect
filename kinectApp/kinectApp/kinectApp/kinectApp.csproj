@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\BaseEnitiy.cs" />
+    <Compile Include="Entities\EntityManager.cs" />
     <Compile Include="Entities\Germs\GermBase.cs" />
     <Compile Include="Entities\Germs\IGerm.cs" />
     <Compile Include="Entities\Germs\SmallGerm.cs" />
