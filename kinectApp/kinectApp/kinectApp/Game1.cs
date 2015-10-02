@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
+using kinectApp.Entities;
+
 namespace kinectApp
 {
     /// <summary>
@@ -29,10 +31,14 @@ namespace kinectApp
         byte[] _colorImageBuffer;
         bool _colorIsDrawing;
 
+        readonly EntityManager entityManager;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            entityManager = new EntityManager();
         }
 
         /// <summary>
@@ -50,6 +56,7 @@ namespace kinectApp
             sensor.Open();
             cfReader = sensor.ColorFrameSource.OpenReader();
             cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
+            entityManager.AddEntity(Entities.Germs.GermFactory.CreateSmallGerm());
 
             base.Initialize();
         }
@@ -67,13 +74,11 @@ namespace kinectApp
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             kinectRGBVideo = new Texture2D(GraphicsDevice, 1337, 1337);
 
             overlay = Content.Load<Texture2D>("overlay");
             font = Content.Load<SpriteFont>("SpriteFont1");
-
-            // TODO: use this.Content to load your game content here
+            entityManager.Load();
         }
 
         /// <summary>
@@ -84,6 +89,7 @@ namespace kinectApp
         {
             // TODO: Unload any non ContentManager content here
             sensor.Close();
+            entityManager.Unload();
         }
 
         /// <summary>
@@ -98,6 +104,8 @@ namespace kinectApp
                 this.Exit();
 
             // TODO: Add your update logic here
+
+            entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -117,6 +125,7 @@ namespace kinectApp
             spriteBatch.End();
 
             // TODO: Add your drawing code here
+            entityManager.Draw(gameTime);
 
             base.Draw(gameTime);
         }
