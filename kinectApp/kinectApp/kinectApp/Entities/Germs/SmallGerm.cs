@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities.Germs
 {
@@ -17,10 +18,14 @@ namespace kinectApp.Entities.Germs
 
         public override void Draw(GameTime aGameTime)
         {
+            //Use the SpriteBatch property of this class to use it for drawing.
+            //Loading code will come soon. I promise :)
+
+
             //throw new NotImplementedException();
         }
 
-        public override void Load()
+        public override void Load(SpriteBatch aSpriteBatch)
         {
             //throw new NotImplementedException();
         }

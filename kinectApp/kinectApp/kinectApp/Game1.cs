@@ -55,7 +55,7 @@ namespace kinectApp
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here#
-            entityManager.Load();
+            entityManager.Load(spriteBatch);
         }
 
         /// <summary>

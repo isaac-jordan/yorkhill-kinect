@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using kinectApp.Entities;
 
@@ -49,7 +50,10 @@ namespace kinectApp.Entities.Germs
 
         public abstract override void Draw(GameTime aGameTime);
 
-        public abstract override void Load();
+        public override void Load(SpriteBatch aSpriteBatch)
+        {
+            SpriteBatch = aSpriteBatch;
+        }
 
         public abstract override void Unload();
 
