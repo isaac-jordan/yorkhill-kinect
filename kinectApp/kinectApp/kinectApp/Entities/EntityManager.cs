@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
 {
@@ -76,11 +77,11 @@ namespace kinectApp.Entities
             }
         }
 
-        public void Load()
+        public void Load(SpriteBatch aSpriteBatch)
         {
             foreach (var entity in _entities)
             {
-                entity.Load();
+                entity.Load(aSpriteBatch);
             }
         }
         #endregion

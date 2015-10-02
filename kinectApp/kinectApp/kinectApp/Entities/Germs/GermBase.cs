@@ -15,6 +15,7 @@ namespace kinectApp.Entities.Germs
     /// </summary>
     public abstract class GermBase : BaseEnitiy, IGerm
     {
+        protected Texture2D _texture;
 
         /// <summary>
         /// Create new Germ with position 0,0,0
@@ -34,6 +35,11 @@ namespace kinectApp.Entities.Germs
         /// <param name="aZ">Z Pos</param>
         public GermBase(float aX, float aY, float aZ) : base(aX, aY, aZ) { }
 
+        public string Filename
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets the ID of the germ
@@ -53,6 +59,9 @@ namespace kinectApp.Entities.Germs
         public override void Load(SpriteBatch aSpriteBatch)
         {
             SpriteBatch = aSpriteBatch;
+
+            _texture = new Texture2D(Graphics
+
         }
 
         public abstract override void Unload();
