@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework.Graphics;
+
 namespace kinectApp.Entities
 {
     /*
@@ -16,7 +18,7 @@ namespace kinectApp.Entities
         void Draw(GameTime aGameTime);
         void Update(GameTime aGameTime);
 
-        void Load();
+        void Load(SpriteBatch aSpriteBatch);
         void Unload();
 
         float PosX { get; }

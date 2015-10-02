@@ -79,6 +79,9 @@ namespace kinectApp
             overlay = Content.Load<Texture2D>("overlay");
             font = Content.Load<SpriteFont>("SpriteFont1");
             entityManager.Load();
+
+            // TODO: use this.Content to load your game content here#
+            entityManager.Load(spriteBatch);
         }
 
         /// <summary>

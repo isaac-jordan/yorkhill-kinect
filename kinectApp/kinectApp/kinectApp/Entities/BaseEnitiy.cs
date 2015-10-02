@@ -4,29 +4,34 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
 {
     public abstract class BaseEnitiy : IEntity
     {
         private Vector3 _pos;
+        private SpriteBatch _spriteBatch;
 
         #region Constructors
-        public BaseEnitiy()
-        {
-            _pos = new Vector3(0,0,0);
-        }
+        public BaseEnitiy() : this(0, 0, 0) { }
 
-        public BaseEnitiy(Vector3 aPos)
-        {
-            _pos = aPos;
-        }
+        public BaseEnitiy(Vector3 aPos) : this(aPos.X, aPos.Y, aPos.Z) { }
 
         public BaseEnitiy(float aX, float aY, float aZ)
         {
             _pos = new Vector3(aX, aY, aZ);
         }
         #endregion
+
+        /// <summary>
+        /// Gets or sets the internal spritebatch of the entity
+        /// </summary>
+        protected SpriteBatch SpriteBatch
+        {
+            get { return _spriteBatch; }
+            set { _spriteBatch = value; }
+        }
 
         #region Position Code
         /// <summary>
@@ -69,7 +74,7 @@ namespace kinectApp.Entities
         public abstract void Draw(GameTime aGameTime);
         public abstract void Update(GameTime aGameTime);
 
-        public abstract void Load();
+        public abstract void Load(SpriteBatch aSpriteBatch);
         public abstract void Unload();
     }
 }
