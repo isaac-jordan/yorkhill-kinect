@@ -20,6 +20,7 @@ namespace kinectApp.Entities
         private GraphicsDevice iGraphicsDevice;
 
         private byte[] iColourImageBuffer;
+        private byte[] iBodyIndexBuffer;
         private Body[] _bodies;
         private List<Point> hands = new List<Point>();
         private Action<bool> iUpdateTitle;
@@ -40,6 +41,7 @@ namespace kinectApp.Entities
 
             iProcessingTasks = new List<Task>(500);
             iColourImageBuffer = new byte[kWidth * kHeight * 4];
+            iBodyIndexBuffer = new byte[5];
         }
 
         /// <summary>
@@ -112,7 +114,7 @@ namespace kinectApp.Entities
                 iSensor.IsAvailableChanged += KSensor_IsAvailableChanged;
 
                 //Setup the video feed from the Kinect Camera!
-                iFrameReader = iSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+                iFrameReader = iSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body | FrameSourceTypes.Depth | FrameSourceTypes.BodyIndex);
 
                 iFrameReader.MultiSourceFrameArrived += KFrameReader_MultiSourceFrameArrived;
             }
@@ -129,19 +131,20 @@ namespace kinectApp.Entities
                 {
                     multiFrame = multiRef.AcquireFrame();
                 }
-                catch (System.InvalidOperationException)
+                catch (InvalidOperationException)
                 {
                     return;
                 }
-
 
                 if (multiFrame == null) return;
 
                 // Retrieve data stream frame references
                 ColorFrameReference colorRef = multiFrame.ColorFrameReference;
                 BodyFrameReference bodyRef = multiFrame.BodyFrameReference;
+                BodyIndexFrameReference bodyIndexRef = multiFrame.BodyIndexFrameReference;
+                DepthFrameReference depthRef = multiFrame.DepthFrameReference;
 
-                Task.Factory.StartNew(() => ProcessRGBVideo(colorRef));
+                Task.Factory.StartNew(() => ProcessRGBVideo(colorRef, bodyIndexRef, depthRef));
                 Task.Factory.StartNew(() => ProcessJoints(bodyRef));
 
             }).ContinueWith((aTask) => iProcessingTasks.Remove(aTask));
@@ -169,7 +172,7 @@ namespace kinectApp.Entities
         //Processes the Frame data from the Kinect camera.
         //Since events are called synchronously, this would bottleneck and cause an issue with framerate
         //By threading, we process the info on seperate threads, allowing execution to coninue with the rest of the game
-        private void ProcessRGBVideo(ColorFrameReference aReference)
+        private void ProcessRGBVideo(ColorFrameReference aReference, BodyIndexFrameReference bifRef, DepthFrameReference depthRef)
         {
             using (ColorFrame colorImageFrame = aReference.AcquireFrame())
             {
@@ -221,7 +224,7 @@ namespace kinectApp.Entities
                     {
                         hands.Clear();
                     }
-                    
+
 
                     foreach (var body in _bodies)
                     {
@@ -260,6 +263,101 @@ namespace kinectApp.Entities
             point.Y = (int)colorPoint.Y;
             return point;
         }
+
+        /*private void ProcessDepthAndBodyIndex(BodyIndexFrameReference bifRef, DepthFrameReference depthRef)
+        {
+            // We'll access the body index data directly to avoid a copy
+            using (BodyIndexFrame bodyIndexFrame = bifRef.AcquireFrame())
+            {
+                using (DepthFrame depthFrame = )
+                int depthWidth = bodyIndexFrame.FrameDescription.Width;
+                int depthHeight = bodyIndexFrame.FrameDescription.Height;
+                using (KinectBuffer bodyIndexData = bodyIndexFrame.LockImageBuffer())
+                {
+                    unsafe
+                    {
+                        byte* bodyIndexDataPointer = (byte*)bodyIndexData.UnderlyingBuffer;
+
+                        int colorMappedToDepthPointCount = this.colorMappedToDepthPoints.Length;
+
+                        fixed (DepthSpacePoint* colorMappedToDepthPointsPointer = this.colorMappedToDepthPoints)
+                        {
+                            // Treat the color data as 4-byte pixels
+                            uint* bitmapPixelsPointer = (uint*)this.bitmap.BackBuffer;
+
+                            // Loop over each row and column of the color image
+                            // Zero out any pixels that don't correspond to a body index
+                            for (int colorIndex = 0; colorIndex < colorMappedToDepthPointCount; ++colorIndex)
+                            {
+                                float colorMappedToDepthX = colorMappedToDepthPointsPointer[colorIndex].X;
+                                float colorMappedToDepthY = colorMappedToDepthPointsPointer[colorIndex].Y;
+
+                                // The sentinel value is -inf, -inf, meaning that no depth pixel corresponds to this color pixel.
+                                if (!float.IsNegativeInfinity(colorMappedToDepthX) &&
+                                    !float.IsNegativeInfinity(colorMappedToDepthY))
+                                {
+                                    // Make sure the depth pixel maps to a valid point in color space
+                                    int depthX = (int)(colorMappedToDepthX + 0.5f);
+                                    int depthY = (int)(colorMappedToDepthY + 0.5f);
+
+                                    // If the point is not valid, there is no body index there.
+                                    if ((depthX >= 0) && (depthX < depthWidth) && (depthY >= 0) && (depthY < depthHeight))
+                                    {
+                                        int depthIndex = (depthY * depthWidth) + depthX;
+
+                                        // If we are tracking a body for the current pixel, do not zero out the pixel
+                                        if (bodyIndexDataPointer[depthIndex] != 0xff)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+
+                                bitmapPixelsPointer[colorIndex] = 0;
+                            }
+                        }
+
+                        this.bitmap.AddDirtyRect(new Int32Rect(0, 0, this.bitmap.PixelWidth, this.bitmap.PixelHeight));
+                    }
+                }
+            }
+
+            /*using (BodyIndexFrame bodyFrame = aReference.AcquireFrame())
+            {
+                if (bodyFrame != null)
+                {
+                    bodyFrame.CopyFrameDataToArray
+
+                    Color[] color = new Color[kHeight * kWidth];
+
+                    // Go through each pixel and set the bytes correctly
+                    // Remember, each pixel got a Red, Green and Blue
+                    int index = 0;
+                    for (int y = 0; y < kWidth; y++)
+                    {
+                        for (int x = 0; x < kHeight; x++)
+                        {
+                            Color c = new Color(iColourImageBuffer[index + 0], iColourImageBuffer[index + 1], iColourImageBuffer[index + 2], iColourImageBuffer[index + 3]);
+                            color[y * kHeight + x] = c;
+                            index += 4;
+                        }
+                    }
+
+                    if (iGraphicsDevice.IsDisposed) return;
+                    var video = new Texture2D(iGraphicsDevice, kWidth, kHeight);
+
+
+                    video.SetData(color);
+
+
+                    lock (iVideoLock)
+                    {
+                        iRGBVideo = video;
+                    }
+                }
+
+
+        }*/
 
         //Process a change in the availability of Kinect
         private void KSensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)

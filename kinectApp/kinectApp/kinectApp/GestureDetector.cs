@@ -19,12 +19,12 @@ namespace kinectApp
     public class GestureDetector : IDisposable
     {
         /// <summary> Path to the gesture database that was trained with VGB </summary>
-        private readonly string quitGestureDatabase = @"..\..\..\..\..\kinectGestures\QuitGesture\bin\QuitGesture.gba";
+        private readonly string quitGestureDatabase = @"..\..\..\..\..\kinectGestures\QuitGesture\database\QuitGesture.gba";
 
         /// <summary> Name of the discrete gesture in the database that we want to track </summary>
         private readonly string quitGestureName = "QuitGesture";
 
-        private readonly string handsAboveHeadGestureDatabase = @"..\..\..\..\..\kinectGestures\HandsAboveHeadGesture\bin\HandsAboveHead.gbd";
+        private readonly string handsAboveHeadGestureDatabase = @"..\..\..\..\..\kinectGestures\HandsAboveHeadGesture\database\HandsAboveHead.gbd";
 
         /// <summary> Gesture frame source which should be tied to a body tracking ID </summary>
         private VisualGestureBuilderFrameSource vgbFrameSource = null;
