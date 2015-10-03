@@ -66,10 +66,10 @@ namespace kinectApp.Entities
                 entity.Update(aGameTime);
             }
 
-            //if (_entities.Count < 5)
-            //{
-            //    _entities.Add(Entities.Germs.GermFactory.CreateSmallGerm());
-            //}
+            if (_entities.Count < 8)
+            {
+                _entities.Add(Entities.Germs.GermFactory.CreateSmallGerm());
+            }
         }
 
         public void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)

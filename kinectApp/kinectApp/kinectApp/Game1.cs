@@ -35,7 +35,7 @@ namespace kinectApp
         int screenHeight;
         int screenWidth;
 
-        KinectAdapter iKinect;
+        public KinectAdapter iKinect;
         GestureResultView gestureRV;
         GestureDetector gestureDet;
 
