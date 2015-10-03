@@ -120,8 +120,17 @@ namespace kinectApp.Entities
             {
                 // Retrieve multisource frame reference
                 MultiSourceFrameReference multiRef = e.FrameReference;
+                MultiSourceFrame multiFrame;
+                try
+                {
+                    multiFrame = multiRef.AcquireFrame();
+                }
+                catch (System.InvalidOperationException)
+                {
+                    return;
+                }
 
-                MultiSourceFrame multiFrame = multiRef.AcquireFrame();
+                
                 if (multiFrame == null) return;
 
                 // Retrieve data stream frame references
@@ -215,6 +224,8 @@ namespace kinectApp.Entities
 
                                 Joint handLeft = body.Joints[JointType.HandLeft];
                                 Joint thumbLeft = body.Joints[JointType.ThumbLeft];
+
+                                Console.WriteLine("I can see a joint at:" + handRight.Position.X + ", " + handRight.Position.Y + ", " + handRight.Position.Z);
 
                                 if (_joints == null || _joints.Length != 4)
                                 {
