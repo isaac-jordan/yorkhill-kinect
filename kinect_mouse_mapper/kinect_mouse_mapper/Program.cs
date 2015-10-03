@@ -103,6 +103,11 @@ namespace kinect_mouse_mapper
                                 VirtualMouse.MoveTo(point.X, point.Y);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
 
+                                if (body.HandRightState == HandState.Closed)
+                                {
+                                        VirtualMouse.LeftClick();
+                                }
+
                             }
                         }
                     }
