@@ -29,17 +29,8 @@ namespace kinectApp
         int screenWidth;
 
         KinectAdapter iKinect;
-
-        KinectSensor sensor;
-        MultiSourceFrameReader _multiReader;
-        string connectedStatus;
-        byte[] _colorImageBuffer;
-        bool _isDrawing;
-
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
-        Body[] _bodies;
-        Joint[] _joints;
 
         public Game1()
         {
@@ -64,123 +55,13 @@ namespace kinectApp
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             iKinect = new KinectAdapter(graphics.GraphicsDevice);
-
             iKinect.OpenSensor();
 
-            //_multiReader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
-
-            // Hook-up the frames arrived event
-            //_multiReader.MultiSourceFrameArrived += OnMultipleFramesArrivedHandler;
-
-            //sensor = KinectSensor.GetDefault();
-            //sensor.IsAvailableChanged += KinectSensors_StatusChanged;
-            
-            //sensor.Open();
-            //cfReader = sensor.ColorFrameSource.OpenReader();
-            //cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
-
-
-            //iSceneManager.SetScene(new Entities.Scenes.Menu());
-
-            //for (int i = 0; i < 250; i++)
-            //{
-            //    entityManager.AddEntity(Entities.Germs.GermFactory.CreateSmallGerm());
-            //}
-
-            //entityManager.AddEntity(new Entities.UI.Button("Test", string.Empty, 20, 20, 0));
+            //Show Main menu
+            iSceneManager.SetScene(new Entities.Scenes.Menu());
 
             base.Initialize();
-        }
-
-        private void OnMultipleFramesArrivedHandler(object sender, MultiSourceFrameArrivedEventArgs e)
-        {
-            // Retrieve multisource frame reference
-            MultiSourceFrameReference multiRef = e.FrameReference;
-
-            MultiSourceFrame multiFrame = multiRef.AcquireFrame();
-            if (multiFrame == null) return;
-
-            // Retrieve data stream frame references
-            ColorFrameReference colorRef = multiFrame.ColorFrameReference;
-            BodyFrameReference bodyRef = multiFrame.BodyFrameReference;
-
-            using (ColorFrame colorFrame = colorRef.AcquireFrame())
-            {
-                using (BodyFrame bodyFrame = bodyRef.AcquireFrame())
-                {
-                    if (colorFrame == null || bodyFrame == null || _isDrawing) return;
-
-                    _isDrawing = true;
-                    int width = colorFrame.FrameDescription.Width;
-                    int height = colorFrame.FrameDescription.Height;
-
-                    if ((_colorImageBuffer == null) || (_colorImageBuffer.Length != width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
-                    {
-                        _colorImageBuffer = new byte[width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
-                    }
-
-                    colorFrame.CopyConvertedFrameDataToArray(_colorImageBuffer, ColorImageFormat.Rgba);
-
-                    Color[] color = new Color[height * width];
-                    kinectRGBVideo = new Texture2D(graphics.GraphicsDevice, width, height);
-
-                    // Go through each pixel and set the bytes correctly
-                    // Remember, each pixel got a Red, Green and Blue
-                    int index = 0;
-                    for (int y = 0; y < width; y++)
-                    {
-                        for (int x = 0; x < height; x++)
-                        {
-                            Color c = new Color(_colorImageBuffer[index + 0], _colorImageBuffer[index + 1], _colorImageBuffer[index + 2], _colorImageBuffer[index + 3]);
-                            color[y * height + x] = c;
-                            index += 4;
-                        }
-                    }
-
-                    // Set pixeldata from the ColorImageFrame to a Texture2D
-                    kinectRGBVideo.SetData(color);
-
-                    if (bodyFrame != null)
-                    {
-                        _bodies = new Body[bodyFrame.BodyFrameSource.BodyCount];
-
-                        bodyFrame.GetAndRefreshBodyData(_bodies);
-
-                        foreach (var body in _bodies)
-                        {
-                            if (body != null)
-                            {
-                                if (body.IsTracked)
-                                {
-                                    // Find the joints
-                                    Joint handRight = body.Joints[JointType.HandRight];
-                                    Joint thumbRight = body.Joints[JointType.ThumbRight];
-
-                                    Joint handLeft = body.Joints[JointType.HandLeft];
-                                    Joint thumbLeft = body.Joints[JointType.ThumbLeft];
-
-                                    if (_joints == null || _joints.Length != 4)
-                                    {
-                                        _joints = new Joint[4];
-                                    }
-
-                                    _joints[0] = handRight;
-                                    _joints[1] = thumbRight;
-                                    _joints[2] = handLeft;
-                                    _joints[3] = thumbLeft;
-                                }
-                            }
-                        }
-                    }
-
-                    this.BeginDraw();
-                }
-
-
-            }
-
         }
 
         /// <summary>
@@ -253,6 +134,8 @@ namespace kinectApp
                 spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
             }
 
+            spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(0, 0), Color.White);
+
             //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
             //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
 
@@ -276,91 +159,6 @@ namespace kinectApp
 
             // TODO: Add your drawing code here
             base.Draw(gameTime);
-        }
-
-        protected override void EndDraw()
-        {
-            _isDrawing = false;
-            base.EndDraw();
-        }
-
-        private void KinectSensor_BodySourceFrameArrived(object sender, BodyFrameArrivedEventArgs e)
-        {
-            if (_isDrawing) return;
-            _isDrawing = true;
-            using (var frame = e.FrameReference.AcquireFrame())
-            {
-                if (frame != null)
-                {
-                    _bodies = new Body[frame.BodyFrameSource.BodyCount];
-
-                    frame.GetAndRefreshBodyData(_bodies);
-
-                    foreach (var body in _bodies)
-                    {
-                        if (body != null)
-                        {
-                            if (body.IsTracked)
-                            {
-                                // Find the joints
-                                Joint handRight = body.Joints[JointType.HandRight];
-                                Joint thumbRight = body.Joints[JointType.ThumbRight];
-
-                                Joint handLeft = body.Joints[JointType.HandLeft];
-                                Joint thumbLeft = body.Joints[JointType.ThumbLeft];
-                            }
-                        }
-                    }
-                }
-            }
-            this.BeginDraw();
-
-        }
-
-        private void kinectSensor_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
-        {
-            if (_isDrawing) return;
-            _isDrawing = true;
-            using (ColorFrame colorImageFrame = e.FrameReference.AcquireFrame())
-            {
-                if (colorImageFrame != null)
-                {
-                    int width = colorImageFrame.FrameDescription.Width;
-                    int height = colorImageFrame.FrameDescription.Height;
-
-                    if ((_colorImageBuffer == null) || (_colorImageBuffer.Length != width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
-                    {
-                        _colorImageBuffer = new byte[width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
-                    }
-
-                    colorImageFrame.CopyConvertedFrameDataToArray(_colorImageBuffer, ColorImageFormat.Rgba);
-
-                    Color[] color = new Color[height * width];
-                    kinectRGBVideo = new Texture2D(graphics.GraphicsDevice, width, height);
-
-                    // Go through each pixel and set the bytes correctly
-                    // Remember, each pixel got a Red, Green and Blue
-                    int index = 0;
-                    for (int y = 0; y < width; y++)
-                    {
-                        for (int x = 0; x < height; x++)
-                        {
-                            Color c = new Color(_colorImageBuffer[index + 0], _colorImageBuffer[index + 1], _colorImageBuffer[index + 2], _colorImageBuffer[index + 3]);
-                            color[y * height + x] = c;
-                            index += 4;
-                        }
-                    }
-
-                    // Set pixeldata from the ColorImageFrame to a Texture2D
-                    kinectRGBVideo.SetData(color);
-                    this.BeginDraw();
-                }
-            }
-        }
-
-        private void KinectSensors_StatusChanged(object sender, IsAvailableChangedEventArgs e)
-        {
-            connectedStatus = e.IsAvailable ? "Sensor is available." : "**Sensor is not available**";
         }
     }
 }
