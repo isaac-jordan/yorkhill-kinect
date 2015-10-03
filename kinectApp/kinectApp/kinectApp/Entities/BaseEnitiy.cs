@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
@@ -11,27 +12,31 @@ namespace kinectApp.Entities
     public abstract class BaseEnitiy : IEntity
     {
         private Vector3 _pos;
-        private SpriteBatch _spriteBatch;
 
         #region Constructors
-        public BaseEnitiy() : this(0, 0, 0) { }
+        public BaseEnitiy() : this(string.Empty, 0, 0, 0) { }
 
-        public BaseEnitiy(Vector3 aPos) : this(aPos.X, aPos.Y, aPos.Z) { }
+        public BaseEnitiy(string aAssetName) : this(aAssetName, 0, 0, 0) { }
 
-        public BaseEnitiy(float aX, float aY, float aZ)
+        public BaseEnitiy(string aAssetName, Vector3 aPos) : this(aAssetName, aPos.X, aPos.Y, aPos.Z) { }
+
+        public BaseEnitiy(string aAssetName, float aX, float aY, float aZ)
         {
             _pos = new Vector3(aX, aY, aZ);
+            AssetName = aAssetName;
         }
         #endregion
 
-        /// <summary>
-        /// Gets or sets the internal spritebatch of the entity
-        /// </summary>
-        protected SpriteBatch SpriteBatch
+        public Texture2D Texture
         {
-            get { return _spriteBatch; }
-            set { _spriteBatch = value; }
+            get; set;
         }
+
+        public string AssetName
+        {
+            get; set;
+        }
+
 
         #region Position Code
         /// <summary>
@@ -71,10 +76,10 @@ namespace kinectApp.Entities
 
         #endregion
 
-        public abstract void Draw(GameTime aGameTime);
+  
         public abstract void Update(GameTime aGameTime);
 
-        public abstract void Load(SpriteBatch aSpriteBatch);
+        public abstract void Load(ContentManager aSpriteBatch);
         public abstract void Unload();
     }
 }

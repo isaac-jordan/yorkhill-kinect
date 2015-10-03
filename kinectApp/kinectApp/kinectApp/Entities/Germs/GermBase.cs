@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 using kinectApp.Entities;
@@ -26,20 +27,14 @@ namespace kinectApp.Entities.Germs
         /// Create a new Germ with the specified a position
         /// </summary>
         /// <param name="aPos">A Position</param>
-        public GermBase(Vector3 aPos) : base(aPos) { }
+        public GermBase(Vector3 aPos) : base(string.Empty, aPos) { }
         /// <summary>
         /// Create a new Germ with a Custom position
         /// </summary>
         /// <param name="aX">X Pos</param>
         /// <param name="aY">Y Pos</param>
         /// <param name="aZ">Z Pos</param>
-        public GermBase(float aX, float aY, float aZ) : base(aX, aY, aZ) { }
-
-        public string Filename
-        {
-            get;
-            set;
-        }
+        public GermBase(float aX, float aY, float aZ) : base(string.Empty, aX, aY, aZ) { }
 
         /// <summary>
         /// Gets the ID of the germ
@@ -54,14 +49,12 @@ namespace kinectApp.Entities.Germs
             get; private set; 
         }
 
-        public abstract override void Draw(GameTime aGameTime);
-
-        public override void Load(SpriteBatch aSpriteBatch)
+        public override void Load(ContentManager aContentManager)
         {
-            SpriteBatch = aSpriteBatch;
-
-            _texture = new Texture2D(Graphics
-
+            if (!string.IsNullOrEmpty(AssetName))
+            {
+                Texture = aContentManager.Load<Texture2D>(AssetName);
+            }
         }
 
         public abstract override void Unload();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace kinectApp.Entities
 {
@@ -65,7 +65,7 @@ namespace kinectApp.Entities
         {
             foreach (var entity in _entities)
             {
-                entity.Draw(aGameTime);
+                //entity.Draw(aGameTime);
             }
         }
 
@@ -77,11 +77,11 @@ namespace kinectApp.Entities
             }
         }
 
-        public void Load(SpriteBatch aSpriteBatch)
+        public void Load(ContentManager aContentManager)
         {
             foreach (var entity in _entities)
             {
-                entity.Load(aSpriteBatch);
+                entity.Load(aContentManager);
             }
         }
         #endregion
