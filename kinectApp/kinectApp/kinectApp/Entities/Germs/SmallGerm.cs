@@ -13,9 +13,11 @@ namespace kinectApp.Entities.Germs
     {
         public SmallGerm() : base() { }
 
-        public SmallGerm(Vector3 aPos) : base(aPos) { }
+        public SmallGerm(string aAssetName) : base(aAssetName) { }
 
-        public SmallGerm(float aX, float aY, float aZ) : base(aX, aY, aZ) { }
+        public SmallGerm(string aAssetName, Vector3 aPos) : base(aAssetName, aPos) { }
+
+        public SmallGerm(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ) { }
 
         public override void Load(ContentManager aContentManager)
         {

@@ -27,11 +27,17 @@ namespace kinectApp.Entities
         }
         #endregion
 
+        /// <summary>
+        /// Gets or Sets the texture of the entity
+        /// </summary>
         public Texture2D Texture
         {
             get; set;
         }
 
+        /// <summary>
+        /// Gets or Sets the asset name of the entity
+        /// </summary>
         public string AssetName
         {
             get; set;

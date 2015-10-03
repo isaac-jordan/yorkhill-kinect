@@ -24,17 +24,23 @@ namespace kinectApp.Entities.Germs
         public GermBase() : base() { }
 
         /// <summary>
+        /// Create a new Germ with a asset name.
+        /// </summary>
+        /// <param name="aAssetName"></param>
+        public GermBase(string aAssetName) : base(aAssetName) { }
+
+        /// <summary>
         /// Create a new Germ with the specified a position
         /// </summary>
         /// <param name="aPos">A Position</param>
-        public GermBase(Vector3 aPos) : base(string.Empty, aPos) { }
+        public GermBase(string aAssetName, Vector3 aPos) : base(aAssetName, aPos) { }
         /// <summary>
         /// Create a new Germ with a Custom position
         /// </summary>
         /// <param name="aX">X Pos</param>
         /// <param name="aY">Y Pos</param>
         /// <param name="aZ">Z Pos</param>
-        public GermBase(float aX, float aY, float aZ) : base(string.Empty, aX, aY, aZ) { }
+        public GermBase(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ) { }
 
         /// <summary>
         /// Gets the ID of the germ
