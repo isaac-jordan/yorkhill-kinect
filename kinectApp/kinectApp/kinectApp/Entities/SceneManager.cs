@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
 {
     /*
         Handles the changing of Scenes within the game, passing the information to the Entity Manager
     */
-    public class SceneManager
+    public class SceneManager : IDisposable
     {
         EntityManager iEntityManager;
         ContentManager iContentManager;
@@ -32,7 +34,6 @@ namespace kinectApp.Entities
                 iCurrentScene = aScene;
             }
 
-
             iEntityManager.Unload();
             iEntityManager.Clear();
 
@@ -42,6 +43,23 @@ namespace kinectApp.Entities
             }
 
             iEntityManager.Load(iContentManager);
+        }
+
+        public void UpdateScene(GameTime aGameTime)
+        {
+            iEntityManager.Update(aGameTime);
+        }
+
+        public void DrawScene(GameTime aGameTime, SpriteBatch aSpriteBatch)
+        {
+            iEntityManager.Draw(aGameTime, aSpriteBatch);
+        }
+
+        public void Dispose()
+        {
+            iEntityManager.Unload();
+            iEntityManager = null;
+            iCurrentScene = null;
         }
     }
 }

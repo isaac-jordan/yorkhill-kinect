@@ -31,6 +31,7 @@ namespace kinectApp
         byte[] _colorImageBuffer;
         bool _colorIsDrawing;
 
+        readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
 
         public Game1()
@@ -45,6 +46,7 @@ namespace kinectApp
             Content.RootDirectory = "Content";
 
             entityManager = new EntityManager();
+            iSceneManager = new SceneManager(Content);
         }
 
         /// <summary>
@@ -63,12 +65,15 @@ namespace kinectApp
             cfReader = sensor.ColorFrameSource.OpenReader();
             cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
 
-            for (int i = 0; i < 250; i++)
-            {
-                entityManager.AddEntity(Entities.Germs.GermFactory.CreateSmallGerm());
-            }
 
-            entityManager.AddEntity(new Entities.UI.Button("Test", string.Empty, 20, 20, 0));
+            iSceneManager.SetScene(new Entities.Scenes.Menu());
+
+            //for (int i = 0; i < 250; i++)
+            //{
+            //    entityManager.AddEntity(Entities.Germs.GermFactory.CreateSmallGerm());
+            //}
+
+            //entityManager.AddEntity(new Entities.UI.Button("Test", string.Empty, 20, 20, 0));
 
             base.Initialize();
         }
@@ -92,7 +97,7 @@ namespace kinectApp
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // TODO: use this.Content to load your game content here#
-            entityManager.Load(Content);
+            //entityManager.Load(Content);
         }
 
         /// <summary>
@@ -103,7 +108,10 @@ namespace kinectApp
         {
             // TODO: Unload any non ContentManager content here
             sensor.Close();
-            entityManager.Unload();
+
+            iSceneManager.Dispose();
+
+            //entityManager.Unload();
         }
 
         /// <summary>
@@ -118,8 +126,9 @@ namespace kinectApp
                 this.Exit();
 
             // TODO: Add your update logic here
+            iSceneManager.UpdateScene(gameTime);
 
-            entityManager.Update(gameTime);
+            //entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -136,12 +145,13 @@ namespace kinectApp
             spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
             //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
             spriteBatch.DrawString(font, connectedStatus, new Vector2(20, 80), Color.White);
-            entityManager.Draw(gameTime,spriteBatch);
+
+            iSceneManager.DrawScene(gameTime, spriteBatch);
+            //entityManager.Draw(gameTime,spriteBatch);
+
             spriteBatch.End();
 
             // TODO: Add your drawing code here
-            
-
             base.Draw(gameTime);
         }
 
