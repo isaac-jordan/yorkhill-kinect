@@ -27,4 +27,22 @@ namespace kinectApp.Entities.Scenes
             return;
         }
     }
+
+
+    public class KinectLost : Scene
+    {
+        private IEntity iLabel;
+
+        public KinectLost() : base("kinect-disconnect")
+        {
+            iLabel = new BigLabel("Searching for player...", string.Empty, 225, 250, 0);
+
+            Entities.Add(iLabel);
+        }
+
+        public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
+        {
+            return;
+        }
+    }
 }

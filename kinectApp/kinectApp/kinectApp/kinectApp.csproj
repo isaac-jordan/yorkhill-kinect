@@ -108,7 +108,7 @@
     <Compile Include="Entities\SceneManager.cs" />
     <Compile Include="Entities\Scenes\ExitGameIntsance.cs" />
     <Compile Include="Entities\Scenes\GameInstance.cs" />
-    <Compile Include="Entities\Scenes\KinectDisconnect.cs" />
+    <Compile Include="Entities\Scenes\Kinect.cs" />
     <Compile Include="Entities\Scenes\Menu.cs" />
     <Compile Include="Entities\Scenes\Pause.cs" />
     <Compile Include="Entities\UI\BigLabel.cs" />
