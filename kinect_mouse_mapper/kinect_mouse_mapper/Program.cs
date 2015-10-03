@@ -18,9 +18,10 @@ namespace kinect_mouse_mapper
         static void Main(string[] args)
         {
             sensor = KinectSensor.GetDefault();
-            sensor.Open();
 
             sensor.IsAvailableChanged += Sensor_IsAvailableChanged;
+
+            sensor.Open();
 
             _multiReader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Body);
 
