@@ -89,9 +89,8 @@ namespace kinect_mouse_mapper
                                 Point point = new Point();
                                 point.X = (int)colorPoint.X;
                                 point.Y = (int)colorPoint.Y;
-                                
-                              
-                                VirtualMouse.Move(point.X, point.Y);
+                               
+                                VirtualMouse.MoveTo(point.X, point.Y);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
 
                                 if (body.HandRightState == HandState.Closed)
