@@ -80,6 +80,10 @@ namespace kinectApp.Entities
 
         public void Unload()
         {
+            #if DEBUG
+                Console.WriteLine("<Disposing Entities> : {0}", _entities.Count);
+            #endif
+
             foreach (var entity in _entities)
             {
                 entity.Unload();
@@ -88,6 +92,10 @@ namespace kinectApp.Entities
 
         public void Load(ContentManager aContentManager)
         {
+            #if DEBUG
+                Console.WriteLine("<Loading Entities> : {0}", _entities.Count);
+            #endif
+
             foreach (var entity in _entities)
             {
                 entity.Load(aContentManager);

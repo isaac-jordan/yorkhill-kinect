@@ -11,13 +11,16 @@ namespace kinectApp.Entities.Germs
 {
     public class SmallGerm : GermBase
     {
-        public SmallGerm() : base() { }
+        static Random Rand = new Random(234230);
 
-        public SmallGerm(string aAssetName) : base(aAssetName) { }
 
-        public SmallGerm(string aAssetName, Vector3 aPos) : base(aAssetName, aPos) { }
+        public SmallGerm() : base() { Id = Rand.Next(0, 200); }
 
-        public SmallGerm(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ) { }
+        public SmallGerm(string aAssetName) : base(aAssetName) { Id = Rand.Next(0, 200);  }
+
+        public SmallGerm(string aAssetName, Vector3 aPos) : base(aAssetName, aPos) { Id = Rand.Next(0, 200); }
+
+        public SmallGerm(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ) { Id = Rand.Next(0, 200); }
 
         public override void Load(ContentManager aContentManager)
         {
@@ -26,7 +29,7 @@ namespace kinectApp.Entities.Germs
 
         public override void Unload()
         {
-            //throw new NotImplementedException();
+            base.Unload();
         }
 
         public override void Update(GameTime aGameTime)
