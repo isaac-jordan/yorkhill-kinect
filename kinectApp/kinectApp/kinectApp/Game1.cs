@@ -36,6 +36,7 @@ namespace kinectApp
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+
             graphics.PreferredBackBufferHeight = 1000;
             graphics.PreferredBackBufferWidth = 1900;
             Content.RootDirectory = "Content";

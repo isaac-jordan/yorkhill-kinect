@@ -9,7 +9,7 @@ namespace kinectApp.Entities.Germs
     {
         public static IEntity CreateSmallGerm()
         {
-            return new SmallGerm("overlay", new Microsoft.Xna.Framework.Vector3(0,2,3));
+            return new SmallGerm("SmallGerm", new Microsoft.Xna.Framework.Vector3(0,2,3));
         }
 
    }
