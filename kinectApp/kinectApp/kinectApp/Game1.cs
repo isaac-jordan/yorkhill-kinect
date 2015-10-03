@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
-using System.Windows.Forms;
+using SForms = System.Windows.Forms;
 using SDrawing = System.Drawing;
 
 using kinectApp.Entities;
@@ -99,7 +99,6 @@ namespace kinectApp
 
             //Show Main menu
             iSceneManager.SetScene(new Entities.Scenes.GameInstance());
-            iKinect = new KinectAdapter(graphics.GraphicsDevice);
             colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
 
             gestureRV = new GestureResultView(0, false, false, 0);
@@ -150,7 +149,7 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || icancelRequested || gestureRV.Detected)
+            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || iCancelRequested || gestureRV.Detected)
             //Dectect a close, from outwith this class!
             {
                 this.Exit();

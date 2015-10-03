@@ -129,6 +129,12 @@
     </Content>
     <Content Include="Germz.Icon.ico" />
     <Content Include="Germz.Icon.png" />
+    <Content Include="vbgtechs\AdaBoostTech.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="vbgtechs\RFRProgressTech.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Res\Germz.Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
