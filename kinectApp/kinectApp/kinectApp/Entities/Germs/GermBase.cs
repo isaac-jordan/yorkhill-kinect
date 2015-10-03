@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Threading.Tasks;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -45,7 +47,7 @@ namespace kinectApp.Entities.Germs
         /// <summary>
         /// Gets the ID of the germ
         /// </summary>
-        public int Id{ get; private set; }
+        public int Id{ get; set; }
 
         /// <summary>
         /// Gets if the Germ is dead.
@@ -59,11 +61,18 @@ namespace kinectApp.Entities.Germs
         {
             if (!string.IsNullOrEmpty(AssetName))
             {
-                Texture = aContentManager.Load<Texture2D>(AssetName);
+                    Texture = aContentManager.Load<Texture2D>(AssetName);
             }
         }
 
-        public abstract override void Unload();
+        public override void Unload()
+        {
+            if (Texture != null)
+            {
+                Texture.Dispose();
+            }
+            Texture = null;
+        }
 
         public abstract override void Update(GameTime aGameTime);
     }
