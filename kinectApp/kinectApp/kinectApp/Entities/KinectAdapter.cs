@@ -20,12 +20,12 @@ namespace kinectApp.Entities
 
         private byte[] iColourImageBuffer;
         private Body[] _bodies;
-        private List<Joint> hands = new List<Joint>();
+        private List<Point> hands = new List<Point>();
         private readonly static object iVideoLock = new object();
         private readonly static object iJointLock = new object();
 
-        private const int kWidth = 1920;
-        private const int kHeight = 1080;
+        public const int kWidth = 1920;
+        public const int kHeight = 1080;
 
         private List<Task> iProcessingTasks;
 
@@ -82,14 +82,14 @@ namespace kinectApp.Entities
         /// <summary>
         /// Gets the current found joints from the last frame.
         /// </summary>
-        public List<Joint> KinectJoints
+        public List<Point> KinectJoints
         {
             get
             {
-                lock(iJointLock)
+                lock (iJointLock)
                 {
                     return hands;
-                }               
+                }
             }
         }
 
@@ -106,7 +106,7 @@ namespace kinectApp.Entities
                 IsOpen = true;
 
                 iSensor.IsAvailableChanged += KSensor_IsAvailableChanged;
-            
+
                 //Setup the video feed from the Kinect Camera!
                 iFrameReader = iSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
 
@@ -130,7 +130,7 @@ namespace kinectApp.Entities
                     return;
                 }
 
-                
+
                 if (multiFrame == null) return;
 
                 // Retrieve data stream frame references
@@ -220,19 +220,33 @@ namespace kinectApp.Entities
                         {
                             if (body.IsTracked)
                             {
-                                // Find the joints
-                                Joint handRight = body.Joints[JointType.HandRight];
-                                Joint handLeft = body.Joints[JointType.HandLeft];
+                                JointType[] JointsToGet = { JointType.HandRight, JointType.HandLeft, JointType.WristRight, JointType.WristLeft };
 
                                 //Console.WriteLine("I can see a joint at:" + handRight.Position.X + ", " + handRight.Position.Y + ", " + handRight.Position.Z);
 
-                                hands.Add(handRight);
-                                hands.Add(handLeft);
+                                foreach (JointType jt in JointsToGet)
+                                {
+                                    hands.Add(MapJointToPoint(body.Joints[jt]));
+                                }
                             }
                         }
                     }
                 }
             }
+        }
+
+        private Point MapJointToPoint(Joint joint)
+        {
+            CameraSpacePoint skeletonPoint = joint.Position;
+            ColorSpacePoint colorPoint = iSensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
+            // 2D coordinates in pixels
+
+            // Skeleton-to-Color mapping
+
+            Point point = new Point();
+            point.X = (int)colorPoint.X;
+            point.Y = (int)colorPoint.Y;
+            return point;
         }
 
         //Process a change in the availability of Kinect
