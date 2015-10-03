@@ -87,7 +87,7 @@ namespace kinectApp.Entities
   
         public abstract void Update(GameTime aGameTime);
 
-        public abstract void Load(ContentManager aSpriteBatch);
+        public abstract void Load(ContentManager aContentManager);
         public abstract void Unload();
     }
 }
