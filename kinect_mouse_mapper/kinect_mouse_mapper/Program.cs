@@ -90,7 +90,7 @@ namespace kinect_mouse_mapper
                                 point.X = (int)colorPoint.X;
                                 point.Y = (int)colorPoint.Y;
 
-                                VirtualMouse.MoveTo(point.X,point.Y);
+                                VirtualMouse.Move(Cursor.Position.X + point.X, Cursor.Position.Y + point.Y);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
                             }
                         }
