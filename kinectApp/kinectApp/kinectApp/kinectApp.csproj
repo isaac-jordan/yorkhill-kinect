@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="Entities\BaseEnitiy.cs" />
     <Compile Include="Entities\EntityManager.cs" />
+    <Compile Include="Entities\Germs\BigGerm.cs" />
     <Compile Include="Entities\Germs\GermBase.cs" />
     <Compile Include="Entities\Germs\GermFactory.cs" />
     <Compile Include="Entities\Germs\IGerm.cs" />
