@@ -19,16 +19,20 @@ namespace kinectApp.Entities
         private GraphicsDevice iGraphicsDevice;
 
         private byte[] iColourImageBuffer;
-        private readonly object iLock = new object();
-
+        private readonly static object iLock = new object();
 
         private const int kWidth = 1920;
         private const int kHeight = 1080;
+
+        private List<Task> iProcessingTasks;
 
         public KinectAdapter(GraphicsDevice aGraphicsDevice)
         {
             iSensor = KinectSensor.GetDefault();
             iGraphicsDevice = aGraphicsDevice;
+
+            iProcessingTasks = new List<Task>();
+            iColourImageBuffer = new byte[kWidth * kHeight * 4];
         }
 
         /// <summary>
@@ -114,17 +118,13 @@ namespace kinectApp.Entities
         //By threading, we process the info on seperate threads, allowing execution to coninue with the rest of the game
         private void KFrameReader_FrameArrived(object sender, ColorFrameArrivedEventArgs e)
         {
-            Task.Factory.StartNew(() =>
+            //We also keep a list of all the old tasks, because then we stop the game crashing on exit.
+            var T = Task.Factory.StartNew(() =>
             {
                 using (ColorFrame colorImageFrame = e.FrameReference.AcquireFrame())
                 {
                     if (colorImageFrame != null)
                     {
-                        if ((iColourImageBuffer == null) || (iColourImageBuffer.Length != kWidth * kHeight * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
-                        {
-                            iColourImageBuffer = new byte[kWidth * kHeight * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
-                        }
-
                         colorImageFrame.CopyConvertedFrameDataToArray(iColourImageBuffer, ColorImageFormat.Rgba);
 
                         Color[] color = new Color[kHeight * kWidth];
@@ -142,15 +142,19 @@ namespace kinectApp.Entities
                             }
                         }
 
+                        var video = new Texture2D(iGraphicsDevice, kWidth, kHeight);
+                        video.SetData(color);
+
+
                         lock (iLock)
                         {
-                                iRGBVideo = new Texture2D(iGraphicsDevice, kWidth, kHeight);
-                                // Set pixeldata from the ColorImageFrame to a Texture2D
-                                iRGBVideo.SetData(color);
+                            iRGBVideo = video;
                         }
                     }
                 }
-            });
+            }).ContinueWith((aTask) => iProcessingTasks.Remove(aTask));
+
+            iProcessingTasks.Add(T);
         }
 
         //Process a change in the availability of Kinect
@@ -163,6 +167,13 @@ namespace kinectApp.Entities
         //Frees resources used by the adapter
         public void Dispose()
         {
+            //Wait for all the processing to be done on the video frames
+            //Sometimes we'd be disposing while we're trying to re-construct the RGBVideo
+            var Tasks = iProcessingTasks.ToArray();
+            Task.WaitAll(Tasks);
+
+            iProcessingTasks.Clear();
+
             if (IsOpen)
             {
                 CloseSensor();
