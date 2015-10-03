@@ -19,7 +19,6 @@ namespace kinectApp.Entities
         private Texture2D iRGBVideo;
         private GraphicsDevice iGraphicsDevice;
 
-        private byte[] iColourImageBuffer;
         private byte[] iBodyIndexBuffer;
         private Body[] _bodies;
         private List<Point> hands = new List<Point>();
@@ -40,7 +39,6 @@ namespace kinectApp.Entities
 
 
             iProcessingTasks = new List<Task>(500);
-            iColourImageBuffer = new byte[kWidth * kHeight * 4];
             iBodyIndexBuffer = new byte[5];
         }
 
@@ -178,33 +176,77 @@ namespace kinectApp.Entities
             {
                 if (colorImageFrame != null)
                 {
-                    colorImageFrame.CopyConvertedFrameDataToArray(iColourImageBuffer, ColorImageFormat.Rgba);
-
-                    Color[] color = new Color[kHeight * kWidth];
-
-                    // Go through each pixel and set the bytes correctly
-                    // Remember, each pixel got a Red, Green and Blue
-                    int index = 0;
-                    for (int y = 0; y < kWidth; y++)
+                    using (BodyIndexFrame bodyIndexFrame = bifRef.AcquireFrame())
                     {
-                        for (int x = 0; x < kHeight; x++)
+                        if (bodyIndexFrame != null)
                         {
-                            Color c = new Color(iColourImageBuffer[index + 0], iColourImageBuffer[index + 1], iColourImageBuffer[index + 2], iColourImageBuffer[index + 3]);
-                            color[y * kHeight + x] = c;
-                            index += 4;
+                            using (DepthFrame depthFrame = depthRef.AcquireFrame())
+                            {
+                                if (depthFrame != null)
+                                {
+                                    int depthHeight = depthFrame.FrameDescription.Height;
+                                    int depthWidth = depthFrame.FrameDescription.Width;
+
+                                    int colorHeight = colorImageFrame.FrameDescription.Height;
+                                    int colorWidth = colorImageFrame.FrameDescription.Width;
+
+                                    ushort[] _depthData = new ushort[depthFrame.FrameDescription.Width * depthFrame.FrameDescription.Height];
+                                    byte[] _bodyData = new byte[bodyIndexFrame.FrameDescription.Width * bodyIndexFrame.FrameDescription.Height];
+                                    byte[] _colorData = new byte[colorImageFrame.FrameDescription.Width * colorImageFrame.FrameDescription.Height * 4];
+                                    ColorSpacePoint[] _colorPoints = new ColorSpacePoint[depthWidth * depthHeight];
+
+                                    depthFrame.CopyFrameDataToArray(_depthData);
+                                    bodyIndexFrame.CopyFrameDataToArray(_bodyData);
+                                    colorImageFrame.CopyConvertedFrameDataToArray(_colorData, ColorImageFormat.Rgba);
+
+                                    iSensor.CoordinateMapper.MapDepthFrameToColorSpace(_depthData, _colorPoints);
+
+                                    Color[] color = new Color[depthHeight * depthWidth];
+
+                                    for (int y = 0; y < depthHeight; ++y)
+                                    {
+                                        for (int x = 0; x < depthWidth; ++x)
+                                        {
+                                            int depthIndex = (y * depthHeight) + x;
+
+                                            byte player = _bodyData[depthIndex];
+
+
+                                            // Check whether this pixel belong to a human!!!
+                                            if (player != 0xff)
+                                            {
+                                                ColorSpacePoint colorPoint = _colorPoints[depthIndex];
+                                                
+                                                int colorX = (int)Math.Floor(colorPoint.X + 0.5);
+                                                int colorY = (int)Math.Floor(colorPoint.Y + 0.5);
+                                                int colorIndex = ((colorY * colorWidth) + colorX);
+
+                                                if ((colorX >= 0) && (colorX < colorWidth) && (colorY >= 0) && (colorY < colorHeight))
+                                                {
+                                                    
+                                                    int displayIndex = colorIndex * 4;
+
+                                                    Color c = new Color(_colorData[displayIndex + 0], _colorData[displayIndex + 1], _colorData[displayIndex + 2], 0xff);
+                                                    color[depthIndex] = c;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (iGraphicsDevice.IsDisposed) return;
+                                    var video = new Texture2D(iGraphicsDevice, depthWidth, depthHeight);
+
+
+                                    video.SetData(color);
+
+
+                                    lock (iVideoLock)
+                                    {
+                                        iRGBVideo = video;
+                                    }
+                                }
+                            }
                         }
-                    }
-
-                    if (iGraphicsDevice.IsDisposed) return;
-                    var video = new Texture2D(iGraphicsDevice, kWidth, kHeight);
-
-
-                    video.SetData(color);
-
-
-                    lock (iVideoLock)
-                    {
-                        iRGBVideo = video;
                     }
                 }
             }

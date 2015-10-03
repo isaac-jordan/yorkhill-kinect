@@ -29,6 +29,7 @@ namespace kinectApp
         InputHelper iInputHelper;
         Texture2D jointMarker;
         Texture2D overlay;
+        Texture2D room;
         RenderTarget2D colorRenderTarget;
         SpriteFont font;
         int screenHeight;
@@ -43,7 +44,7 @@ namespace kinectApp
 
         static bool iCancelRequested = false;
 
-        readonly Color iBackground = Color.SaddleBrown;
+        readonly Color iBackground = Color.Purple;
 
         public Game1()
         {
@@ -81,14 +82,14 @@ namespace kinectApp
                     title = "Connected";
                     file = "Germz.Icon.ico";
 
-                    //iSceneManager.HideOverlay();
+                    iSceneManager.HideOverlay();
                 }
                 else
                 {
                     title = "NO KINECT FOUND";
                     file = "Germz.NoKintec.Icon.ico";
 
-                    //iSceneManager.ShowOverlay(new KinectDisconnect());
+                    iSceneManager.ShowOverlay(new KinectDisconnect());
                 }
 
                 Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", title);
@@ -124,6 +125,7 @@ namespace kinectApp
             jointMarker.SetData(data);
 
             overlay = Content.Load<Texture2D>("overlay");
+            room = Content.Load<Texture2D>("room");
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // TODO: use this.Content to load your game content here#
@@ -182,6 +184,7 @@ namespace kinectApp
             
 
             spriteBatch.Begin();
+            spriteBatch.Draw(room, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
             if (iKinect.KinectRGBVideo != null)
             {
                 spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
