@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
+using System.Windows.Forms;
+using SDrawing = System.Drawing;
+
 using kinectApp.Entities;
 using kinectApp.Utilities;
 
@@ -61,7 +64,14 @@ namespace kinectApp
         /// </summary>
         protected override void Initialize()
         {
-            iKinect = new KinectAdapter(graphics.GraphicsDevice);
+            iKinect = new KinectAdapter(graphics.GraphicsDevice, (isAvail) =>
+            {
+                Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", (isAvail) ? "Connected" : "NO KINECT FOUND");
+
+                var filename = string.Format("Res/{0}", (isAvail) ? "Germz.Icon.ico" : "Germz.NoKintec.Icon.ico");
+
+                ((System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(Window.Handle)).Icon = new SDrawing.Icon(filename);
+            });
             iKinect.OpenSensor();
 
             //Show Main menu
@@ -102,8 +112,6 @@ namespace kinectApp
 
             iSceneManager.Dispose();
             iKinect.Dispose();
-
-            //entityManager.Unload();
         }
 
         /// <summary>
@@ -122,12 +130,9 @@ namespace kinectApp
             iInputHelper.Update();
 
             iSceneManager.DoKeys(iInputHelper);
+            iSceneManager.UpdateScene(gameTime);
 
-
-                iSceneManager.UpdateScene(gameTime);
-
-                base.Update(gameTime);
-            }
+            base.Update(gameTime);
         }
 
         /// <summary>
