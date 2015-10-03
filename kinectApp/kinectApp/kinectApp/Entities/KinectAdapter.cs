@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.Kinect;
+using Microsoft.Kinect.Input;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +14,7 @@ namespace kinectApp.Entities
 {
     public class KinectAdapter : IDisposable
     {
-        private KinectSensor iSensor;
+        public KinectSensor iSensor;
         private MultiSourceFrameReader iFrameReader;
         private Texture2D iRGBVideo;
         private GraphicsDevice iGraphicsDevice;
@@ -191,9 +192,10 @@ namespace kinectApp.Entities
                         }
                     }
 
+                    if (iGraphicsDevice.IsDisposed) return;
                     var video = new Texture2D(iGraphicsDevice, kWidth, kHeight);
 
-                    //TODO Stop stupid AccessViolation
+
                     video.SetData(color);
 
 
@@ -219,7 +221,11 @@ namespace kinectApp.Entities
 
                     bodyFrame.GetAndRefreshBodyData(_bodies);
 
-                    hands.Clear();
+                    lock (hands)
+                    {
+                        hands.Clear();
+                    }
+                    
 
                     foreach (var body in _bodies)
                     {
@@ -233,7 +239,10 @@ namespace kinectApp.Entities
 
                                 foreach (JointType jt in JointsToGet)
                                 {
-                                    hands.Add(MapJointToPoint(body.Joints[jt]));
+                                    lock (hands)
+                                    {
+                                        hands.Add(MapJointToPoint(body.Joints[jt]));
+                                    }
                                 }
                             }
                         }
