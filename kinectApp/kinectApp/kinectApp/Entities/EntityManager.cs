@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using kinectApp.Entities.Germs;
 
 namespace kinectApp.Entities
 {
@@ -59,18 +60,30 @@ namespace kinectApp.Entities
             {
                 entity.Update(aGameTime);
             }
+
+            if (_entities.Count < 5)
+            {
+                _entities.Add(new SmallGerm());
+            }
         }
 
-        public void Draw(GameTime aGameTime)
+        public void Draw(GameTime aGameTime , Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             foreach (var entity in _entities)
             {
-                //entity.Draw(aGameTime);
+                if (_entities.Count != 0)
+                {
+                    spriteBatch.Draw(entity.Texture, new Vector2(entity.PosX, entity.PosY), Color.White);
+                }
             }
         }
 
         public void Unload()
         {
+            #if DEBUG
+                Console.WriteLine("<Disposing Entities> : {0}", _entities.Count);
+            #endif
+
             foreach (var entity in _entities)
             {
                 entity.Unload();
@@ -79,6 +92,10 @@ namespace kinectApp.Entities
 
         public void Load(ContentManager aContentManager)
         {
+            #if DEBUG
+                Console.WriteLine("<Loading Entities> : {0}", _entities.Count);
+            #endif
+
             foreach (var entity in _entities)
             {
                 entity.Load(aContentManager);
