@@ -81,7 +81,7 @@ namespace kinect_mouse_mapper
                                 _joints[2] = handLeft;
                                 _joints[3] = thumbLeft;
 
-                                VirtualMouse.Move((int)((_joints[1].Position.X) * 10), (int)((_joints[1].Position.Y) * 10));
+                                VirtualMouse.Move((int)((_joints[1].Position.X) * 10) > 1 ? (int)((_joints[1].Position.X) * 10):0, (int)((_joints[1].Position.X) * 10) > 1 ? (int)(-(_joints[1].Position.Y) * 10) : 0);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
                             }
                         }

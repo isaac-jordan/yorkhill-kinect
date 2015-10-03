@@ -23,6 +23,7 @@ namespace kinectApp
         SpriteBatch spriteBatch;
         Texture2D jointMarker;
         Texture2D overlay;
+        RenderTarget2D colorRenderTarget;
         SpriteFont font;
         int screenHeight;
         int screenWidth;
@@ -59,6 +60,7 @@ namespace kinectApp
 
             //Show Main menu
             iSceneManager.SetScene(new Entities.Scenes.Menu());
+            colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
 
             base.Initialize();
         }
@@ -150,36 +152,39 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            Point[] joints = iKinect.KinectJoints.ToArray();
+
+            GraphicsDevice.SetRenderTarget(colorRenderTarget);
+
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+            if (iKinect.KinectRGBVideo != null)
+            {
+                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
+            }
+            if (joints != null)
+            {
+                foreach (var J in joints)
+                {
+                    spriteBatch.Draw(jointMarker, new Rectangle(J.X, J.Y, 10, 10), Color.White);
+                }
+            }
+            spriteBatch.End();
+
+            // Reset the device to the back buffer
+            GraphicsDevice.SetRenderTarget(null);
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
 
             //Drawing the video feed if we have one available.
-            if (iKinect.KinectRGBVideo != null)
-            {
-                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-            }
+            spriteBatch.Draw(colorRenderTarget, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
 
             //Drawing the connection string on top of screen
             spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(0, 0), Color.White);
-
-            //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
-            //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
-            Joint[] joints = iKinect.KinectJoints.ToArray();
-
-            if (joints != null)
-            {
-                foreach (var J in joints)
-                {
-                    int x = screenWidth / 2 + (int)(J.Position.X * screenWidth);
-                    int y = screenHeight / 2 - (int)(J.Position.Y * screenHeight);
-
-                    spriteBatch.Draw(jointMarker, new Rectangle(x, y, 10, 10), Color.White);
-#if DEBUG
-                    Console.WriteLine(string.Format("Joint at: {0},{1}", J.Position.X, J.Position.Y));
-#endif
-                }
-            }
+            
 
             //Now we draw whatever scene is currently in the game!
             iSceneManager.DrawScene(gameTime, spriteBatch);
