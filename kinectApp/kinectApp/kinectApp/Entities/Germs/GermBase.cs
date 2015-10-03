@@ -75,5 +75,6 @@ namespace kinectApp.Entities.Germs
         }
 
         public abstract override void Update(GameTime aGameTime);
+        public abstract override void Draw(SpriteBatch aSpriteBatch);
     }
 }

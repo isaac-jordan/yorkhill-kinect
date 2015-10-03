@@ -21,8 +21,6 @@ namespace kinectApp.Entities.Germs
         public SmallGerm(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ)
         {
             Id = BaseId++;
-            Height = HEIGHT;
-            Width = WIDTH;
         }
 
         public override void Load(ContentManager aContentManager)
@@ -39,6 +37,15 @@ namespace kinectApp.Entities.Germs
         {
             this.PosX += 2.0f;
             this.PosY += 5.0f;
+        }
+
+        public override void Draw(SpriteBatch aSpriteBatch)
+        {
+            int x1 = int.Parse(PosX.ToString());
+            int y1 = int.Parse(PosY.ToString());
+            var rec = new Rectangle(x1, y1,HEIGHT, WIDTH);
+
+            aSpriteBatch.Draw(Texture, rec, Color.White);
         }
     }
 }

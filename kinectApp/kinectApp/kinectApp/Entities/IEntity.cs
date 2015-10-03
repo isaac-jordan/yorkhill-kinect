@@ -17,10 +17,9 @@ namespace kinectApp.Entities
         Vector3 Pos { get; }
         Texture2D Texture { get; }
         string AssetName { get; }
-        int Width { get; }
-        int Height { get; }
 
         void Update(GameTime aGameTime);
+        void Draw(SpriteBatch aSpriteBatch);
 
         void Load(ContentManager aContentManager);
         void Unload();

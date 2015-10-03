@@ -43,9 +43,6 @@ namespace kinectApp.Entities
             get; private set;
         }
 
-        public int Width { get; set; }
-        public int Height{ get; set; }
-
         #region Position Code
         /// <summary>
         /// Gets the Position of the Germ in the Game
@@ -84,10 +81,10 @@ namespace kinectApp.Entities
 
         #endregion
 
-  
+        public abstract void Draw(SpriteBatch aSpriteBatch);
         public abstract void Update(GameTime aGameTime);
 
-        public abstract void Load(ContentManager aSpriteBatch);
+        public abstract void Load(ContentManager aContentManager);
         public abstract void Unload();
     }
 }
