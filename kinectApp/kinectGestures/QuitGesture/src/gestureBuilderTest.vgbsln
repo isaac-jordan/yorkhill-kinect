@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GestureBuilderFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<SolutionFile>
+		<Header>
+			<Date>2015-10-03</Date>
+			<Time>16:24:31.8684498+01:00</Time>
+			<Version>1</Version>
+			<Type>Solution</Type>
+			<ID>b76c0be9-b4da-47ee-9cfe-a4a14aa86881</ID>
+		</Header>
+		<Solution_Data>
+			<Files>
+				<Name />
+				<Content>
+					<Items>
+						<File>QuitGesture.vgbproj</File>
+					</Items>
+					<Items>
+						<File>QuitGesture.a.vgbproj</File>
+					</Items>
+				</Content>
+			</Files>
+		</Solution_Data>
+		<UI_State />
+		<Attributes />
+	</SolutionFile>
+</GestureBuilderFile>

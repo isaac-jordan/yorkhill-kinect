@@ -29,6 +29,9 @@ namespace kinectApp
         int screenWidth;
 
         KinectAdapter iKinect;
+        GestureResultView gestureRV;
+        GestureDetector gestureDet;
+
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
 
@@ -55,12 +58,17 @@ namespace kinectApp
         /// </summary>
         protected override void Initialize()
         {
-            iKinect = new KinectAdapter(graphics.GraphicsDevice);
-            iKinect.OpenSensor();
+            
 
             //Show Main menu
             iSceneManager.SetScene(new Entities.Scenes.Menu());
+            iKinect = new KinectAdapter(graphics.GraphicsDevice);
             colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
+
+            gestureRV = new GestureResultView(0, false, false, 0);
+            gestureDet = new GestureDetector(iKinect.iSensor, gestureRV);
+
+            iKinect.OpenSensor();
 
             base.Initialize();
         }
@@ -108,7 +116,7 @@ namespace kinectApp
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape))
+            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || gestureRV.Detected)
                 this.Exit();
 
             // TODO: Add your update logic here
@@ -125,7 +133,11 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            Point[] joints = iKinect.KinectJoints.ToArray();
+            Point[] joints;
+            lock (iKinect.KinectJoints)
+            {
+                joints = iKinect.KinectJoints.ToArray();
+            }
 
             GraphicsDevice.SetRenderTarget(colorRenderTarget);
 
