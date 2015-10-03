@@ -20,7 +20,7 @@ namespace kinectApp.Entities.Germs
             float x = (float)(Rand.NextDouble() * 3.2);
             float y = (float)(Rand.NextDouble() * 1.5);
 
-            return new SmallGerm("SmallGerm", new Vector3(x, y, 0));
+            return new SmallGerm("SmallGerm", new Vector3(x * 300, y * 200, 0));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace kinectApp.Entities.Germs
             float x = (float)(Rand.NextDouble() * 2.2);
             float y = (float)(Rand.NextDouble() * 3.1);
 
-            return new BigGerm("BigGerm", new Vector3(x, y, 0));
+            return new BigGerm("BigGerm", new Vector3(x* 300, y * 200, 0));
         }
 
         /// <summary>

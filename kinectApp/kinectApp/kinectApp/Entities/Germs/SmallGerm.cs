@@ -81,8 +81,8 @@ namespace kinectApp.Entities.Germs
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            int x1 = int.Parse(PosX.ToString());
-            int y1 = int.Parse(PosY.ToString());
+            int x1 = (int)PosX;
+            int y1 = (int)PosY;
             var rec = new Rectangle(x1, y1,HEIGHT, WIDTH);
 
             aSpriteBatch.Draw(Texture, rec, Color.White);

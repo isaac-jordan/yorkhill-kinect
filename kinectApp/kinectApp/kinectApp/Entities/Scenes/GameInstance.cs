@@ -7,6 +7,8 @@ using kinectApp.Utilities;
 
 using Microsoft.Xna.Framework.Input;
 
+using kinectApp.Entities.Germs;
+
 namespace kinectApp.Entities.Scenes
 {
     /*
@@ -14,9 +16,29 @@ namespace kinectApp.Entities.Scenes
     */
     public class GameInstance : Scene
     {
+        List<IEntity> iGerms;
+
+
         public GameInstance() : base("Game")
         {
+            iGerms = new List<IEntity>();
 
+            iGerms.Add(GermFactory.CreateSmallGerm(450,550,0));
+            iGerms.Add(GermFactory.CreateSmallGerm(755,230,0));
+            iGerms.Add(GermFactory.CreateBigGerm(260,345,0));
+
+            for (int i = 0; i < 25; i++)
+            {
+                iGerms.Add(GermFactory.CreateSmallGerm());
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                iGerms.Add(GermFactory.CreateBigGerm());
+            }
+
+
+            Entities.AddRange(iGerms);
         }
 
         //Show Pause screen with P
