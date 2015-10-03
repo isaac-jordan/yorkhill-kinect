@@ -128,8 +128,8 @@ namespace kinectApp.Entities
                 ColorFrameReference colorRef = multiFrame.ColorFrameReference;
                 BodyFrameReference bodyRef = multiFrame.BodyFrameReference;
 
-                ProcessRGBVideo(colorRef);
-                ProcessJoints(bodyRef);
+                Task.Factory.StartNew(() => ProcessRGBVideo(colorRef));
+                Task.Factory.StartNew(() => ProcessJoints(bodyRef));
 
             }).ContinueWith((aTask) => iProcessingTasks.Remove(aTask));
 
