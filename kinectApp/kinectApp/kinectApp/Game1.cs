@@ -80,7 +80,7 @@ namespace kinectApp
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             // TODO: use this.Content to load your game content here#
-            entityManager.Load(spriteBatch);
+            entityManager.Load(Content);
         }
 
         /// <summary>

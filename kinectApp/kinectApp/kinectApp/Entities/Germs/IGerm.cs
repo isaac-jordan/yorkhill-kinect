@@ -14,6 +14,5 @@ namespace kinectApp.Entities.Germs
     {
         int Id { get; }
         bool IsDead { get; }
-        string Filename { get; }
     }
 }

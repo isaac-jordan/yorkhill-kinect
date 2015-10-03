@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
@@ -14,11 +15,12 @@ namespace kinectApp.Entities
     public interface IEntity
     {
         Vector3 Pos { get; }
+        Texture2D Texture { get; }
+        string AssetName { get; }
 
-        void Draw(GameTime aGameTime);
         void Update(GameTime aGameTime);
 
-        void Load(SpriteBatch aSpriteBatch);
+        void Load(ContentManager aContentManager);
         void Unload();
 
         float PosX { get; }

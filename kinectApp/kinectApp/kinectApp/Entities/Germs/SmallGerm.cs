@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities.Germs
@@ -12,22 +13,15 @@ namespace kinectApp.Entities.Germs
     {
         public SmallGerm() : base() { }
 
-        public SmallGerm(Vector3 aPos) : base(aPos) { }
+        public SmallGerm(string aAssetName) : base(aAssetName) { }
 
-        public SmallGerm(float aX, float aY, float aZ) : base(aX, aY, aZ) { }
+        public SmallGerm(string aAssetName, Vector3 aPos) : base(aAssetName, aPos) { }
 
-        public override void Draw(GameTime aGameTime)
+        public SmallGerm(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ) { }
+
+        public override void Load(ContentManager aContentManager)
         {
-            //Use the SpriteBatch property of this class to use it for drawing.
-            //Loading code will come soon. I promise :)
-
-
-            //throw new NotImplementedException();
-        }
-
-        public override void Load(SpriteBatch aSpriteBatch)
-        {
-            //throw new NotImplementedException();
+            base.Load(aContentManager);
         }
 
         public override void Unload()
