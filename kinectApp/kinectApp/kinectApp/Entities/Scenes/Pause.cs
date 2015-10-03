@@ -20,7 +20,7 @@ namespace kinectApp.Entities.Scenes
 
         public Pause() : base("Pause")
         {
-            iLabel = new Label("Paused...", string.Empty, 250, 250, 0);
+            iLabel = new BigLabel("Paused...", string.Empty, 450, 250, 0);
 
             Entities.Add(iLabel);
         }

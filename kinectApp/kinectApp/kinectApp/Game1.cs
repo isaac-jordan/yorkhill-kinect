@@ -39,6 +39,8 @@ namespace kinectApp
 
         static bool iCancelRequested = false;
 
+        readonly Color iBackground = Color.SaddleBrown;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -75,7 +77,7 @@ namespace kinectApp
             iKinect.OpenSensor();
 
             //Show Main menu
-            iSceneManager.SetScene(new Entities.Scenes.Menu());
+            iSceneManager.SetScene(new Entities.Scenes.GameInstance());
             colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
 
             base.Initialize();
@@ -145,7 +147,7 @@ namespace kinectApp
 
             GraphicsDevice.SetRenderTarget(colorRenderTarget);
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(iBackground);
 
             spriteBatch.Begin();
             if (iKinect.KinectRGBVideo != null)
@@ -170,11 +172,8 @@ namespace kinectApp
 
             //Drawing the video feed if we have one available.
             spriteBatch.Draw(colorRenderTarget, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-
-            //Drawing the connection string on top of screen
-            spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(0, 0), Color.White);
-            
-
+           
+            //No longer displaying the connection status on the screen because we have the title bar now >=]
             //Now we draw whatever scene is currently in the game!
             iSceneManager.DrawScene(gameTime, spriteBatch);
 

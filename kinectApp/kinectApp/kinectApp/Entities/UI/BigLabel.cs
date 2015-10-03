@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace kinectApp.Entities.UI
 {
-    public class Label : BaseEnitiy
+    public class BigLabel : BaseEnitiy
     {
         private string iText;
-
         private SpriteFont iFont;
 
-        public Label(string aMessage, string aAssetName, float aX, float aY, float aZ) : base(string.Empty, aX, aY, aZ)
+        public BigLabel(string aMessage, string aAssetName, float aX, float aY, float aZ) : base(string.Empty, aX, aY, aZ)
         {
             iText = aMessage;
         }
@@ -27,7 +27,7 @@ namespace kinectApp.Entities.UI
 
         public override void Load(ContentManager aContentManager)
         {
-            iFont = aContentManager.Load<SpriteFont>("UI.LabelText");
+            iFont = aContentManager.Load<SpriteFont>("UI.LabelText.Big");
         }
 
         public override void Unload()

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using kinectApp.Utilities;
 
+using Microsoft.Xna.Framework.Input;
+
 namespace kinectApp.Entities.Scenes
 {
     /*
@@ -17,9 +19,20 @@ namespace kinectApp.Entities.Scenes
 
         }
 
+        //Show Pause screen with P
         public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
         {
-            throw new NotImplementedException();
+            //Show Pause Screen
+            if (aInputHelper.IsNewPress(Keys.P))
+            {
+                aSceneManager.ShowOverlay(new Pause());
+            }
+
+            //Show The exit screen
+            if (aInputHelper.IsNewPress(Keys.Escape))
+            {
+                aSceneManager.ShowOverlay(new ExitGameIntsance());
+            }
         }
     }
 }

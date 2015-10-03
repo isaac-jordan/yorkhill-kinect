@@ -110,6 +110,7 @@
     <Compile Include="Entities\Scenes\GameInstance.cs" />
     <Compile Include="Entities\Scenes\Menu.cs" />
     <Compile Include="Entities\Scenes\Pause.cs" />
+    <Compile Include="Entities\UI\BigLabel.cs" />
     <Compile Include="Entities\UI\Button.cs" />
     <Compile Include="Entities\UI\Label.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
