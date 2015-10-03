@@ -102,13 +102,16 @@
     <Compile Include="Entities\KinectAdapter.cs" />
     <Compile Include="Entities\Scene.cs" />
     <Compile Include="Entities\SceneManager.cs" />
+    <Compile Include="Entities\Scenes\ExitGameIntsance.cs" />
     <Compile Include="Entities\Scenes\GameInstance.cs" />
     <Compile Include="Entities\Scenes\Menu.cs" />
     <Compile Include="Entities\Scenes\Pause.cs" />
     <Compile Include="Entities\UI\Button.cs" />
+    <Compile Include="Entities\UI\Label.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Utilities\InputHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -18,6 +18,7 @@ namespace kinectApp.Entities
         EntityManager iEntityManager;
         ContentManager iContentManager;
         Scene iCurrentScene;
+        Scene iCurrentOverlay;
 
         public SceneManager(ContentManager aContentManager)
         {
@@ -32,17 +33,52 @@ namespace kinectApp.Entities
             if (iCurrentScene != aScene)
             {
                 iCurrentScene = aScene;
-            }
 
-            iEntityManager.Unload();
+                iEntityManager.Unload();
+                iEntityManager.Clear();
+
+                foreach (IEntity entity in iCurrentScene.Entities)
+                {
+                    iEntityManager.AddEntity(entity);
+                }
+
+                iEntityManager.Load(iContentManager);
+            }
+        }
+
+        //Shows an Overlay onto the current game
+        //It's technically not an overlay, we just preserve state of the current scene
+        //So users can return back where they want to do.
+        //I wonder - do people actually read my comments?
+        public void ShowOverlay(Scene aOverlay)
+        {
+            iCurrentOverlay = aOverlay;
+
             iEntityManager.Clear();
 
-            foreach (IEntity entity in iCurrentScene.Entities)
+            foreach (IEntity entity in iCurrentOverlay.Entities)
             {
                 iEntityManager.AddEntity(entity);
             }
 
             iEntityManager.Load(iContentManager);
+        }
+
+        //Hides the current overlay so that the game can return to normal :)
+        public void HideOverlay()
+        {
+            if (iCurrentOverlay != null)
+            {
+                iEntityManager.Unload();
+                iEntityManager.Clear();
+
+                foreach (var entity in iCurrentScene.Entities)
+                {
+                    iEntityManager.AddEntity(entity);
+                }
+
+                iCurrentOverlay = null;
+            }
         }
 
         public void UpdateScene(GameTime aGameTime)
@@ -55,6 +91,29 @@ namespace kinectApp.Entities
             iEntityManager.Draw(aGameTime, aSpriteBatch);
         }
 
+        public SceneDescription GetDescription()
+        {
+            if (iCurrentOverlay != null)
+            {
+                return SceneDescription.Overlay;
+            }
+            else
+            {
+                if (iCurrentScene is Scenes.Menu)
+                {
+                    return SceneDescription.Menu;
+                }
+                else if (iCurrentScene is Scenes.GameInstance)
+                {
+                    return SceneDescription.Game;
+                }
+                else
+                {
+                    return SceneDescription.Unknown;
+                }
+            }
+        }
+
         public void Dispose()
         {
             iEntityManager.Unload();
@@ -62,4 +121,20 @@ namespace kinectApp.Entities
             iCurrentScene = null;
         }
     }
+
+
+    public enum SceneType
+    {
+        Normal = 1,
+        Overlay = 2,
+    };
+
+    public enum SceneDescription
+    {
+        Menu = 1,
+        Game = 2,
+        Pause = 3,
+        Unknown = 4,
+        Overlay = 5,
+    };
 }

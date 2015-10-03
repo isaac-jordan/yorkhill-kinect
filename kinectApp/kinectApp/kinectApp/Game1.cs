@@ -108,32 +108,38 @@ namespace kinectApp
             // Allows the game to exit
             var PKeys = Keyboard.GetState().GetPressedKeys();
 
-            foreach (var k in PKeys)
+
+            //Handling a Quit Operation
+            //Making sure we deal with exiting while playing the game
+            if (PKeys.Contains(Keys.Escape) || PKeys.Contains(Keys.Q))
             {
-                switch (k)
+                if (iSceneManager.GetDescription() == SceneDescription.Game)
                 {
-                    case Keys.Escape:
-                    case Keys.Q:
-                    {
-                        this.Exit();
-                        break;
-                    }
-
-                    //DEBUG SCENE CHANGES
-
-                    case Keys.Space:
-                    {
-                        iSceneManager.SetScene(new Entities.Scenes.GameInstance());
-                        break;
-                    }
-
-                    case Keys.LeftAlt:
-                    {
-                        iSceneManager.SetScene(new Entities.Scenes.Menu());
-                        break;
+                    Console.WriteLine("<SceneChange> -> ExitGameInstance");
+                    //User is trying to leave a game :( 
+                    iSceneManager.ShowOverlay(new Entities.Scenes.ExitGameIntsance());
+                }
+                else
+                {
+                    this.Exit();
                 }
             }
 
+            #region Debug Scene Switches
+
+            if (PKeys.Contains(Keys.Space))
+            {
+                Console.WriteLine("<SceneChange> -> GamePlay");
+                iSceneManager.SetScene(new Entities.Scenes.GameInstance());
+            }
+
+            if (PKeys.Contains(Keys.LeftAlt))
+            {
+                Console.WriteLine("<SceneChange> -> Menu");
+                iSceneManager.SetScene(new Entities.Scenes.Menu());
+            }
+
+            #endregion
 
 
             // TODO: Add your update logic here
