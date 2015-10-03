@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+using kinectApp.Utilities;
+
 namespace kinectApp.Entities
 {
     public interface ISceneManager : IDisposable
@@ -100,6 +102,19 @@ namespace kinectApp.Entities
         public void DrawScene(GameTime aGameTime, SpriteBatch aSpriteBatch)
         {
             iEntityManager.Draw(aGameTime, aSpriteBatch);
+        }
+
+        //Handle Key presses in the scene
+        public void DoKeys(InputHelper aInputHelper)
+        {
+            if (iCurrentOverlay != null)
+            {
+                iCurrentOverlay.HandleKeys(aInputHelper, this);
+            }
+            else
+            {
+                iCurrentScene.HandleKeys(aInputHelper, this);
+            }
         }
 
         public SceneDescription GetDescription()

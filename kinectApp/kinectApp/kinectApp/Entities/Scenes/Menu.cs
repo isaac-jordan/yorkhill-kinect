@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework.Input;
+
 using kinectApp.Entities.UI;
 using kinectApp.Utilities;
 
@@ -33,7 +35,23 @@ namespace kinectApp.Entities.Scenes
 
         public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
         {
-            throw new NotImplementedException();
+            //Does the user want to quit?
+            if (aInputHelper.IsNewPress(Keys.Q) || aInputHelper.IsNewPress(Keys.Escape))
+            {
+                aSceneManager.SetScene(new ExitGameIntsance());
+                return;
+            }
+
+            //Else - Let's be silly!
+            if (aInputHelper.IsCurPress(Keys.E) &&
+                aInputHelper.IsCurPress(Keys.W) &&
+                aInputHelper.IsCurPress(Keys.A) &&
+                aInputHelper.IsCurPress(Keys.N))
+            {
+                //aSceneManager.SetScene(new SuperSpecialAwesomeScene());
+                Console.WriteLine("Dylan smells!");
+                return;
+            }
         }
     }
 }

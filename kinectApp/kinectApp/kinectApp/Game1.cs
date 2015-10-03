@@ -33,6 +33,8 @@ namespace kinectApp
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
 
+        static bool iCancelRequested = false;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -109,49 +111,18 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //Dectect a close, from outwith this class!
+            if (iCancelRequested)
+            {
+                this.Exit();
+            }
+
             iInputHelper.Update();
 
-            // Allows the game to exit
-            var PKeys = Keyboard.GetState().GetPressedKeys();
+            iSceneManager.DoKeys(iInputHelper);
 
 
-            //Handling a Quit Operation
-            //Making sure we deal with exiting while playing the game
-            if (PKeys.Contains(Keys.Escape) || PKeys.Contains(Keys.Q))
-            {
-                if (iSceneManager.GetDescription() == SceneDescription.Game)
-                {
-                    Console.WriteLine("<SceneChange> -> ExitGameInstance");
-                    //User is trying to leave a game :( 
-                    iSceneManager.ShowOverlay(new Entities.Scenes.ExitGameIntsance());
-                }
-                else
-                {
-                    this.Exit();
-                }
-            }
-
-            #region Debug Scene Switches
-
-            if (PKeys.Contains(Keys.Space))
-            {
-                Console.WriteLine("<SceneChange> -> GamePlay");
-                iSceneManager.SetScene(new Entities.Scenes.GameInstance());
-            }
-
-            if (PKeys.Contains(Keys.LeftAlt))
-            {
-                Console.WriteLine("<SceneChange> -> Menu");
-                iSceneManager.SetScene(new Entities.Scenes.Menu());
-            }
-
-            #endregion
-
-
-            // TODO: Add your update logic here
             iSceneManager.UpdateScene(gameTime);
-
-            //entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -198,6 +169,12 @@ namespace kinectApp
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        //Allows A forced close of the application.
+        public static void ForceClose()
+        {
+            iCancelRequested = true;
         }
     }
 }

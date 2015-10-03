@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework.Input;
+
 using kinectApp.Entities.UI;
 using kinectApp.Utilities;
 
@@ -24,7 +26,12 @@ namespace kinectApp.Entities.Scenes
 
         public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
         {
-            throw new NotImplementedException();
+            //Close/Quit :)
+
+            if(aInputHelper.IsNewPress(Keys.Y) || aInputHelper.IsNewPress(Keys.Enter))
+            {
+                Game1.ForceClose();
+            }
         }
     }
 }
