@@ -10,7 +10,11 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
+using System.Windows.Forms;
+using SDrawing = System.Drawing;
+
 using kinectApp.Entities;
+using kinectApp.Utilities;
 
 namespace kinectApp
 {
@@ -21,6 +25,7 @@ namespace kinectApp
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        InputHelper iInputHelper;
         Texture2D jointMarker;
         Texture2D overlay;
         RenderTarget2D colorRenderTarget;
@@ -35,6 +40,8 @@ namespace kinectApp
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
 
+        static bool iCancelRequested = false;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,6 +55,8 @@ namespace kinectApp
 
             entityManager = new EntityManager();
             iSceneManager = new SceneManager(Content);
+
+            iInputHelper = new InputHelper();
         }
 
         /// <summary>
@@ -59,6 +68,15 @@ namespace kinectApp
         protected override void Initialize()
         {
             
+            iKinect = new KinectAdapter(graphics.GraphicsDevice, (isAvail) =>
+            {
+                Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", (isAvail) ? "Connected" : "NO KINECT FOUND");
+
+                var filename = string.Format("Res/{0}", (isAvail) ? "Germz.Icon.ico" : "Germz.NoKintec.Icon.ico");
+
+                ((System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(Window.Handle)).Icon = new SDrawing.Icon(filename);
+            });
+            iKinect.OpenSensor();
 
             //Show Main menu
             iSceneManager.SetScene(new Entities.Scenes.Menu());
@@ -104,8 +122,6 @@ namespace kinectApp
 
             iSceneManager.Dispose();
             iKinect.Dispose();
-
-            //entityManager.Unload();
         }
 
         /// <summary>
@@ -115,14 +131,16 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || gestureRV.Detected)
+            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || icancelRequested || gestureRV.Detected)
+            //Dectect a close, from outwith this class!
+            {
                 this.Exit();
+            }
 
-            // TODO: Add your update logic here
+            iInputHelper.Update();
+
+            iSceneManager.DoKeys(iInputHelper);
             iSceneManager.UpdateScene(gameTime);
-
-            //entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -176,6 +194,12 @@ namespace kinectApp
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        //Allows A forced close of the application.
+        public static void ForceClose()
+        {
+            iCancelRequested = true;
         }
     }
 }

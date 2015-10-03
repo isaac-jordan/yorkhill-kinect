@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using kinect_mouse_mapper.MouseManipulator;
 using Microsoft.Kinect;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace kinect_mouse_mapper
 {
@@ -76,13 +77,37 @@ namespace kinect_mouse_mapper
                                     _joints = new Joint[4];
                                 }
 
-                                _joints[0] = handRight;
-                                _joints[1] = thumbRight;
-                                _joints[2] = handLeft;
-                                _joints[3] = thumbLeft;
+                                
+                                Joint j = handRight;
 
-                                VirtualMouse.Move((int)((_joints[1].Position.X) * 10) > 1 ? (int)((_joints[1].Position.X) * 10):0, (int)((_joints[1].Position.X) * 10) > 1 ? (int)(-(_joints[1].Position.Y) * 10) : 0);
+                                CameraSpacePoint skeletonPoint = j.Position;
+                                ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
+                                // 2D coordinates in pixels
+
+                                // Skeleton-to-Color mapping
+
+                                Point point = new Point();
+                                point.X = (int)colorPoint.X;
+                                point.Y = (int)colorPoint.Y;
+                                
+                                if (!(-1 < point.X && point.X < 1))
+                                {
+                                    point.X = Cursor.Position.X;
+                                }
+
+                                if (!(-1 < point.Y && point.Y < 1))
+                                {
+                                    point.Y = Cursor.Position.Y;
+                                }
+
+                                VirtualMouse.Move(point.X, point.Y);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
+
+                                if (body.HandRightState == HandState.Closed)
+                                {
+                                        VirtualMouse.LeftClick();
+                                }
+
                             }
                         }
                     }

@@ -22,6 +22,7 @@ namespace kinectApp.Entities
         private byte[] iColourImageBuffer;
         private Body[] _bodies;
         private List<Point> hands = new List<Point>();
+        private Action<bool> iUpdateTitle;
         private readonly static object iVideoLock = new object();
         private readonly static object iJointLock = new object();
 
@@ -30,10 +31,12 @@ namespace kinectApp.Entities
 
         private List<Task> iProcessingTasks;
 
-        public KinectAdapter(GraphicsDevice aGraphicsDevice)
+        public KinectAdapter(GraphicsDevice aGraphicsDevice, Action<bool> aUpdateTitle)
         {
             iSensor = KinectSensor.GetDefault();
             iGraphicsDevice = aGraphicsDevice;
+            iUpdateTitle = aUpdateTitle;
+
 
             iProcessingTasks = new List<Task>(500);
             iColourImageBuffer = new byte[kWidth * kHeight * 4];
@@ -263,6 +266,8 @@ namespace kinectApp.Entities
         {
             IsAvailable = e.IsAvailable;
             iRGBVideo = null;
+
+            iUpdateTitle(IsAvailable);
         }
 
         //Frees resources used by the adapter
