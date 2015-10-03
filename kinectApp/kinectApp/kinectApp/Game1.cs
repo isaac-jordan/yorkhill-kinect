@@ -35,7 +35,7 @@ namespace kinectApp
         {
             graphics = new GraphicsDeviceManager(this);
 
-            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 125;
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
 
             graphics.PreferredBackBufferHeight = screenHeight;
@@ -127,16 +127,16 @@ namespace kinectApp
 
             spriteBatch.Begin();
 
+            //Drawing the video feed if we have one available.
             if (iKinect.KinectRGBVideo != null)
             {
-                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
+                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             }
 
+            //Drawing the connection string on top of screen
             spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(0, 0), Color.White);
 
-            //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
-            //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
-
+            //Draw some squares for the joints of the people we see.
             if (iKinect.KinectJoints != null)
             {
                 int i = 0;
@@ -150,12 +150,10 @@ namespace kinectApp
                 }
             }
 
+            //Now we draw whatever scene is currently in the game!
             iSceneManager.DrawScene(gameTime, spriteBatch);
-            //entityManager.Draw(gameTime,spriteBatch);
 
             spriteBatch.End();
-
-            // TODO: Add your drawing code here
             base.Draw(gameTime);
         }
     }
