@@ -57,7 +57,7 @@ namespace kinectApp
             cfReader = sensor.ColorFrameSource.OpenReader();
             cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
 
-            for (int i = 0; i < 2500; i++)
+            for (int i = 0; i < 250; i++)
             {
                 entityManager.AddEntity(Entities.Germs.GermFactory.CreateSmallGerm());
             }
