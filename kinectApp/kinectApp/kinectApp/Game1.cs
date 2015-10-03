@@ -106,8 +106,35 @@ namespace kinectApp
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape))
-                this.Exit();
+            var PKeys = Keyboard.GetState().GetPressedKeys();
+
+            foreach (var k in PKeys)
+            {
+                switch (k)
+                {
+                    case Keys.Escape:
+                    case Keys.Q:
+                    {
+                        this.Exit();
+                        break;
+                    }
+
+                    //DEBUG SCENE CHANGES
+
+                    case Keys.Space:
+                    {
+                        iSceneManager.SetScene(new Entities.Scenes.GameInstance());
+                        break;
+                    }
+
+                    case Keys.LeftAlt:
+                    {
+                        iSceneManager.SetScene(new Entities.Scenes.Menu());
+                        break;
+                }
+            }
+
+
 
             // TODO: Add your update logic here
             iSceneManager.UpdateScene(gameTime);
