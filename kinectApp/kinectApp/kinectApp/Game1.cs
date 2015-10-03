@@ -133,17 +133,18 @@ namespace kinectApp
                     {
                         iSceneManager.SetScene(new Entities.Scenes.Menu());
                         break;
+                    }
                 }
+
+
+
+                // TODO: Add your update logic here
+                iSceneManager.UpdateScene(gameTime);
+
+                //entityManager.Update(gameTime);
+
+                base.Update(gameTime);
             }
-
-
-
-            // TODO: Add your update logic here
-            iSceneManager.UpdateScene(gameTime);
-
-            //entityManager.Update(gameTime);
-
-            base.Update(gameTime);
         }
 
         /// <summary>
