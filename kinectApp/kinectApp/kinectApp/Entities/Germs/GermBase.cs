@@ -54,7 +54,7 @@ namespace kinectApp.Entities.Germs
         /// </summary>
         public bool IsDead
         {
-            get; private set; 
+            get; protected set; 
         }
 
         public override void Load(ContentManager aContentManager)

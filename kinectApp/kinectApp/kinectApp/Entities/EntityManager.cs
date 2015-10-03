@@ -73,7 +73,12 @@ namespace kinectApp.Entities
             {
                 if (_entities.Count != 0)
                 {
-                    spriteBatch.Draw(entity.Texture, new Vector2(entity.PosX, entity.PosY), Color.White);
+                    int x1 = int.Parse(entity.PosX.ToString());
+                    int y1 = int.Parse(entity.PosY.ToString());
+                    var rec = new Rectangle(x1, y1, entity.Height, entity.Width);
+
+                    spriteBatch.Draw(entity.Texture, rec, Color.White);
+                    //spriteBatch.Draw(entity.Texture, new Vector2(entity.PosX, entity.PosY), Color.White);
                 }
             }
         }
