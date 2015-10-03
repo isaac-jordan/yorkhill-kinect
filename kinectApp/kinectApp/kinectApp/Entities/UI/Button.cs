@@ -15,6 +15,9 @@ namespace kinectApp.Entities.UI
         private string _Text;
         private SpriteFont _Font;
 
+        const int HEIGHT = 32;
+        const int WIDTH = 128;
+
         public Button(string aText, string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ)
         {
             _Text = aText;
@@ -43,8 +46,16 @@ namespace kinectApp.Entities.UI
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.Draw(Texture, new Vector2(PosX, PosY), Color.White);
-            aSpriteBatch.DrawString(_Font, _Text, new Vector2(PosX / 2.0f, PosY), Color.White);
+            var x = int.Parse(PosX.ToString());
+            var y = int.Parse(PosY.ToString());
+
+            var rect = new Rectangle(x, y, WIDTH, HEIGHT);
+
+            aSpriteBatch.Draw(Texture, rect, Color.White);
+
+            //Format the text position so it's roughly in the center of the button
+            var textPos = new Vector2(PosX + (128.0f / 4.0f), PosY);
+            aSpriteBatch.DrawString(_Font, _Text, textPos, Color.White);
         }
     }
 }
