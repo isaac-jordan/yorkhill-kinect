@@ -52,6 +52,11 @@ namespace kinectApp.Entities
             return _entities.Contains(aEntity);
         }
 
+        public void Clear()
+        {
+            _entities.Clear();
+        }
+
 
         #region Game Logic
         public void Update(GameTime aGameTime)
@@ -61,10 +66,10 @@ namespace kinectApp.Entities
                 entity.Update(aGameTime);
             }
 
-            if (_entities.Count < 5)
-            {
-                _entities.Add(Entities.Germs.GermFactory.CreateSmallGerm());
-            }
+            //if (_entities.Count < 5)
+            //{
+            //    _entities.Add(Entities.Germs.GermFactory.CreateSmallGerm());
+            //}
         }
 
         public void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
