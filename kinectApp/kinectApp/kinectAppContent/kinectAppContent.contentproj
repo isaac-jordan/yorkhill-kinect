@@ -44,7 +44,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="germ1.png">
+    <Compile Include="BigGerm.png">
       <Name>SmallGerm</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

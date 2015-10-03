@@ -36,53 +36,25 @@ namespace kinectApp.Entities.Germs
 
         public override void Update(GameTime aGameTime)
         {
-            int DirX = Rand.Next(0, 12);
-            int DirY = Rand.Next(0, 12);
-
-            double AMX = Rand.NextDouble() * 5.5;
-            double AMY = Rand.NextDouble() * 5.5;
-
-            //Moving on the X
-            if (DirX != 6)
+            int DirX, DirY;
+            if (beenToTopHalfOfScreen)
             {
-                switch (DirX % 2)
-                {
-                    case 0:
-                    {
-                        PosX += (float)AMX;
-                        break;
-                    }
-                    case 1:
-                    {
-                        PosX -= (float)AMX;
-                        break;
-                    }
-                }
+                DirY = Rand.Next(100) < 80 ? Rand.Next(3) * -1 : Rand.Next(2);
             }
-
-            //Moving on the Y
-            if (DirY != 6)
+            else
             {
-                switch (DirY % 2)
-                {
-                    case 0:
-                    {
-                        PosY -= (float)AMY;
-                        break;
-                    }
-                    case 1:
-                    {
-                        PosY += (float)AMY;
-                        break;
-                    }
-                }
+                DirY = Rand.Next(100) < 20 ? Rand.Next(3) * -1 : Rand.Next(2);
             }
+            DirX = Rand.Next(0, 4);
+
+            PosY += DirY;
+            PosX += DirX;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            int x1 = int.Parse(PosX.ToString());
-            int y1 = int.Parse(PosY.ToString());
+            int x1 = (int)PosX;
+            int y1 = (int)PosY;
             var rec = new Rectangle(x1, y1,HEIGHT, WIDTH);
 
             aSpriteBatch.Draw(Texture, rec, Color.White);

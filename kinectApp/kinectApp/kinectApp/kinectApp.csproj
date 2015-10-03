@@ -98,7 +98,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\BaseEnitiy.cs" />
+    <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\EntityManager.cs" />
     <Compile Include="Entities\Germs\BigGerm.cs" />
     <Compile Include="Entities\Germs\GermBase.cs" />

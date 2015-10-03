@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace kinectApp.Entities.UI
 {
-    public class BigLabel : BaseEnitiy
+    public class BigLabel : BaseEntity
     {
         private string iText;
         private SpriteFont iFont;

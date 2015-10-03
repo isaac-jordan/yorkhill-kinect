@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities.UI
 {
-    public class Label : BaseEnitiy
+    public class Label : BaseEntity
     {
         private string iText;
 

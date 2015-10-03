@@ -16,9 +16,10 @@ namespace kinectApp.Entities.Germs
     /// <summary>
     /// Base Germ object. Must inherit of this and implement the required methods
     /// </summary>
-    public abstract class GermBase : BaseEnitiy, IGerm
+    public abstract class GermBase : BaseEntity, IGerm
     {
         protected Texture2D _texture;
+        protected bool beenToTopHalfOfScreen = false;
 
         /// <summary>
         /// Create new Germ with position 0,0,0

@@ -16,6 +16,7 @@ using SDrawing = System.Drawing;
 using kinectApp.Entities;
 using kinectApp.Utilities;
 using kinectApp.Entities.Scenes;
+using kinectApp.Entities.Germs;
 
 namespace kinectApp
 {
@@ -24,16 +25,22 @@ namespace kinectApp
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        int millisecondSpawnTimer = 5000;
+        double lastSpawnTimeStamp = -1;
+        Random rand = new Random();
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         InputHelper iInputHelper;
         Texture2D jointMarker;
         Texture2D overlay;
         Texture2D room;
+        Texture2D smallGermTexture;
+        Texture2D bigGermTexture;
         RenderTarget2D colorRenderTarget;
         SpriteFont font;
-        int screenHeight;
-        int screenWidth;
+        public int screenHeight;
+        public int screenWidth;
 
         KinectAdapter iKinect;
         GestureResultView gestureRV;
@@ -41,6 +48,8 @@ namespace kinectApp
 
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
+
+        List<IEntity> germs = new List<IEntity>();
 
         static bool iCancelRequested = false;
 
@@ -102,8 +111,8 @@ namespace kinectApp
             iSceneManager.SetScene(new Entities.Scenes.GameInstance());
             colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
 
-            gestureRV = new GestureResultView(0, false, false, 0);
-            gestureDet = new GestureDetector(iKinect.iSensor, gestureRV);
+            //gestureRV = new GestureResultView(0, false, false, 0);
+            //gestureDet = new GestureDetector(iKinect.iSensor, gestureRV);
 
             iKinect.OpenSensor();
 
@@ -126,9 +135,12 @@ namespace kinectApp
             overlay = Content.Load<Texture2D>("overlay");
             room = Content.Load<Texture2D>("room");
             font = Content.Load<SpriteFont>("SpriteFont1");
+            smallGermTexture = Content.Load<Texture2D>("SmallGerm");
+            bigGermTexture = Content.Load<Texture2D>("SmallGerm"); // TODO: BigGerm texture?
+
 
             // TODO: use this.Content to load your game content here#
-            //entityManager.Load(Content);
+            entityManager.Load(Content);
         }
 
         /// <summary>
@@ -150,10 +162,21 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || iCancelRequested || gestureRV.Detected)
+            if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || iCancelRequested)
             //Dectect a close, from outwith this class!
             {
                 this.Exit();
+            }
+
+            if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer)
+            {
+                germs.Add(rand.Next(100) < 20 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
+                lastSpawnTimeStamp = gameTime.TotalGameTime.Milliseconds;
+            }
+
+            foreach (GermBase germ in germs)
+            {
+                germ.Update(gameTime);
             }
 
             iInputHelper.Update();
@@ -205,9 +228,23 @@ namespace kinectApp
 
             spriteBatch.Begin();
 
-            entityManager.Draw(gameTime,spriteBatch);
+            //entityManager.Draw(gameTime,spriteBatch);
             //Drawing the video feed if we have one available.
             spriteBatch.Draw(colorRenderTarget, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+
+            foreach (GermBase germ in germs)
+            {
+                if (germ is SmallGerm)
+                {
+                    germ.Texture = smallGermTexture;
+                }
+                else if (germ is BigGerm)
+                {
+                    germ.Texture = bigGermTexture;
+                }
+                
+                germ.Draw(spriteBatch);
+            }
            
             //No longer displaying the connection status on the screen because we have the title bar now >=]
             //Now we draw whatever scene is currently in the game!

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities.UI
 {
-    public class Button : BaseEnitiy
+    public class Button : BaseEntity
     {
         private string _Text;
         private SpriteFont _Font;
