@@ -90,16 +90,7 @@ namespace kinect_mouse_mapper
                                 point.X = (int)colorPoint.X;
                                 point.Y = (int)colorPoint.Y;
                                 
-                                if (!(-1 < point.X && point.X < 1))
-                                {
-                                    point.X = Cursor.Position.X;
-                                }
-
-                                if (!(-1 < point.Y && point.Y < 1))
-                                {
-                                    point.Y = Cursor.Position.Y;
-                                }
-
+                              
                                 VirtualMouse.Move(point.X, point.Y);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
 
