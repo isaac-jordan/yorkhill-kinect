@@ -40,9 +40,11 @@ namespace kinectApp.Entities
         /// </summary>
         public string AssetName
         {
-            get; set;
+            get; private set;
         }
 
+        public int Width { get; set; }
+        public int Height{ get; set; }
 
         #region Position Code
         /// <summary>
