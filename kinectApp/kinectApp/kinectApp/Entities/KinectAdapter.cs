@@ -20,7 +20,7 @@ namespace kinectApp.Entities
 
         private byte[] iColourImageBuffer;
         private Body[] _bodies;
-        private Joint[] _joints;
+        private List<Joint> hands = new List<Joint>();
         private readonly static object iVideoLock = new object();
         private readonly static object iJointLock = new object();
 
@@ -82,13 +82,13 @@ namespace kinectApp.Entities
         /// <summary>
         /// Gets the current found joints from the last frame.
         /// </summary>
-        public Joint[] KinectJoints
+        public List<Joint> KinectJoints
         {
             get
             {
                 lock(iJointLock)
                 {
-                    return _joints;
+                    return hands;
                 }               
             }
         }
@@ -212,6 +212,8 @@ namespace kinectApp.Entities
 
                     bodyFrame.GetAndRefreshBodyData(_bodies);
 
+                    hands.Clear();
+
                     foreach (var body in _bodies)
                     {
                         if (body != null)
@@ -220,22 +222,12 @@ namespace kinectApp.Entities
                             {
                                 // Find the joints
                                 Joint handRight = body.Joints[JointType.HandRight];
-                                Joint thumbRight = body.Joints[JointType.ThumbRight];
-
                                 Joint handLeft = body.Joints[JointType.HandLeft];
-                                Joint thumbLeft = body.Joints[JointType.ThumbLeft];
 
-                                Console.WriteLine("I can see a joint at:" + handRight.Position.X + ", " + handRight.Position.Y + ", " + handRight.Position.Z);
+                                //Console.WriteLine("I can see a joint at:" + handRight.Position.X + ", " + handRight.Position.Y + ", " + handRight.Position.Z);
 
-                                if (_joints == null || _joints.Length != 4)
-                                {
-                                    _joints = new Joint[4];
-                                }
-
-                                _joints[0] = handRight;
-                                _joints[1] = thumbRight;
-                                _joints[2] = handLeft;
-                                _joints[3] = thumbLeft;
+                                hands.Add(handRight);
+                                hands.Add(handLeft);
                             }
                         }
                     }
