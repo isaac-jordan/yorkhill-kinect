@@ -74,7 +74,7 @@ namespace kinectApp
 
             jointMarker = new Texture2D(GraphicsDevice, 50, 50);
             Color[] data = new Color[50 * 50];
-            for (int i = 0; i < data.Length; ++i) data[i] = Color.Green;
+            for (int i = 0; i < data.Length; ++i) data[i] = Color.Red;
             jointMarker.SetData(data);
 
             overlay = Content.Load<Texture2D>("overlay");
@@ -136,14 +136,18 @@ namespace kinectApp
             //Drawing the connection string on top of screen
             spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(0, 0), Color.White);
 
-            //Draw some squares for the joints of the people we see.
-            if (iKinect.KinectJoints != null)
+            //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
+            //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
+            Joint[] joints = iKinect.KinectJoints.ToArray();
+
+            if (joints != null)
             {
-                int i = 0;
-                foreach (var J in iKinect.KinectJoints)
+                foreach (var J in joints)
                 {
-                    spriteBatch.Draw(jointMarker, new Rectangle(100 + i, 150, 10, 10), Color.Green);
-                    i += 20;
+                    int x = screenWidth / 2 + (int)(J.Position.X * screenWidth);
+                    int y = screenHeight / 2 - (int)(J.Position.Y * screenHeight);
+
+                    spriteBatch.Draw(jointMarker, new Rectangle(x, y, 10, 10), Color.White);
 #if DEBUG
                     Console.WriteLine(string.Format("Joint at: {0},{1}", J.Position.X, J.Position.Y));
 #endif
