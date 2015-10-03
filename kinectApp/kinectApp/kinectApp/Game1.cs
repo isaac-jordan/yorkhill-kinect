@@ -194,7 +194,7 @@ namespace kinectApp
             {
                 foreach (var J in joints)
                 {
-                    spriteBatch.Draw(jointMarker, new Rectangle(J.X, J.Y, 10, 10), Color.White);
+                    spriteBatch.Draw(jointMarker, new Rectangle(J.X - 50, J.Y, 10, 10), Color.White);
                 }
             }
             spriteBatch.End();

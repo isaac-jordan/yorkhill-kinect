@@ -17,8 +17,6 @@ namespace kinectApp
             {
                 game.Run();
             }
-
-
         }
     }
 #endif
