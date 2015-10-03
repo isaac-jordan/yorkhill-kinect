@@ -61,11 +61,11 @@ namespace kinectApp.Entities
             }
         }
 
-        public void Draw(GameTime aGameTime)
+        public void Draw(GameTime aGameTime , Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
             foreach (var entity in _entities)
             {
-                //entity.Draw(aGameTime);
+                spriteBatch.Draw(entity.Texture, new Vector2(entity.PosX , entity.PosY), Color.White);
             }
         }
 

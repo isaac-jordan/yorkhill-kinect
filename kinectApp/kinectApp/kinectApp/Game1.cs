@@ -126,10 +126,11 @@ namespace kinectApp
             spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
             spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
             spriteBatch.DrawString(font, connectedStatus, new Vector2(20, 80), Color.White);
+            entityManager.Draw(gameTime,spriteBatch);
             spriteBatch.End();
 
             // TODO: Add your drawing code here
-            entityManager.Draw(gameTime);
+            
 
             base.Draw(gameTime);
         }
