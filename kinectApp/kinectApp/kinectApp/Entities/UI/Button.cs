@@ -13,6 +13,7 @@ namespace kinectApp.Entities.UI
     public class Button : BaseEnitiy
     {
         private string _Text;
+        private SpriteFont _Font;
 
         public Button(string aText, string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ)
         {
@@ -22,6 +23,7 @@ namespace kinectApp.Entities.UI
         public override void Load(ContentManager aContentManager)
         {
             Texture = aContentManager.Load<Texture2D>("UI.Button");
+            _Font = aContentManager.Load<SpriteFont>("SpriteFont1");
         }
 
         public override void Unload()
@@ -41,7 +43,8 @@ namespace kinectApp.Entities.UI
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            throw new NotImplementedException();
+            aSpriteBatch.Draw(Texture, new Vector2(PosX, PosY), Color.White);
+            aSpriteBatch.DrawString(_Font, _Text, new Vector2(PosX / 2.0f, PosY), Color.White);
         }
     }
 }
