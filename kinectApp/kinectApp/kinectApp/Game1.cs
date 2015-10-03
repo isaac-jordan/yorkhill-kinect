@@ -118,7 +118,6 @@ namespace kinectApp
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
             jointMarker = new Texture2D(GraphicsDevice, 50, 50);
             Color[] data = new Color[50 * 50];
             for (int i = 0; i < data.Length; ++i) data[i] = Color.Red;
@@ -161,6 +160,7 @@ namespace kinectApp
 
             iSceneManager.DoKeys(iInputHelper);
             iSceneManager.UpdateScene(gameTime);
+            entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -205,6 +205,7 @@ namespace kinectApp
 
             spriteBatch.Begin();
 
+            entityManager.Draw(gameTime,spriteBatch);
             //Drawing the video feed if we have one available.
             spriteBatch.Draw(colorRenderTarget, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
            
