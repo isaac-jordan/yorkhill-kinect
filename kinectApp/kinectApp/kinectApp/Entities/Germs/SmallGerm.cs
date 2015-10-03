@@ -29,6 +29,8 @@ namespace kinectApp.Entities.Germs
 
         public override void Update(GameTime aGameTime)
         {
+            this.PosX += 2;
+            this.PosY += 10;
             //throw new NotImplementedException();
         }
     }

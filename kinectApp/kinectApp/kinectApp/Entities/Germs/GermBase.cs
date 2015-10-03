@@ -61,7 +61,7 @@ namespace kinectApp.Entities.Germs
         {
             if (!string.IsNullOrEmpty(AssetName))
             {
-                    Texture = aContentManager.Load<Texture2D>(AssetName);
+                Texture = aContentManager.Load<Texture2D>(AssetName);
             }
         }
 
