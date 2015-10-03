@@ -15,8 +15,8 @@ namespace kinectApp.Entities.Germs
         static int BaseId = 20223;
         static Random Rand = new Random((int)DateTime.Now.Ticks);
 
-        const int HEIGHT = 64;
-        const int WIDTH = 64;
+        const int HEIGHT = 72;
+        const int WIDTH = 72;
 
         public BigGerm(string aAssetName, Vector3 aPos) : this(aAssetName, aPos.X, aPos.Y, aPos.Z) { }
 
