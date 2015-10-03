@@ -69,10 +69,10 @@ namespace kinectApp
 
             iKinect.OpenSensor();
 
-            _multiReader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+            //_multiReader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
 
             // Hook-up the frames arrived event
-            _multiReader.MultiSourceFrameArrived += OnMultipleFramesArrivedHandler;
+            //_multiReader.MultiSourceFrameArrived += OnMultipleFramesArrivedHandler;
 
             //sensor = KinectSensor.GetDefault();
             //sensor.IsAvailableChanged += KinectSensors_StatusChanged;
@@ -82,7 +82,7 @@ namespace kinectApp
             //cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
 
 
-            iSceneManager.SetScene(new Entities.Scenes.Menu());
+            //iSceneManager.SetScene(new Entities.Scenes.Menu());
 
             //for (int i = 0; i < 250; i++)
             //{
@@ -256,19 +256,18 @@ namespace kinectApp
             //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
             //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
 
-            if (_joints != null)
+            if (iKinect.KinectJoints != null)
             {
                 int i = 0;
-                foreach (Joint joint in _joints)
+                foreach (var J in iKinect.KinectJoints)
                 {
                     spriteBatch.Draw(jointMarker, new Rectangle(100 + i, 150, 10, 10), Color.Green);
                     i += 20;
 #if DEBUG
-                    Console.WriteLine("Joint at " + joint.Position.X + ", " + joint.Position.Y);
+                    Console.WriteLine(string.Format("Joint at: {0},{1}", J.Position.X, J.Position.Y));
 #endif
                 }
             }
-
 
             iSceneManager.DrawScene(gameTime, spriteBatch);
             //entityManager.Draw(gameTime,spriteBatch);

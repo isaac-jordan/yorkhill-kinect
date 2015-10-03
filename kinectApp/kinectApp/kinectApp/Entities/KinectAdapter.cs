@@ -14,12 +14,15 @@ namespace kinectApp.Entities
     public class KinectAdapter : IDisposable
     {
         private KinectSensor iSensor;
-        private ColorFrameReader iFrameReader;
+        private MultiSourceFrameReader iFrameReader;
         private Texture2D iRGBVideo;
         private GraphicsDevice iGraphicsDevice;
 
         private byte[] iColourImageBuffer;
-        private readonly static object iLock = new object();
+        private Body[] _bodies;
+        private Joint[] _joints;
+        private readonly static object iVideoLock = new object();
+        private readonly static object iJointLock = new object();
 
         private const int kWidth = 1920;
         private const int kHeight = 1080;
@@ -31,7 +34,7 @@ namespace kinectApp.Entities
             iSensor = KinectSensor.GetDefault();
             iGraphicsDevice = aGraphicsDevice;
 
-            iProcessingTasks = new List<Task>();
+            iProcessingTasks = new List<Task>(500);
             iColourImageBuffer = new byte[kWidth * kHeight * 4];
         }
 
@@ -69,10 +72,24 @@ namespace kinectApp.Entities
         {
             get
             {
-                lock (iLock)
+                lock (iVideoLock)
                 {
                     return iRGBVideo;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the current found joints from the last frame.
+        /// </summary>
+        public Joint[] KinectJoints
+        {
+            get
+            {
+                lock(iJointLock)
+                {
+                    return _joints;
+                }               
             }
         }
 
@@ -91,9 +108,32 @@ namespace kinectApp.Entities
                 iSensor.IsAvailableChanged += KSensor_IsAvailableChanged;
             
                 //Setup the video feed from the Kinect Camera!
-                iFrameReader = iSensor.ColorFrameSource.OpenReader();
-                iFrameReader.FrameArrived += KFrameReader_FrameArrived;
+                iFrameReader = iSensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+
+                iFrameReader.MultiSourceFrameArrived += KFrameReader_MultiSourceFrameArrived;
             }
+        }
+
+        private void KFrameReader_MultiSourceFrameArrived(object sender, MultiSourceFrameArrivedEventArgs e)
+        {
+            var T = Task.Factory.StartNew(() =>
+            {
+                // Retrieve multisource frame reference
+                MultiSourceFrameReference multiRef = e.FrameReference;
+
+                MultiSourceFrame multiFrame = multiRef.AcquireFrame();
+                if (multiFrame == null) return;
+
+                // Retrieve data stream frame references
+                ColorFrameReference colorRef = multiFrame.ColorFrameReference;
+                BodyFrameReference bodyRef = multiFrame.BodyFrameReference;
+
+                ProcessRGBVideo(colorRef);
+                ProcessJoints(bodyRef);
+
+            }).ContinueWith((aTask) => iProcessingTasks.Remove(aTask));
+
+            iProcessingTasks.Add(T);
         }
 
         /// <summary>
@@ -116,45 +156,80 @@ namespace kinectApp.Entities
         //Processes the Frame data from the Kinect camera.
         //Since events are called synchronously, this would bottleneck and cause an issue with framerate
         //By threading, we process the info on seperate threads, allowing execution to coninue with the rest of the game
-        private void KFrameReader_FrameArrived(object sender, ColorFrameArrivedEventArgs e)
+        private void ProcessRGBVideo(ColorFrameReference aReference)
         {
-            //We also keep a list of all the old tasks, because then we stop the game crashing on exit.
-            var T = Task.Factory.StartNew(() =>
+            using (ColorFrame colorImageFrame = aReference.AcquireFrame())
             {
-                using (ColorFrame colorImageFrame = e.FrameReference.AcquireFrame())
+                if (colorImageFrame != null)
                 {
-                    if (colorImageFrame != null)
+                    colorImageFrame.CopyConvertedFrameDataToArray(iColourImageBuffer, ColorImageFormat.Rgba);
+
+                    Color[] color = new Color[kHeight * kWidth];
+
+                    // Go through each pixel and set the bytes correctly
+                    // Remember, each pixel got a Red, Green and Blue
+                    int index = 0;
+                    for (int y = 0; y < kWidth; y++)
                     {
-                        colorImageFrame.CopyConvertedFrameDataToArray(iColourImageBuffer, ColorImageFormat.Rgba);
-
-                        Color[] color = new Color[kHeight * kWidth];
-
-                        // Go through each pixel and set the bytes correctly
-                        // Remember, each pixel got a Red, Green and Blue
-                        int index = 0;
-                        for (int y = 0; y < kWidth; y++)
+                        for (int x = 0; x < kHeight; x++)
                         {
-                            for (int x = 0; x < kHeight; x++)
-                            {
-                                Color c = new Color(iColourImageBuffer[index + 0], iColourImageBuffer[index + 1], iColourImageBuffer[index + 2], iColourImageBuffer[index + 3]);
-                                color[y * kHeight + x] = c;
-                                index += 4;
-                            }
+                            Color c = new Color(iColourImageBuffer[index + 0], iColourImageBuffer[index + 1], iColourImageBuffer[index + 2], iColourImageBuffer[index + 3]);
+                            color[y * kHeight + x] = c;
+                            index += 4;
                         }
+                    }
 
-                        var video = new Texture2D(iGraphicsDevice, kWidth, kHeight);
-                        video.SetData(color);
+                    var video = new Texture2D(iGraphicsDevice, kWidth, kHeight);
+
+                    //TODO Stop stupid AccessViolation
+                    video.SetData(color);
 
 
-                        lock (iLock)
+                    lock (iVideoLock)
+                    {
+                        iRGBVideo = video;
+                    }
+                }
+            }
+        }
+
+        private void ProcessJoints(BodyFrameReference aReference)
+        {
+            using (BodyFrame bodyFrame = aReference.AcquireFrame())
+            {
+                if (bodyFrame != null)
+                {
+                    _bodies = new Body[bodyFrame.BodyFrameSource.BodyCount];
+
+                    bodyFrame.GetAndRefreshBodyData(_bodies);
+
+                    foreach (var body in _bodies)
+                    {
+                        if (body != null)
                         {
-                            iRGBVideo = video;
+                            if (body.IsTracked)
+                            {
+                                // Find the joints
+                                Joint handRight = body.Joints[JointType.HandRight];
+                                Joint thumbRight = body.Joints[JointType.ThumbRight];
+
+                                Joint handLeft = body.Joints[JointType.HandLeft];
+                                Joint thumbLeft = body.Joints[JointType.ThumbLeft];
+
+                                if (_joints == null || _joints.Length != 4)
+                                {
+                                    _joints = new Joint[4];
+                                }
+
+                                _joints[0] = handRight;
+                                _joints[1] = thumbRight;
+                                _joints[2] = handLeft;
+                                _joints[3] = thumbLeft;
+                            }
                         }
                     }
                 }
-            }).ContinueWith((aTask) => iProcessingTasks.Remove(aTask));
-
-            iProcessingTasks.Add(T);
+            }
         }
 
         //Process a change in the availability of Kinect
