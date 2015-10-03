@@ -52,6 +52,11 @@ namespace kinectApp.Entities
             return _entities.Contains(aEntity);
         }
 
+        public void Clear()
+        {
+            _entities.Clear();
+        }
+
 
         #region Game Logic
         public void Update(GameTime aGameTime)
