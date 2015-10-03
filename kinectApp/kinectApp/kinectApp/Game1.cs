@@ -25,6 +25,8 @@ namespace kinectApp
         Texture2D overlay;
         SpriteFont font;
 
+        KinectAdapter iKinect;
+
         KinectSensor sensor;
         ColorFrameReader cfReader;
         string connectedStatus;
@@ -58,12 +60,16 @@ namespace kinectApp
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            sensor = KinectSensor.GetDefault();
-            sensor.IsAvailableChanged += KinectSensors_StatusChanged;
+            iKinect = new KinectAdapter(graphics.GraphicsDevice);
+
+            iKinect.OpenSensor(kinectSensor_ColorFrameArrived);
+
+            //sensor = KinectSensor.GetDefault();
+            //sensor.IsAvailableChanged += KinectSensors_StatusChanged;
             
-            sensor.Open();
-            cfReader = sensor.ColorFrameSource.OpenReader();
-            cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
+            //sensor.Open();
+            //cfReader = sensor.ColorFrameSource.OpenReader();
+            //cfReader.FrameArrived += kinectSensor_ColorFrameArrived;
 
 
             iSceneManager.SetScene(new Entities.Scenes.Menu());
@@ -107,9 +113,9 @@ namespace kinectApp
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            sensor.Close();
 
             iSceneManager.Dispose();
+            iKinect.Dispose();
 
             //entityManager.Unload();
         }
@@ -142,9 +148,15 @@ namespace kinectApp
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
+
+            if (iKinect.KinectRGBVideo != null)
+            {
+                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
+            }
+
+            //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
             //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
-            spriteBatch.DrawString(font, connectedStatus, new Vector2(20, 80), Color.White);
+            spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(20, 80), Color.White);
 
             iSceneManager.DrawScene(gameTime, spriteBatch);
             //entityManager.Draw(gameTime,spriteBatch);

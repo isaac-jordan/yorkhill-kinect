@@ -11,15 +11,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
 {
-    public class KinectAdapter
+    public class KinectAdapter : IDisposable
     {
         private KinectSensor iSensor;
         private ColorFrameReader iFrameReader;
         private Texture2D iRGBVideo;
         private GraphicsDevice iGraphicsDevice;
 
-        private byte[] _colorImageBuffer;
-        private bool _colorIsDrawing;
+        private byte[] iColourImageBuffer;
+        private bool iColourIsDrawing;
 
         private readonly object iLock = new object();
 
@@ -44,11 +44,11 @@ namespace kinectApp.Entities
         {
             get; private set;
         }
-        
+
         /// <summary>
         /// Gets a string representing the connection status of the Kinect
         /// </summary>
-        public string ContectedStatus
+        public string ConnectedStatus
         {
             get
             {
@@ -67,7 +67,7 @@ namespace kinectApp.Entities
             }
         }
 
-        public void OpenSensor()
+        public void OpenSensor(EventHandler<ColorFrameArrivedEventArgs> aHandler)
         {
             if (!IsOpen)
             {
@@ -75,8 +75,11 @@ namespace kinectApp.Entities
                 IsOpen = true;
 
                 iSensor.IsAvailableChanged += KSensor_IsAvailableChanged;
-       
+
                 iFrameReader = iSensor.ColorFrameSource.OpenReader();
+
+
+                //iFrameReader.FrameArrived += aHandler;
                 iFrameReader.FrameArrived += KFrameReader_FrameArrived;
             }
         }
@@ -97,45 +100,48 @@ namespace kinectApp.Entities
 
         private void KFrameReader_FrameArrived(object sender, ColorFrameArrivedEventArgs e)
         {
-            if (_colorIsDrawing) return;
-            _colorIsDrawing = true;
-            using (ColorFrame colorImageFrame = e.FrameReference.AcquireFrame())
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                if (colorImageFrame != null)
+                //if (iColourIsDrawing) return;
+                //iColourIsDrawing = true;
+                using (ColorFrame colorImageFrame = e.FrameReference.AcquireFrame())
                 {
-                    int width = colorImageFrame.FrameDescription.Width;
-                    int height = colorImageFrame.FrameDescription.Height;
-
-                    if ((_colorImageBuffer == null) || (_colorImageBuffer.Length != width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
+                    if (colorImageFrame != null)
                     {
-                        _colorImageBuffer = new byte[width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
-                    }
+                        int width = colorImageFrame.FrameDescription.Width;
+                        int height = colorImageFrame.FrameDescription.Height;
 
-                    colorImageFrame.CopyConvertedFrameDataToArray(_colorImageBuffer, ColorImageFormat.Rgba);
-
-                    Color[] color = new Color[height * width];
-
-                    // Go through each pixel and set the bytes correctly
-                    // Remember, each pixel got a Red, Green and Blue
-                    int index = 0;
-                    for (int y = 0; y < width; y++)
-                    {
-                        for (int x = 0; x < height; x++)
+                        if ((iColourImageBuffer == null) || (iColourImageBuffer.Length != width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
                         {
-                            Color c = new Color(_colorImageBuffer[index + 0], _colorImageBuffer[index + 1], _colorImageBuffer[index + 2], _colorImageBuffer[index + 3]);
-                            color[y * height + x] = c;
-                            index += 4;
+                            iColourImageBuffer = new byte[width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
+                        }
+
+                        colorImageFrame.CopyConvertedFrameDataToArray(iColourImageBuffer, ColorImageFormat.Rgba);
+
+                        Color[] color = new Color[height * width];
+
+                        // Go through each pixel and set the bytes correctly
+                        // Remember, each pixel got a Red, Green and Blue
+                        int index = 0;
+                        for (int y = 0; y < width; y++)
+                        {
+                            for (int x = 0; x < height; x++)
+                            {
+                                Color c = new Color(iColourImageBuffer[index + 0], iColourImageBuffer[index + 1], iColourImageBuffer[index + 2], iColourImageBuffer[index + 3]);
+                                color[y * height + x] = c;
+                                index += 4;
+                            }
+                        }
+
+                        lock (iLock)
+                        {
+                            iRGBVideo = new Texture2D(iGraphicsDevice, width, height);
+                            // Set pixeldata from the ColorImageFrame to a Texture2D
+                            iRGBVideo.SetData(color);
                         }
                     }
-
-                    lock (iLock)
-                    {
-                        iRGBVideo = new Texture2D(iGraphicsDevice, width, height);
-                        // Set pixeldata from the ColorImageFrame to a Texture2D
-                        iRGBVideo.SetData(color);
-                    }
                 }
-            }
+            });
         }
 
         private void KSensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
@@ -143,5 +149,15 @@ namespace kinectApp.Entities
             IsAvailable = e.IsAvailable;
         }
 
+        public void Dispose()
+        {
+            if (IsOpen)
+            {
+                CloseSensor();
+            }
+
+            iFrameReader = null;
+            iSensor = null;
+        }
     }
 }

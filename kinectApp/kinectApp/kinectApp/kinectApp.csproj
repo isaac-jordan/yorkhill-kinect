@@ -99,6 +99,7 @@
     <Compile Include="Entities\Germs\IGerm.cs" />
     <Compile Include="Entities\Germs\SmallGerm.cs" />
     <Compile Include="Entities\IEntity.cs" />
+    <Compile Include="Entities\KinectAdapter.cs" />
     <Compile Include="Entities\Scene.cs" />
     <Compile Include="Entities\SceneManager.cs" />
     <Compile Include="Entities\Scenes\GameInstance.cs" />
