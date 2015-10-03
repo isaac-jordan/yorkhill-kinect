@@ -25,7 +25,6 @@ namespace kinectApp.Entities.Germs
             Width = WIDTH;
         }
 
-
         public override void Load(ContentManager aContentManager)
         {
             base.Load(aContentManager);
@@ -40,7 +39,6 @@ namespace kinectApp.Entities.Germs
         {
             this.PosX += 2.0f;
             this.PosY += 5.0f;
-            //throw new NotImplementedException();
         }
     }
 }
