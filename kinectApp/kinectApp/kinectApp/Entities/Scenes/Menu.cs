@@ -20,8 +20,8 @@ namespace kinectApp.Entities.Scenes
 
         public Menu() : base("Menu")
         {
-            _Quit = new Button("Quit", string.Empty, 20, 20, 0);
-            _Play = new Button("Play", string.Empty, 20, 50, 0);
+            _Quit = new Button("Quit", string.Empty, 20, 50, 0);
+            _Play = new Button("Play", string.Empty, 20, 80, 0);
 
             _OptionA = null;
             _OptionB = null;
