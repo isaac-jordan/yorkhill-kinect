@@ -92,12 +92,12 @@ namespace kinect_mouse_mapper
                                 
                                 if (!(-1 < point.X && point.X < 1))
                                 {
-                                    point.X = 0;
+                                    point.X = Cursor.Position.X;
                                 }
 
                                 if (!(-1 < point.Y && point.Y < 1))
                                 {
-                                    point.Y = 0;
+                                    point.Y = Cursor.Position.Y;
                                 }
 
                                 VirtualMouse.MoveTo(point.X, point.Y);
