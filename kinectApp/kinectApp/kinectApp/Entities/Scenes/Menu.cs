@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using kinectApp.Entities.UI;
+using kinectApp.Utilities;
 
 namespace kinectApp.Entities.Scenes
 {
@@ -30,5 +31,9 @@ namespace kinectApp.Entities.Scenes
             Entities.Add(_Play);
         }
 
+        public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

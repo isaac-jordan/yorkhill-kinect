@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using kinectApp.Entities.UI;
+using kinectApp.Utilities;
 
 namespace kinectApp.Entities.Scenes
 {
@@ -19,6 +20,11 @@ namespace kinectApp.Entities.Scenes
             iMessage = new Label("Bye Bye?", string.Empty, 50, 50, 0);
 
             Entities.Add(iMessage);
+        }
+
+        public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
+        {
+            throw new NotImplementedException();
         }
     }
 }

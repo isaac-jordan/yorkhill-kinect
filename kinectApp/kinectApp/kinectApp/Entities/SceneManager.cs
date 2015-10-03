@@ -10,15 +10,26 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace kinectApp.Entities
 {
+    public interface ISceneManager : IDisposable
+    {
+        void SetScene(IScene aScene);
+        void ShowOverlay(IScene aOverlay);
+
+        void HideOverlay();
+
+        SceneDescription GetDescription();
+    }
+
+
     /*
         Handles the changing of Scenes within the game, passing the information to the Entity Manager
     */
-    public class SceneManager : IDisposable
+    public class SceneManager : ISceneManager
     {
         EntityManager iEntityManager;
         ContentManager iContentManager;
-        Scene iCurrentScene;
-        Scene iCurrentOverlay;
+        IScene iCurrentScene;
+        IScene iCurrentOverlay;
 
         public SceneManager(ContentManager aContentManager)
         {
@@ -28,7 +39,7 @@ namespace kinectApp.Entities
 
         //Clears out the current set of entities of the current scene
         //Then fills the entities for use in the game again.
-        public void SetScene(Scene aScene)
+        public void SetScene(IScene aScene)
         {
             if (iCurrentScene != aScene)
             {
@@ -50,7 +61,7 @@ namespace kinectApp.Entities
         //It's technically not an overlay, we just preserve state of the current scene
         //So users can return back where they want to do.
         //I wonder - do people actually read my comments?
-        public void ShowOverlay(Scene aOverlay)
+        public void ShowOverlay(IScene aOverlay)
         {
             iCurrentOverlay = aOverlay;
 

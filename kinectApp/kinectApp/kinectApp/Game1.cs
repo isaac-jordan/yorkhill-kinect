@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
 using kinectApp.Entities;
+using kinectApp.Utilities;
 
 namespace kinectApp
 {
@@ -21,6 +22,7 @@ namespace kinectApp
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        InputHelper iInputHelper;
         Texture2D jointMarker;
         Texture2D overlay;
         SpriteFont font;
@@ -44,6 +46,8 @@ namespace kinectApp
 
             entityManager = new EntityManager();
             iSceneManager = new SceneManager(Content);
+
+            iInputHelper = new InputHelper();
         }
 
         /// <summary>
@@ -105,6 +109,8 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            iInputHelper.Update();
+
             // Allows the game to exit
             var PKeys = Keyboard.GetState().GetPressedKeys();
 
