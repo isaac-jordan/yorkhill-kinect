@@ -78,12 +78,10 @@ namespace kinectApp
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            kinectRGBVideo = new Texture2D(GraphicsDevice, 1337, 1337);
+            kinectRGBVideo = new Texture2D(GraphicsDevice, 1920, 1080);
 
             overlay = Content.Load<Texture2D>("overlay");
             font = Content.Load<SpriteFont>("SpriteFont1");
-
-            
 
             // TODO: use this.Content to load your game content here#
             entityManager.Load(Content);
@@ -127,15 +125,22 @@ namespace kinectApp
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 640, 480), Color.White);
-            spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
+            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1920, 1080), Color.White);
+            //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
             spriteBatch.DrawString(font, connectedStatus, new Vector2(20, 80), Color.White);
+            entityManager.Draw(gameTime,spriteBatch);
             spriteBatch.End();
 
             // TODO: Add your drawing code here
-            entityManager.Draw(gameTime);
+            
 
             base.Draw(gameTime);
+        }
+
+        protected override void EndDraw()
+        {
+            _colorIsDrawing = false;
+            base.EndDraw();
         }
 
         private void kinectSensor_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
@@ -146,33 +151,36 @@ namespace kinectApp
             {
                 if (colorImageFrame != null)
                 {
-                    if ((this._colorImageBuffer == null) || (this._colorImageBuffer.Length != colorImageFrame.FrameDescription.Width * colorImageFrame.FrameDescription.Height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
+                    int width = colorImageFrame.FrameDescription.Width;
+                    int height = colorImageFrame.FrameDescription.Height;
+
+                    if ((_colorImageBuffer == null) || (_colorImageBuffer.Length != width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4))
                     {
-                        this._colorImageBuffer = new byte[colorImageFrame.FrameDescription.Width * colorImageFrame.FrameDescription.Height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
+                        _colorImageBuffer = new byte[width * height * /*colorImageFrame.FrameDescription.BytesPerPixel*/ 4];
                     }
                     
-                    colorImageFrame.CopyConvertedFrameDataToArray(this._colorImageBuffer, ColorImageFormat.Bgra);
+                    colorImageFrame.CopyConvertedFrameDataToArray(_colorImageBuffer, ColorImageFormat.Rgba);
 
-                    Color[] color = new Color[colorImageFrame.FrameDescription.Height * colorImageFrame.FrameDescription.Width];
-                    kinectRGBVideo = new Texture2D(graphics.GraphicsDevice, colorImageFrame.FrameDescription.Width, colorImageFrame.FrameDescription.Height);
+                    Color[] color = new Color[height * width];
+                    kinectRGBVideo = new Texture2D(graphics.GraphicsDevice, width, height);
 
                     // Go through each pixel and set the bytes correctly
-                    // Remember, each pixel got a Rad, Green and Blue
+                    // Remember, each pixel got a Red, Green and Blue
                     int index = 0;
-                    for (int y = 0; y < colorImageFrame.FrameDescription.Height; y++)
+                    for (int y = 0; y < height; y++)
                     {
-                        for (int x = 0; x < colorImageFrame.FrameDescription.Width; x++, index += 4)
+                        for (int x = 0; x < width; x++, index += 4)
                         {
-                            Color c = new Color(_colorImageBuffer[index + 2], _colorImageBuffer[index + 1], _colorImageBuffer[index + 0]);
-                            color[y * colorImageFrame.FrameDescription.Height + x] = c;
+                            Color c = new Color(_colorImageBuffer[index + 0], _colorImageBuffer[index + 1], _colorImageBuffer[index + 2], _colorImageBuffer[index + 3]);
+                            color[y * height + x] = c;
                         }
                     }
 
                     // Set pixeldata from the ColorImageFrame to a Texture2D
                     kinectRGBVideo.SetData(color);
+                    this.BeginDraw();
                 }
             }
-            _colorIsDrawing = false;
         }
     }
 }
