@@ -63,7 +63,7 @@ namespace kinectApp.Entities
 
             if (_entities.Count < 5)
             {
-                _entities.Add(new SmallGerm());
+                _entities.Add(new SmallGerm("overlay", 0, 0, 0));
             }
         }
 
