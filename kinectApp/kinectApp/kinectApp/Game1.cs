@@ -21,7 +21,6 @@ namespace kinectApp
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D kinectRGBVideo;
         Texture2D jointMarker;
         Texture2D overlay;
         SpriteFont font;
@@ -72,7 +71,6 @@ namespace kinectApp
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            kinectRGBVideo = new Texture2D(GraphicsDevice, 1920, 1080);
 
             jointMarker = new Texture2D(GraphicsDevice, 50, 50);
             Color[] data = new Color[50 * 50];
@@ -129,11 +127,13 @@ namespace kinectApp
 
             spriteBatch.Begin();
 
+            //Drawing the video feed if we have one available.
             if (iKinect.KinectRGBVideo != null)
             {
-                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
+                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             }
 
+            //Drawing the connection string on top of screen
             spriteBatch.DrawString(font, iKinect.ConnectedStatus, new Vector2(0, 0), Color.White);
 
             //spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
@@ -154,12 +154,10 @@ namespace kinectApp
                 }
             }
 
+            //Now we draw whatever scene is currently in the game!
             iSceneManager.DrawScene(gameTime, spriteBatch);
-            //entityManager.Draw(gameTime,spriteBatch);
 
             spriteBatch.End();
-
-            // TODO: Add your drawing code here
             base.Draw(gameTime);
         }
     }
