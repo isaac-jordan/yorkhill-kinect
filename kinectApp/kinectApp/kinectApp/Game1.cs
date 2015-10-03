@@ -42,7 +42,7 @@ namespace kinectApp
         public int screenHeight;
         public int screenWidth;
 
-        KinectAdapter iKinect;
+        public KinectAdapter iKinect;
         GestureResultView gestureRV;
         GestureDetector gestureDet;
 
@@ -140,7 +140,7 @@ namespace kinectApp
 
 
             // TODO: use this.Content to load your game content here#
-            entityManager.Load(Content);
+            //entityManager.Load(Content);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace kinectApp
 
             iSceneManager.DoKeys(iInputHelper);
             iSceneManager.UpdateScene(gameTime);
-            entityManager.Update(gameTime);
+            //entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -248,7 +248,7 @@ namespace kinectApp
            
             //No longer displaying the connection status on the screen because we have the title bar now >=]
             //Now we draw whatever scene is currently in the game!
-            iSceneManager.DrawScene(gameTime, spriteBatch);
+            //iSceneManager.DrawScene(gameTime, spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);
