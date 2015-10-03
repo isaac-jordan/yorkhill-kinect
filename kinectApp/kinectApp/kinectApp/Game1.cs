@@ -15,6 +15,7 @@ using SDrawing = System.Drawing;
 
 using kinectApp.Entities;
 using kinectApp.Utilities;
+using kinectApp.Entities.Scenes;
 
 namespace kinectApp
 {
@@ -68,10 +69,26 @@ namespace kinectApp
         {
             iKinect = new KinectAdapter(graphics.GraphicsDevice, (isAvail) =>
             {
-                Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", (isAvail) ? "Connected" : "NO KINECT FOUND");
+                string title = null;
+                string file = null;
 
-                var filename = string.Format("Res/{0}", (isAvail) ? "Germz.Icon.ico" : "Germz.NoKintec.Icon.ico");
+                if (isAvail)
+                {
+                    title = "Connected";
+                    file = "Germz.Icon.ico";
 
+                    iSceneManager.HideOverlay();
+                }
+                else
+                {
+                    title = "NO KINECT FOUND";
+                    file = "Germz.NoKintec.Icon.ico";
+
+                    iSceneManager.ShowOverlay(new KinectDisconnect());
+                }
+
+                Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", title);
+                var filename = string.Format("Res/{0}", file);
                 ((System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(Window.Handle)).Icon = new SDrawing.Icon(filename);
             });
             iKinect.OpenSensor();

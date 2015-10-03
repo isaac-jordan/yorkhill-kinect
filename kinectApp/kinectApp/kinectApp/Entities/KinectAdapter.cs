@@ -202,6 +202,10 @@ namespace kinectApp.Entities
                         iRGBVideo = video;
                     }
                 }
+                else
+                {
+                    iRGBVideo = null;
+                }
             }
         }
 
