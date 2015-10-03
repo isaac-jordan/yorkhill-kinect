@@ -14,12 +14,11 @@
     </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>1b58e3ad-2159-4505-965b-8d645ae825b0</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <Thumbnail>GameThumbnail.png</Thumbnail>
+    <ApplicationIcon>Germz.Icon.ico</ApplicationIcon>
+    <Thumbnail>Germz.Icon.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\Users\isaac.jordan\Documents\workspace\yorkhill-kinect\kinectApp\kinectApp\kinectApp\\..\..\obj\publish</PublishUrl>
     <Install>true</Install>
@@ -63,8 +62,7 @@
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>kinectApp.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>7F75B1A24D8FD892AC62183B51CFACD8FF8BC568</ManifestCertificateThumbprint>
@@ -77,6 +75,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -120,6 +121,8 @@
     <Content Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
+    <Content Include="Germz.Icon.ico" />
+    <Content Include="Germz.Icon.png" />
     <Content Include="Res\Germz.Icon.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
