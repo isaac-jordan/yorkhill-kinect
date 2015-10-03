@@ -100,7 +100,7 @@ namespace kinect_mouse_mapper
                                     point.Y = Cursor.Position.Y;
                                 }
 
-                                VirtualMouse.MoveTo(point.X, point.Y);
+                                VirtualMouse.Move(point.X, point.Y);
                                 Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
 
                                 if (body.HandRightState == HandState.Closed)
