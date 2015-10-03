@@ -62,7 +62,7 @@ namespace kinectApp
             // TODO: Add your initialization logic here
             iKinect = new KinectAdapter(graphics.GraphicsDevice);
 
-            iKinect.OpenSensor(kinectSensor_ColorFrameArrived);
+            iKinect.OpenSensor();
 
             //sensor = KinectSensor.GetDefault();
             //sensor.IsAvailableChanged += KinectSensors_StatusChanged;
