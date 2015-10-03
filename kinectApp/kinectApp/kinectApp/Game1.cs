@@ -35,7 +35,7 @@ namespace kinectApp
         {
             graphics = new GraphicsDeviceManager(this);
 
-            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 125;
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
 
             graphics.PreferredBackBufferHeight = screenHeight;
