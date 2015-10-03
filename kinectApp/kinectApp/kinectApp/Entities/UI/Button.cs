@@ -31,10 +31,6 @@ namespace kinectApp.Entities.UI
 
         public override void Unload()
         {
-            if (Texture != null)
-            {
-                Texture.Dispose();
-            }
             Texture = null;
         }
 

@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
 using kinectApp.Entities;
+using kinectApp.Utilities;
 
 namespace kinectApp
 {
@@ -21,6 +22,7 @@ namespace kinectApp
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        InputHelper iInputHelper;
         Texture2D jointMarker;
         Texture2D overlay;
         RenderTarget2D colorRenderTarget;
@@ -31,6 +33,8 @@ namespace kinectApp
         KinectAdapter iKinect;
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
+
+        static bool iCancelRequested = false;
 
         public Game1()
         {
@@ -45,6 +49,8 @@ namespace kinectApp
 
             entityManager = new EntityManager();
             iSceneManager = new SceneManager(Content);
+
+            iInputHelper = new InputHelper();
         }
 
         /// <summary>
@@ -107,41 +113,18 @@ namespace kinectApp
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            var PKeys = Keyboard.GetState().GetPressedKeys();
-
-            foreach (var k in PKeys)
+            //Dectect a close, from outwith this class!
+            if (iCancelRequested)
             {
-                switch (k)
-                {
-                    case Keys.Escape:
-                    case Keys.Q:
-                    {
-                        this.Exit();
-                        break;
-                    }
+                this.Exit();
+            }
 
-                    //DEBUG SCENE CHANGES
+            iInputHelper.Update();
 
-                    case Keys.Space:
-                    {
-                        iSceneManager.SetScene(new Entities.Scenes.GameInstance());
-                        break;
-                    }
-
-                    case Keys.LeftAlt:
-                    {
-                        iSceneManager.SetScene(new Entities.Scenes.Menu());
-                        break;
-                    }
-                }
+            iSceneManager.DoKeys(iInputHelper);
 
 
-
-                // TODO: Add your update logic here
                 iSceneManager.UpdateScene(gameTime);
-
-                //entityManager.Update(gameTime);
 
                 base.Update(gameTime);
             }
@@ -192,6 +175,12 @@ namespace kinectApp
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        //Allows A forced close of the application.
+        public static void ForceClose()
+        {
+            iCancelRequested = true;
         }
     }
 }

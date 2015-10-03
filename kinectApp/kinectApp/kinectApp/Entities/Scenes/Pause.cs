@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using kinectApp.Utilities;
 
 namespace kinectApp.Entities.Scenes
 {
@@ -16,5 +17,9 @@ namespace kinectApp.Entities.Scenes
 
         }
 
+        public override void HandleKeys(InputHelper aInputHelper, ISceneManager aSceneManager)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
