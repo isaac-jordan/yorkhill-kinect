@@ -21,6 +21,7 @@ namespace kinectApp.Entities
         int Height { get; }
 
         void Update(GameTime aGameTime);
+        void Draw(SpriteBatch aSpriteBatch);
 
         void Load(ContentManager aContentManager);
         void Unload();

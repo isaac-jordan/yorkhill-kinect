@@ -38,5 +38,10 @@ namespace kinectApp.Entities.UI
         {
             return;
         }
+
+        public override void Draw(SpriteBatch aSpriteBatch)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

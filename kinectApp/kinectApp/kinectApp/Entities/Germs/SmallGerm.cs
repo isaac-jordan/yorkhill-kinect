@@ -40,7 +40,15 @@ namespace kinectApp.Entities.Germs
         {
             this.PosX += 2.0f;
             this.PosY += 5.0f;
-            //throw new NotImplementedException();
+        }
+
+        public override void Draw(SpriteBatch aSpriteBatch)
+        {
+            int x1 = int.Parse(PosX.ToString());
+            int y1 = int.Parse(PosY.ToString());
+            var rec = new Rectangle(x1, y1, Height, Width);
+
+            aSpriteBatch.Draw(Texture, rec, Color.White);
         }
     }
 }

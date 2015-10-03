@@ -84,7 +84,7 @@ namespace kinectApp.Entities
 
         #endregion
 
-  
+        public abstract void Draw(SpriteBatch aSpriteBatch);
         public abstract void Update(GameTime aGameTime);
 
         public abstract void Load(ContentManager aContentManager);
