@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using kinectApp.Entities.Germs;
 
 namespace kinectApp.Entities
 {
@@ -67,19 +67,11 @@ namespace kinectApp.Entities
             }
         }
 
-        public void Draw(GameTime aGameTime , Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
+        public void Draw(GameTime aGameTime, SpriteBatch aSpriteBatch)
         {
             foreach (var entity in _entities)
             {
-                if (_entities.Count != 0)
-                {
-                    int x1 = int.Parse(entity.PosX.ToString());
-                    int y1 = int.Parse(entity.PosY.ToString());
-                    var rec = new Rectangle(x1, y1, entity.Height, entity.Width);
-
-                    spriteBatch.Draw(entity.Texture, rec, Color.White);
-                    //spriteBatch.Draw(entity.Texture, new Vector2(entity.PosX, entity.PosY), Color.White);
-                }
+                entity.Draw(aSpriteBatch);
             }
         }
 

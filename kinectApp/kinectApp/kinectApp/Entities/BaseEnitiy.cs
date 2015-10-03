@@ -43,9 +43,6 @@ namespace kinectApp.Entities
             get; private set;
         }
 
-        public int Width { get; set; }
-        public int Height{ get; set; }
-
         #region Position Code
         /// <summary>
         /// Gets the Position of the Germ in the Game
