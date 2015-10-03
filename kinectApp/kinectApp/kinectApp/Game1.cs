@@ -64,11 +64,6 @@ namespace kinectApp
             base.Initialize();
         }
 
-        private void KinectSensors_StatusChanged(object sender, IsAvailableChangedEventArgs e)
-        {
-            connectedStatus = e.IsAvailable ? "Sensor is available." : "**Sensor is not available**";
-        }
-
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -181,6 +176,11 @@ namespace kinectApp
                     this.BeginDraw();
                 }
             }
+        }
+
+        private void KinectSensors_StatusChanged(object sender, IsAvailableChangedEventArgs e)
+        {
+            connectedStatus = e.IsAvailable ? "Sensor is available." : "**Sensor is not available**";
         }
     }
 }
