@@ -81,14 +81,14 @@ namespace kinectApp
                     title = "Connected";
                     file = "Germz.Icon.ico";
 
-                    iSceneManager.HideOverlay();
+                    //iSceneManager.HideOverlay();
                 }
                 else
                 {
                     title = "NO KINECT FOUND";
                     file = "Germz.NoKintec.Icon.ico";
 
-                    iSceneManager.ShowOverlay(new KinectDisconnect());
+                    //iSceneManager.ShowOverlay(new KinectDisconnect());
                 }
 
                 Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", title);
@@ -175,9 +175,11 @@ namespace kinectApp
                 joints = iKinect.KinectJoints.ToArray();
             }
 
+            GraphicsDevice.Clear(iBackground);
+
             GraphicsDevice.SetRenderTarget(colorRenderTarget);
 
-            GraphicsDevice.Clear(iBackground);
+            
 
             spriteBatch.Begin();
             if (iKinect.KinectRGBVideo != null)
@@ -195,8 +197,7 @@ namespace kinectApp
 
             // Reset the device to the back buffer
             GraphicsDevice.SetRenderTarget(null);
-
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            
 
             spriteBatch.Begin();
 
