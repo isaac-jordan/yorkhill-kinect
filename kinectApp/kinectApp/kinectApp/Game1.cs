@@ -36,6 +36,8 @@ namespace kinectApp
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 1000;
+            graphics.PreferredBackBufferWidth = 1900;
             Content.RootDirectory = "Content";
 
             entityManager = new EntityManager();
@@ -121,7 +123,7 @@ namespace kinectApp
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1920, 1080), Color.White);
+            spriteBatch.Draw(kinectRGBVideo, new Rectangle(0, 0, 1900, 1000), Color.White);
             //spriteBatch.Draw(overlay, new Rectangle(0, 0, 640, 480), Color.White);
             spriteBatch.DrawString(font, connectedStatus, new Vector2(20, 80), Color.White);
             spriteBatch.End();
@@ -162,12 +164,13 @@ namespace kinectApp
                     // Go through each pixel and set the bytes correctly
                     // Remember, each pixel got a Red, Green and Blue
                     int index = 0;
-                    for (int y = 0; y < height; y++)
+                    for (int y = 0; y < width; y++)
                     {
-                        for (int x = 0; x < width; x++, index += 4)
+                        for (int x = 0; x < height; x++)
                         {
                             Color c = new Color(_colorImageBuffer[index + 0], _colorImageBuffer[index + 1], _colorImageBuffer[index + 2], _colorImageBuffer[index + 3]);
                             color[y * height + x] = c;
+                            index += 4;
                         }
                     }
 
