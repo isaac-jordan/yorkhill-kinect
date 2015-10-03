@@ -5,29 +5,49 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kinectApp", "kinectApp\kinectApp\kinectApp.csproj", "{1FD13596-C447-4D04-9EB0-FAD569F579F5}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "kinectAppContent", "kinectApp\kinectAppContent\kinectAppContent.contentproj", "{299A6215-F020-450D-822D-A69FD77712BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kinectAppContent", "kinectApp\kinectAppContent\kinectAppContent.contentproj", "{299A6215-F020-450D-822D-A69FD77712BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kinect_mouse_mapper", "..\kinect_mouse_mapper\kinect_mouse_mapper\kinect_mouse_mapper.csproj", "{C1C62574-0B4C-46DE-915C-475C39291178}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Debug|x64.ActiveCfg = Debug|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Debug|x64.Build.0 = Debug|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Debug|x86.ActiveCfg = Debug|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Debug|x86.Build.0 = Debug|x86
+		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Release|Any CPU.ActiveCfg = Release|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Release|x64.ActiveCfg = Release|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Release|x64.Build.0 = Release|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Release|x86.ActiveCfg = Release|x86
 		{1FD13596-C447-4D04-9EB0-FAD569F579F5}.Release|x86.Build.0 = Release|x86
+		{299A6215-F020-450D-822D-A69FD77712BD}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{299A6215-F020-450D-822D-A69FD77712BD}.Debug|x64.ActiveCfg = Debug|x86
 		{299A6215-F020-450D-822D-A69FD77712BD}.Debug|x64.Build.0 = Debug|x86
 		{299A6215-F020-450D-822D-A69FD77712BD}.Debug|x86.ActiveCfg = Debug|x86
+		{299A6215-F020-450D-822D-A69FD77712BD}.Release|Any CPU.ActiveCfg = Release|x86
 		{299A6215-F020-450D-822D-A69FD77712BD}.Release|x64.ActiveCfg = Release|x86
 		{299A6215-F020-450D-822D-A69FD77712BD}.Release|x86.ActiveCfg = Release|x86
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Debug|x64.ActiveCfg = Debug|x64
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Debug|x64.Build.0 = Debug|x64
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Release|x64.ActiveCfg = Release|x64
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Release|x64.Build.0 = Release|x64
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1C62574-0B4C-46DE-915C-475C39291178}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -20,6 +20,8 @@ namespace kinect_mouse_mapper
             sensor = KinectSensor.GetDefault();
             sensor.Open();
 
+            sensor.IsAvailableChanged += Sensor_IsAvailableChanged;
+
             _multiReader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Body);
 
             _multiReader.MultiSourceFrameArrived += OnMultipleFramesArrivedHandler;
@@ -27,6 +29,11 @@ namespace kinect_mouse_mapper
             VirtualMouse.MoveTo(900, 39);
             VirtualMouse.LeftClick();
             Console.ReadKey();
+        }
+
+        private static void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
+        {
+            Console.WriteLine(string.Format("KINECT STATUS CHANGE: {0}", (e.IsAvailable) ? "Available" : "Not Available"));
         }
 
         private static void OnMultipleFramesArrivedHandler(object sender, MultiSourceFrameArrivedEventArgs e)
@@ -73,7 +80,8 @@ namespace kinect_mouse_mapper
                                 _joints[2] = handLeft;
                                 _joints[3] = thumbLeft;
 
-                                VirtualMouse.Move((int)((_joints[1].Position.X) * 100), (int)((_joints[1].Position.Y) * 100));
+                                VirtualMouse.Move((int)((_joints[1].Position.X) * 10), (int)((_joints[1].Position.Y) * 10));
+                                Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
                             }
                         }
                     }

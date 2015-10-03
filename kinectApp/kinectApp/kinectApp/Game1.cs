@@ -21,7 +21,6 @@ namespace kinectApp
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D kinectRGBVideo;
         Texture2D jointMarker;
         Texture2D overlay;
         SpriteFont font;
@@ -72,7 +71,6 @@ namespace kinectApp
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            kinectRGBVideo = new Texture2D(GraphicsDevice, 1920, 1080);
 
             jointMarker = new Texture2D(GraphicsDevice, 50, 50);
             Color[] data = new Color[50 * 50];
