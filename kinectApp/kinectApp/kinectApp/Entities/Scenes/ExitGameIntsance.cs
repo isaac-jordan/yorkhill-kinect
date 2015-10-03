@@ -22,7 +22,7 @@ namespace kinectApp.Entities.Scenes
             iMessage = new Label("Bye Bye?", string.Empty, 50, 100, 0);
 
             iYesbtn = new Button("Yes", string.Empty, 50, 135, 0);
-            iNobtn = new Button("Back", string.Empty, 175, 135, 0);
+            iNobtn = new Button("Back", string.Empty, 190, 135, 0);
 
             Entities.Add(iMessage);
             Entities.Add(iYesbtn);

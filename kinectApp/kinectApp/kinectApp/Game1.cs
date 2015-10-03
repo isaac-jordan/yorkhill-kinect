@@ -61,7 +61,12 @@ namespace kinectApp
         /// </summary>
         protected override void Initialize()
         {
-            iKinect = new KinectAdapter(graphics.GraphicsDevice);
+            iKinect = new KinectAdapter(graphics.GraphicsDevice, (isAvail) =>
+            {
+                Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", (isAvail) ? "Connected" : "NO KINECT FOUND");
+
+                //Window.
+            });
             iKinect.OpenSensor();
 
             //Show Main menu
@@ -102,8 +107,6 @@ namespace kinectApp
 
             iSceneManager.Dispose();
             iKinect.Dispose();
-
-            //entityManager.Unload();
         }
 
         /// <summary>
@@ -122,12 +125,9 @@ namespace kinectApp
             iInputHelper.Update();
 
             iSceneManager.DoKeys(iInputHelper);
+            iSceneManager.UpdateScene(gameTime);
 
-
-                iSceneManager.UpdateScene(gameTime);
-
-                base.Update(gameTime);
-            }
+            base.Update(gameTime);
         }
 
         /// <summary>
