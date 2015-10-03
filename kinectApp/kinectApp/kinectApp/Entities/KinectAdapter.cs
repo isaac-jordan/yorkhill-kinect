@@ -208,9 +208,7 @@ namespace kinectApp.Entities
                                         for (int x = 0; x < depthWidth; ++x)
                                         {
                                             int depthIndex = (y * depthHeight) + x;
-
                                             byte player = _bodyData[depthIndex];
-
 
                                             // Check whether this pixel belong to a human!!!
                                             if (player != 0xff)
@@ -223,7 +221,6 @@ namespace kinectApp.Entities
 
                                                 if ((colorX >= 0) && (colorX < colorWidth) && (colorY >= 0) && (colorY < colorHeight))
                                                 {
-                                                    
                                                     int displayIndex = colorIndex * 4;
 
                                                     Color c = new Color(_colorData[displayIndex + 0], _colorData[displayIndex + 1], _colorData[displayIndex + 2], 0xff);

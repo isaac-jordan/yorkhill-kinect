@@ -50,8 +50,8 @@ namespace kinectApp
         {
             graphics = new GraphicsDeviceManager(this);
 
-            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 125;
-            screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 100;
+            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+            screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 125;
 
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.PreferredBackBufferWidth = screenWidth;
@@ -181,7 +181,8 @@ namespace kinectApp
 
             GraphicsDevice.SetRenderTarget(colorRenderTarget);
 
-            
+            int depthHeight = iKinect.iSensor.DepthFrameSource.FrameDescription.Height;
+            int depthWidth = iKinect.iSensor.DepthFrameSource.FrameDescription.Width;
 
             spriteBatch.Begin();
             spriteBatch.Draw(room, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
