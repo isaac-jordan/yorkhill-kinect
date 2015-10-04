@@ -18,6 +18,22 @@ namespace kinectApp.Entities.UI
         const int HEIGHT = 32;
         const int WIDTH = 128;
 
+        public override int Height
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override int Width
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public Button(string aText, string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ)
         {
             _Text = aText;

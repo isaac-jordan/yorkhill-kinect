@@ -79,6 +79,9 @@ namespace kinectApp.Entities
             set { _pos.Z = value; }
         }
 
+        public abstract int Height { get; }
+        public abstract int Width { get; }
+
         #endregion
 
         public abstract void Draw(SpriteBatch aSpriteBatch);

@@ -19,7 +19,10 @@ namespace kinectApp.Entities.Germs
     public abstract class GermBase : BaseEntity, IGerm
     {
         protected Texture2D _texture;
-        protected bool beenToTopHalfOfScreen = false;
+
+        protected static Random rand = new Random();
+        public bool beenToTopHalfOfScreen = false;
+        public bool isMovingLeft = rand.NextDouble() < 0.5 ? true : false;
 
         private int iHealth = 0;
         protected DateTime iHitTime = new DateTime();

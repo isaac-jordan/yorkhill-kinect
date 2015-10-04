@@ -15,6 +15,22 @@ namespace kinectApp.Entities.UI
         private string iText;
         private SpriteFont iFont;
 
+        public override int Height
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public override int Width
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public BigLabel(string aMessage, string aAssetName, float aX, float aY, float aZ) : base(string.Empty, aX, aY, aZ)
         {
             iText = aMessage;
