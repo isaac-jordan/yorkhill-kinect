@@ -24,6 +24,10 @@ namespace kinectApp.Entities.Germs
         public bool beenToTopHalfOfScreen = false;
         public bool isMovingLeft = rand.NextDouble() < 0.5 ? true : false;
 
+        private int iHealth = 0;
+        protected DateTime iHitTime = new DateTime();
+
+        protected const int WAITTIME = 2500;
         /// <summary>
         /// Create new Germ with position 0,0,0
         /// </summary>
@@ -56,7 +60,32 @@ namespace kinectApp.Entities.Germs
         /// <summary>
         /// Health of the entity
         /// </summary>
-        public int Health { get; set; }
+        public int Health
+        {
+            get
+            {
+                return iHealth;
+            }
+            set
+            {
+                var now = DateTime.Now;
+
+                if ((DateTime.Now - iHitTime).Milliseconds > WAITTIME)
+                {
+                    iHealth = value;
+                    iHitTime = now;
+                    HasBeenHit = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets if the enemy has been hit recently.
+        /// </summary>
+        public bool HasBeenHit
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets if the Germ is dead.
@@ -75,13 +104,7 @@ namespace kinectApp.Entities.Germs
         }
 
         public override void Unload()
-        {
-            if (Texture != null)
-            {
-                Texture.Dispose();
-            }
-            Texture = null;
-        }
+        {        }
 
         public abstract override void Update(GameTime aGameTime);
         public abstract override void Draw(SpriteBatch aSpriteBatch);
