@@ -16,7 +16,9 @@ namespace kinect_mouse_mapper
         static MultiSourceFrameReader _multiReader;
         static Body[] _bodies;
         static Joint[] _joints;
+        static long lasttime = 0;
         static void Main(string[] args)
+
         {
             sensor = KinectSensor.GetDefault();
 
@@ -94,7 +96,7 @@ namespace kinect_mouse_mapper
                                 //Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
                                 Console.WriteLine(body.HandRightState);
 
-                                long lasttime = (long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds;
+                                
         
                                 if (body.HandRightState != HandState.NotTracked && (((long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds - lasttime) >= 1000))
                                 {
@@ -109,6 +111,7 @@ namespace kinect_mouse_mapper
                                         VirtualMouse.RightClick();
                                     }
                                 }
+                                Console.WriteLine((((long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds - lasttime)));
                             }
                         }
                     }

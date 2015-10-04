@@ -45,6 +45,14 @@ namespace kinectApp.Entities.Germs
                 return;
             }
 
+            if (HasBeenHit)
+            {
+                if ((DateTime.Now - iHitTime).Milliseconds > WAITTIME)
+                {
+                    HasBeenHit = false;
+                }
+            }
+
             int DirX, DirY;
             if (!beenToTopHalfOfScreen)
             {
@@ -68,7 +76,14 @@ namespace kinectApp.Entities.Germs
             int y1 = (int)PosY;
             var rec = new Rectangle(x1, y1, WIDTH, HEIGHT);
 
-            aSpriteBatch.Draw(Texture, rec, Color.White);
+            if (HasBeenHit)
+            {
+                aSpriteBatch.Draw(Texture, rec, Color.DarkOrange);
+            }
+            else
+            {
+                aSpriteBatch.Draw(Texture, rec, Color.White);
+            }
         }
     }
 }

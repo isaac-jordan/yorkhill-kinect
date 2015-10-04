@@ -21,6 +21,11 @@ namespace kinectApp.Entities.Germs
         protected Texture2D _texture;
         protected bool beenToTopHalfOfScreen = false;
 
+        private int iHealth = 0;
+        protected DateTime iHitTime = new DateTime();
+
+        protected const int WAITTIME = 1000;
+
         /// <summary>
         /// Create new Germ with position 0,0,0
         /// </summary>
@@ -53,7 +58,32 @@ namespace kinectApp.Entities.Germs
         /// <summary>
         /// Health of the entity
         /// </summary>
-        public int Health { get; set; }
+        public int Health
+        {
+            get
+            {
+                return iHealth;
+            }
+            set
+            {
+                var now = DateTime.Now;
+
+                if ((DateTime.Now - iHitTime).Milliseconds > WAITTIME)
+                {
+                    iHealth = value;
+                    iHitTime = now;
+                    HasBeenHit = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets if the enemy has been hit recently.
+        /// </summary>
+        public bool HasBeenHit
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets if the Germ is dead.
