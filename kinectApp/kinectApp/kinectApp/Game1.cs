@@ -183,26 +183,35 @@ namespace kinectApp
                     joints = iKinect.KinectJoints.ToArray();
                 }
 
+                if (germs.Count > 0)
+                    Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
+
                 for (int i = germs.Count - 1; i >= 0; i--)
                 {
-                    germs[i].Update(gameTime);
+                    var germ = (GermBase)germs[i];
+                    germ.Update(gameTime);
+
                     foreach (Point p in joints)
                     {
                         // Check X bounds
-                        if (germs[i].PosX < p.X && p.X < germs[i].PosX + germs[i].Width)
+                        if (germ.PosX - 12 < p.X && p.X < germ.PosX + 12)
                         {
                             // Check Y bounds
-                            if (germs[i].PosY - germs[i].Height + 40 > p.Y &&
-                                p.Y < germs[i].PosY + germs[i].Height + 40)
+                            if (germ.PosY + 40 > p.Y &&
+                                p.Y < germ.PosY + 88)
                             {
-                                //Free the textures from the germ before it's GC'd
-                                var germ = germs[i];
-                                Task.Factory.StartNew(() => germ.Unload());
-                                germs.RemoveAt(i);
-                                score += 10;
-                                break;
+                                germ.Health -= 100;
                             }
                         }
+                    }
+
+                    //If the germ is off the screen or has been killed - kill it off.
+                    if (germ.IsDead)
+                    {
+                        Task.Factory.StartNew(() => germ.Unload());
+                        germs.RemoveAt(i);
+                        score += 10;
+                        break;
                     }
                 }
 
@@ -257,7 +266,8 @@ namespace kinectApp
             lab.Load(Content);
             lab.Draw(spriteBatch);
 
-            spriteBatch.End();
+            if (!spriteBatch.IsDisposed)
+                spriteBatch.End();
 
             // Reset the device to the back buffer
             GraphicsDevice.SetRenderTarget(null);

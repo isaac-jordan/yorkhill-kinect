@@ -13,6 +13,7 @@ namespace kinectApp.Entities.Germs
     public interface IGerm : IEntity
     {
         int Id { get; }
+        int Health { get; }
         bool IsDead { get; }
     }
 }

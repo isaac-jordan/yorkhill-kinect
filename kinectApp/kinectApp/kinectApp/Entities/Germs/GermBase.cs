@@ -54,6 +54,11 @@ namespace kinectApp.Entities.Germs
         public int Id{ get; set; }
 
         /// <summary>
+        /// Health of the entity
+        /// </summary>
+        public int Health { get; set; }
+
+        /// <summary>
         /// Gets if the Germ is dead.
         /// </summary>
         public bool IsDead
@@ -71,11 +76,11 @@ namespace kinectApp.Entities.Germs
 
         public override void Unload()
         {
-            /*if (Texture != null)
+            if (Texture != null)
             {
                 Texture.Dispose();
             }
-            Texture = null;*/
+            Texture = null;
         }
 
         public abstract override void Update(GameTime aGameTime);
