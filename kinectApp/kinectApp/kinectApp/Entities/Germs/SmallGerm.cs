@@ -58,7 +58,6 @@ namespace kinectApp.Entities.Germs
                 return;
             }
 
-
             int DirX, DirY;
             if (beenToTopHalfOfScreen)
             {

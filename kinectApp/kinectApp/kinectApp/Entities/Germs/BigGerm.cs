@@ -61,22 +61,17 @@ namespace kinectApp.Entities.Germs
                 return;
             }
 
+            //If enemy has been hit for a certain amount of time do stuff
             if (HasBeenHit)
             {
                 if (iHitTime == null)
                 {
                     iHitTime = aGameTime;
                 }
-                else
+                if ((aGameTime.TotalGameTime.TotalMilliseconds - iHitTime.TotalGameTime.TotalMilliseconds) >= WAITTIME)
                 {
-                    if ((aGameTime.TotalGameTime - iHitTime.TotalGameTime).TotalMilliseconds > WAITTIME)
-                    {
-                        HasBeenHit = false;
-                        iHitTime = null;
-                    }
+                    HasBeenHit = false;
                 }
-
-                
             }
 
             int DirX, DirY;
@@ -101,6 +96,7 @@ namespace kinectApp.Entities.Germs
             int x1 = (int)PosX;
             int y1 = (int)PosY;
             var rec = new Rectangle(x1, y1, Width, Height);
+
 
             if (HasBeenHit)
             {
