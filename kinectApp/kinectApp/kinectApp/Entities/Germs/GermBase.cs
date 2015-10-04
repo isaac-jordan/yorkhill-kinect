@@ -65,12 +65,9 @@ namespace kinectApp.Entities.Germs
             }
             set
             {
-                var now = DateTime.Now;
-
-                if ((DateTime.Now - iHitTime).Milliseconds > WAITTIME)
+                if (!HasBeenHit)
                 {
                     iHealth = value;
-                    iHitTime = now;
                     HasBeenHit = true;
                 }
             }

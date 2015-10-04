@@ -78,7 +78,7 @@ namespace kinectApp.Entities.Germs
 
             if (HasBeenHit)
             {
-                aSpriteBatch.Draw(Texture, rec, Color.DarkOrange);
+                //aSpriteBatch.Draw(Texture, rec, Color.DarkOrange);
             }
             else
             {
