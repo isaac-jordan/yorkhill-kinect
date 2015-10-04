@@ -19,7 +19,7 @@ namespace kinectApp.Entities.Germs
         {
             get
             {
-                return 128;
+                return 48;
             }
         }
         const int BASEHEALTH = 250;
@@ -28,7 +28,7 @@ namespace kinectApp.Entities.Germs
         {
             get
             {
-                return 128;
+                return 48;
             }
         }
 
@@ -70,7 +70,7 @@ namespace kinectApp.Entities.Germs
             if (!beenToTopHalfOfScreen)
             {
                 DirY = Rand.Next(100) < 80 ? Rand.Next(8) * -1 : Rand.Next(2);
-                if (PosY < Program.game.screenHeight/3) beenToTopHalfOfScreen = true;
+                if (PosY < Program.game.depthHeight/3) beenToTopHalfOfScreen = true;
             }
             else
             {

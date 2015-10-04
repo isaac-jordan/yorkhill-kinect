@@ -40,6 +40,8 @@ namespace kinectApp
         SpriteFont font;
         public int screenHeight;
         public int screenWidth;
+        public int depthHeight;
+        public int depthWidth;
 
         public KinectAdapter iKinect;
         GestureResultView gestureRV;
@@ -66,6 +68,9 @@ namespace kinectApp
 
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+
+            screenHeight = 1080;
+            screenWidth = 1304;
 
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.PreferredBackBufferWidth = screenWidth;
@@ -113,12 +118,14 @@ namespace kinectApp
 
             //Show Main menu
             iSceneManager.SetScene(new Entities.Scenes.GameInstance());
-            colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
+            colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, 512, 424);
 
             //gestureRV = new GestureResultView(0, false, false, 0);
             //gestureDet = new GestureDetector(iKinect.iSensor, gestureRV);
 
             iKinect.OpenSensor();
+            depthHeight = iKinect.iSensor.DepthFrameSource.FrameDescription.Height;
+            depthWidth = iKinect.iSensor.DepthFrameSource.FrameDescription.Width;
 
             base.Initialize();
         }
@@ -194,11 +201,10 @@ namespace kinectApp
                     foreach (Point p in joints)
                     {
                         // Check X bounds
-                        if (germ.PosX - 12 < p.X && p.X < germ.PosX + 12)
+                        if (germ.PosX < p.X && p.X < germ.PosX + germ.Width)
                         {
                             // Check Y bounds
-                            if (germ.PosY + 40 > p.Y &&
-                                p.Y < germ.PosY + 88)
+                            if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height)
                             {
                                 germ.Health -= 100;
                             }
@@ -240,15 +246,19 @@ namespace kinectApp
 
             GraphicsDevice.SetRenderTarget(colorRenderTarget);
 
-            int depthHeight = iKinect.iSensor.DepthFrameSource.FrameDescription.Height;
-            int depthWidth = iKinect.iSensor.DepthFrameSource.FrameDescription.Width;
-
             spriteBatch.Begin();
-            spriteBatch.Draw(room, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
+            spriteBatch.Draw(room, new Rectangle(0, 0, depthWidth, depthHeight), Color.White);
             if (iKinect.KinectRGBVideo != null)
             {
-                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
+                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, depthWidth, depthHeight), Color.White);
             }
+            
+
+            foreach (GermBase germ in germs)
+            {
+                germ.Draw(spriteBatch);
+            }
+
             if (joints != null)
             {
                 foreach (var J in joints)
@@ -257,12 +267,7 @@ namespace kinectApp
                 }
             }
 
-            foreach (GermBase germ in germs)
-            {
-                germ.Draw(spriteBatch);
-            }
-
-            Entities.UI.BigLabel lab = new Entities.UI.BigLabel("Score: " + score, "label", 50, 50, 50);
+            Entities.UI.BigLabel lab = new Entities.UI.BigLabel("Score: " + score, "label", 5, 5, 0);
             lab.Load(Content);
             lab.Draw(spriteBatch);
 

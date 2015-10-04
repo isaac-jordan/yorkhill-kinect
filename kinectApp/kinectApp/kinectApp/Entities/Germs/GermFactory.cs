@@ -17,8 +17,8 @@ namespace kinectApp.Entities.Germs
         /// <returns></returns>
         public static IEntity CreateSmallGerm()
         {
-            float x = (float)(Rand.NextDouble() * Program.game.screenWidth);
-            float y = Program.game.screenHeight;
+            float x = (float)(Rand.NextDouble() * Program.game.depthWidth);
+            float y = Program.game.depthHeight;
 
             return new SmallGerm("SmallGerm", new Vector3(x, y, 0));
         }
@@ -42,8 +42,8 @@ namespace kinectApp.Entities.Germs
         /// <returns></returns>
         public static IEntity CreateBigGerm()
         {
-            float x = (float)(Rand.NextDouble() * Program.game.screenWidth);
-            float y = Program.game.screenHeight;
+            float x = (float)(Rand.NextDouble() * Program.game.depthWidth);
+            float y = Program.game.depthHeight;
 
             return new BigGerm("BigGerm", new Vector3(x, y, 0));
         }
