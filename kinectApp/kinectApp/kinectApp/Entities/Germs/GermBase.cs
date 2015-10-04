@@ -101,13 +101,7 @@ namespace kinectApp.Entities.Germs
         }
 
         public override void Unload()
-        {
-            if (Texture != null)
-            {
-                Texture.Dispose();
-            }
-            Texture = null;
-        }
+        {        }
 
         public abstract override void Update(GameTime aGameTime);
         public abstract override void Draw(SpriteBatch aSpriteBatch);
