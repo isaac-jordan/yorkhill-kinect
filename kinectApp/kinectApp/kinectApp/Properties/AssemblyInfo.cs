@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("kinectApp")]
-[assembly: AssemblyProduct("kinectApp")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Germz by DynamicDorks")]
+[assembly: AssemblyProduct("Germz")]
+[assembly: AssemblyDescription("A Kinect game created at Glasgow University Tech Society Hackathon 2015. Code at http://github.com/sheepzez/yorkhill-kinect")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]

@@ -47,8 +47,8 @@ namespace kinectApp
         public int depthWidth;
 
         public KinectAdapter iKinect;
-        GestureResultView gestureRV;
-        GestureDetector gestureDet;
+        //GestureResultView gestureRV;
+        //GestureDetector gestureDet;
 
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
@@ -75,8 +75,8 @@ namespace kinectApp
             // Hardcoded values for 1080p screen.
             // You can use http://andrew.hedges.name/experiments/aspect_ratio/ to work out what to use.
             // Set H1: 424, W1: 512
-            screenHeight = 1000;
-            screenWidth = 1208;
+            screenHeight = screenHeight - 100;
+            screenWidth = (int)(screenHeight * (512 / (float)424));
 
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.PreferredBackBufferWidth = screenWidth;
@@ -215,6 +215,18 @@ namespace kinectApp
                             if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height + 30)
                             {
                                 germ.Health -= 100;
+
+                                if (germ.IsDead)
+                                {
+                                    if (germ is BigGerm)
+                                    {
+                                        score += 25;
+                                    }
+                                    else
+                                    {
+                                        score += 10;
+                                    }
+                                }
                             }
                         }
                     }
@@ -224,15 +236,7 @@ namespace kinectApp
                     {
                         Task.Factory.StartNew(() => germ.Unload());
                         germs.RemoveAt(i);
-
-                        if (germ is BigGerm)
-                        {
-                            score += 25;
-                        }
-                        else
-                        {
-                            score += 10;
-                        }
+                        
                         break;
                     }
                 }

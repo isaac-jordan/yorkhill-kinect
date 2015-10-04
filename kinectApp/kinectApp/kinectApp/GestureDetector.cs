@@ -4,7 +4,7 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
-namespace kinectApp
+/*namespace kinectApp
 {
     using System;
     using System.Collections.Generic;
@@ -201,3 +201,4 @@ namespace kinectApp
         }
     }
 }
+*/

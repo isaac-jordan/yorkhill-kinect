@@ -4,7 +4,7 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
-namespace kinectApp
+/*namespace kinectApp
 {
     using System;
     using System.ComponentModel;
@@ -167,3 +167,4 @@ namespace kinectApp
         }
     }
 }
+*/
