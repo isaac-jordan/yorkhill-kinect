@@ -304,6 +304,7 @@ namespace kinectApp.Entities
             Point point = new Point();
             point.X = (int)colorPoint.X;
             point.Y = (int)colorPoint.Y;
+            Console.WriteLine(point.X);
             return point;
         }
 

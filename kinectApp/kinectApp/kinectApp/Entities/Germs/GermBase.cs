@@ -19,6 +19,7 @@ namespace kinectApp.Entities.Germs
     public abstract class GermBase : BaseEntity, IGerm
     {
         protected Texture2D _texture;
+
         protected static Random rand = new Random();
         public bool beenToTopHalfOfScreen = false;
         public bool isMovingLeft = rand.NextDouble() < 0.5 ? true : false;

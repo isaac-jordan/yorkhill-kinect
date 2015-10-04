@@ -14,8 +14,21 @@ namespace kinectApp.Entities.Germs
         static int BaseId = 2000;
         static Random Rand = new Random(DateTime.UtcNow.TimeOfDay.Milliseconds);
 
-        const int HEIGHT = 64;
-        const int WIDTH = 64;
+        public override int Height
+        {
+            get
+            {
+                return 64;
+            }
+        }
+
+        public override int Width
+        {
+            get
+            {
+                return 64;
+            }
+        }
 
         public SmallGerm(string aAssetName, Vector3 aPos) : this(aAssetName, aPos.X, aPos.Y, aPos.Z) { }
 
@@ -55,7 +68,7 @@ namespace kinectApp.Entities.Germs
         {
             int x1 = (int)PosX;
             int y1 = (int)PosY;
-            var rec = new Rectangle(x1, y1,WIDTH, HEIGHT);
+            var rec = new Rectangle(x1, y1, Width, Height);
 
             aSpriteBatch.Draw(Texture, rec, Color.White);
         }

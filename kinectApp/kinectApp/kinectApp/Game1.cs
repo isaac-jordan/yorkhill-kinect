@@ -183,23 +183,25 @@ namespace kinectApp
                     joints = iKinect.KinectJoints.ToArray();
                 }
 
-                if (germs.Count > 0)
-                    Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
-
                 for (int i = germs.Count - 1; i >= 0; i--)
                 {
                     germs[i].Update(gameTime);
                     foreach (Point p in joints)
                     {
                         // Check X bounds
-                        if (germs[i].PosX - 12 < p.X && p.X < germs[i].PosX + 12)
+                        if (germs[i].PosX < p.X && p.X < germs[i].PosX + germs[i].Width)
                         {
-                            //Free the textures from the germ before it's GC'd
-                            var germ = germs[i];
-                            Task.Factory.StartNew(() => germ.Unload());
-                            germs.RemoveAt(i);
-                            score += 10;
-                            break;
+                            // Check Y bounds
+                            if (germs[i].PosY - germs[i].Height + 40 > p.Y &&
+                                p.Y < germs[i].PosY + germs[i].Height + 40)
+                            {
+                                //Free the textures from the germ before it's GC'd
+                                var germ = germs[i];
+                                Task.Factory.StartNew(() => germ.Unload());
+                                germs.RemoveAt(i);
+                                score += 10;
+                                break;
+                            }
                         }
                     }
                 }

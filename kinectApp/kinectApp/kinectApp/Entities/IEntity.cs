@@ -18,6 +18,9 @@ namespace kinectApp.Entities
         Texture2D Texture { get; }
         string AssetName { get; }
 
+        int Height { get; }
+        int Width { get; }
+
         void Update(GameTime aGameTime);
         void Draw(SpriteBatch aSpriteBatch);
 
