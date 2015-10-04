@@ -52,7 +52,7 @@ namespace kinectApp.Entities.Germs
 
         public override void Update(GameTime aGameTime)
         {
-            if ((PosX < 0 - Width || PosX > Program.game.depthWidth + Width) || (PosY < 0 - Height || PosY > Program.game.depthHeight + Height) || Health < 0)
+            if ((PosX < 0 - Width || PosX > Program.game.depthWidth + Width) || (PosY < 0 - Height || PosY > Program.game.depthHeight + Height) || Health <= 0)
             {
                 IsDead = true;
                 return;

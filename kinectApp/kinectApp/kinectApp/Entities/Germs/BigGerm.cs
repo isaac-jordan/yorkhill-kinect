@@ -24,7 +24,7 @@ namespace kinectApp.Entities.Germs
                 return 48;
             }
         }
-        const int BASEHEALTH = 250;
+        const int BASEHEALTH = 200;
 
         public override int Width
         {
@@ -55,7 +55,7 @@ namespace kinectApp.Entities.Germs
 
         public override void Update(GameTime aGameTime)
         {
-            if ((PosX < -65 || PosX > 1950) || (PosY < -65 || PosY > 1200) || Health < 0)
+            if ((PosX < -65 || PosX > 1950) || (PosY < -65 || PosY > 1200) || Health <= 0)
             {
                 IsDead = true;
                 return;
