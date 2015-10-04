@@ -59,8 +59,13 @@ namespace kinectApp
         {
             graphics = new GraphicsDeviceManager(this);
 
-            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
-            screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 125;
+            IntPtr hWnd = this.Window.Handle;
+            var control = System.Windows.Forms.Control.FromHandle(hWnd);
+            var form = control.FindForm();
+            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+
+            screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.PreferredBackBufferWidth = screenWidth;
@@ -80,7 +85,6 @@ namespace kinectApp
         /// </summary>
         protected override void Initialize()
         {
-            
             iKinect = new KinectAdapter(graphics.GraphicsDevice, (isAvail) =>
             {
                 string title = null;
@@ -170,7 +174,8 @@ namespace kinectApp
 
             if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer)
             {
-                germs.Add(rand.Next(100) < 100 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
+                // Small germs are inivisible, so lets only create big ones currently.
+                germs.Add(rand.Next(100) < 150 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
                 lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
@@ -188,10 +193,17 @@ namespace kinectApp
                 germs[i].Update(gameTime);
                 foreach (Point p in joints)
                 {
-                    if (germs[i].PosX - 32 < p.X && germs[i].PosX + 12 > p.X && germs[i].PosY - 12 > p.Y && germs[i].PosY + 12 > p.Y)
+                    // Check X bounds
+                    if (germs[i].PosX - 12 < p.X && p.X < germs[i].PosX + 12)
                     {
-                        germs.RemoveAt(i);
-                        break;
+                        // Check Y bounds
+                        if (germs[i].PosY + 40 > p.Y &&
+                            p.Y < germs[i].PosY + 88)
+                        {
+                            germs.RemoveAt(i);
+                            break;
+                        }
+                        
                     }
                 }
             }
@@ -234,9 +246,24 @@ namespace kinectApp
             {
                 foreach (var J in joints)
                 {
-                    spriteBatch.Draw(jointMarker, new Rectangle(J.X - 50, J.Y, 10, 10), Color.White);
+                    spriteBatch.Draw(createCircleTexture(30), new Rectangle(J.X, J.Y, 30, 30), Color.White);
                 }
             }
+
+            foreach (GermBase germ in germs)
+            {
+                if (germ is SmallGerm)
+                {
+                    germ.Texture = smallGermTexture;
+                }
+                else if (germ is BigGerm)
+                {
+                    germ.Texture = bigGermTexture;
+                }
+
+                germ.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
 
             // Reset the device to the back buffer
@@ -249,24 +276,11 @@ namespace kinectApp
             //Drawing the video feed if we have one available.
             spriteBatch.Draw(colorRenderTarget, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
 
-            foreach (GermBase germ in germs)
-            {
-                if (germ is SmallGerm)
-                {
-                    germ.Texture = smallGermTexture;
-                }
-                else if (germ is BigGerm)
-                {
-                    germ.Texture = bigGermTexture;
-                }
-                
-                germ.Draw(spriteBatch);
-            }
+            
            
             //No longer displaying the connection status on the screen because we have the title bar now >=]
             //Now we draw whatever scene is currently in the game!
             //iSceneManager.DrawScene(gameTime, spriteBatch);
-
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -275,6 +289,35 @@ namespace kinectApp
         public static void ForceClose()
         {
             iCancelRequested = true;
+        }
+
+        Texture2D createCircleTexture(int radius)
+        {
+            Texture2D texture = new Texture2D(GraphicsDevice, radius, radius);
+            Color[] colorData = new Color[radius * radius];
+
+            float diam = radius / 2f;
+            float diamsq = diam * diam;
+
+            for (int x = 0; x < radius; x++)
+            {
+                for (int y = 0; y < radius; y++)
+                {
+                    int index = x * radius + y;
+                    Vector2 pos = new Vector2(x - diam, y - diam);
+                    if (pos.LengthSquared() <= diamsq)
+                    {
+                        colorData[index] = Color.White;
+                    }
+                    else
+                    {
+                        colorData[index] = Color.Transparent;
+                    }
+                }
+            }
+
+            texture.SetData(colorData);
+            return texture;
         }
     }
 }

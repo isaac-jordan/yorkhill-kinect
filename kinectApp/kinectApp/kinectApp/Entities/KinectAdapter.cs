@@ -274,7 +274,7 @@ namespace kinectApp.Entities
                         {
                             if (body.IsTracked)
                             {
-                                JointType[] JointsToGet = { JointType.HandRight, JointType.HandLeft, JointType.WristRight, JointType.WristLeft };
+                                JointType[] JointsToGet = { JointType.HandRight, JointType.HandLeft };
 
                                 //Console.WriteLine("I can see a joint at:" + handRight.Position.X + ", " + handRight.Position.Y + ", " + handRight.Position.Z);
 

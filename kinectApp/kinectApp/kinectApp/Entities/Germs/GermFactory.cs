@@ -9,7 +9,7 @@ namespace kinectApp.Entities.Germs
 {
     public class GermFactory
     {
-        static Random Rand = new Random(DateTime.Now.Millisecond + 13);
+        static Random Rand = new Random((int)DateTime.UtcNow.Ticks);
 
         /// <summary>
         /// Creates a Small germ at a random location
@@ -43,7 +43,7 @@ namespace kinectApp.Entities.Germs
         public static IEntity CreateBigGerm()
         {
             float x = (float)(Rand.NextDouble() * Program.game.screenWidth);
-            float y = Program.game.screenHeight - 100;
+            float y = Program.game.screenHeight;
 
             return new BigGerm("BigGerm", new Vector3(x, y, 0));
         }
