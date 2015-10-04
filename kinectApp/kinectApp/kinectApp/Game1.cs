@@ -71,6 +71,9 @@ namespace kinectApp
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
+            // Hardcoded values for 1080p screen.
+            // You can use http://andrew.hedges.name/experiments/aspect_ratio/ to work out what to use.
+            // Set H1: 424, W1: 512
             screenHeight = 1000;
             screenWidth = 1208;
 
