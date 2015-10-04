@@ -15,6 +15,8 @@ namespace kinectApp.Entities.Germs
         static int BaseId = 20223;
         static Random Rand = new Random((int)DateTime.Now.Ticks);
 
+        private GameTime iHitTime;
+
         public override int Height
         {
             get
@@ -38,6 +40,7 @@ namespace kinectApp.Entities.Germs
         {
             Id = BaseId++;
             Health = BASEHEALTH;
+            HasBeenHit = false;
         }
 
         public override void Load(ContentManager aContentManager)
@@ -58,9 +61,14 @@ namespace kinectApp.Entities.Germs
                 return;
             }
 
+            //If enemy has been hit for a certain amount of time do stuff
             if (HasBeenHit)
             {
-                if ((DateTime.Now - iHitTime).Milliseconds > WAITTIME)
+                if (iHitTime == null)
+                {
+                    iHitTime = aGameTime;
+                }
+                if ((aGameTime.TotalGameTime.TotalMilliseconds - iHitTime.TotalGameTime.TotalMilliseconds) >= WAITTIME)
                 {
                     HasBeenHit = false;
                 }
@@ -89,9 +97,10 @@ namespace kinectApp.Entities.Germs
             int y1 = (int)PosY;
             var rec = new Rectangle(x1, y1, Width, Height);
 
+
             if (HasBeenHit)
             {
-                aSpriteBatch.Draw(Texture, rec, Color.DarkOrange);
+                aSpriteBatch.Draw(Texture, rec, Color.Black);
             }
             else
             {

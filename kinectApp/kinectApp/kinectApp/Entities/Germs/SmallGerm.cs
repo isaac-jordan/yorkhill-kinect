@@ -37,6 +37,7 @@ namespace kinectApp.Entities.Germs
         {
             Id = BaseId++;
             Health = BASEHEALTH;
+            HasBeenHit = false;
         }
 
         public override void Load(ContentManager aContentManager)
@@ -56,7 +57,6 @@ namespace kinectApp.Entities.Germs
                 IsDead = true;
                 return;
             }
-
 
             int DirX, DirY;
             if (!beenToTopHalfOfScreen)

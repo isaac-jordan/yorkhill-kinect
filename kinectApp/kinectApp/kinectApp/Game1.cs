@@ -206,7 +206,7 @@ namespace kinectApp
                             // Check Y bounds
                             if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height)
                             {
-                                germ.Health -= 100;
+                                germ.Health -= 10000;
                             }
                         }
                     }
