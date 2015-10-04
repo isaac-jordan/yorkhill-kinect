@@ -201,7 +201,8 @@ namespace kinectApp.Entities
 
                                     iSensor.CoordinateMapper.MapDepthFrameToColorSpace(_depthData, _colorPoints);
 
-                                    Color[] color = new Color[depthHeight * depthWidth];
+                                    Color[] color = new Color[depthWidth * depthHeight];
+                                    Color c;
 
                                     for (int y = 0; y < depthHeight; ++y)
                                     {
@@ -226,7 +227,7 @@ namespace kinectApp.Entities
                                                     
                                                     int displayIndex = colorIndex * 4;
 
-                                                    Color c = new Color(_colorData[displayIndex + 0], _colorData[displayIndex + 1], _colorData[displayIndex + 2], 0xff);
+                                                    c = new Color(_colorData[displayIndex + 0], _colorData[displayIndex + 1], _colorData[displayIndex + 2], 0xff);
                                                     color[depthIndex] = c;
                                                 }
                                             }
@@ -295,7 +296,7 @@ namespace kinectApp.Entities
         private Point MapJointToPoint(Joint joint)
         {
             CameraSpacePoint skeletonPoint = joint.Position;
-            ColorSpacePoint colorPoint = iSensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
+            DepthSpacePoint colorPoint = iSensor.CoordinateMapper.MapCameraPointToDepthSpace(skeletonPoint);
             
             // 2D coordinates in pixels
 

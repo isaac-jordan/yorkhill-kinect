@@ -18,7 +18,7 @@ namespace kinectApp.Entities.Germs
         {
             get
             {
-                return 64;
+                return 16;
             }
         }
         const int BASEHEALTH = 100;
@@ -27,7 +27,7 @@ namespace kinectApp.Entities.Germs
         {
             get
             {
-                return 64;
+                return 16;
             }
         }
 
@@ -52,16 +52,17 @@ namespace kinectApp.Entities.Germs
 
         public override void Update(GameTime aGameTime)
         {
-            if ((PosX < -65 || PosX > 1950) || (PosY < -65 || PosY > 1200) || Health <= 0)
+            if ((PosX < 0 - Width || PosX > Program.game.depthWidth + Width) || (PosY < 0 - Height || PosY > Program.game.depthHeight + Height) || Health <= 0)
             {
                 IsDead = true;
                 return;
             }
 
             int DirX, DirY;
-            if (beenToTopHalfOfScreen)
+            if (!beenToTopHalfOfScreen)
             {
                 DirY = Rand.Next(100) < 80 ? Rand.Next(3) * -1 : Rand.Next(2);
+                if (PosY < Program.game.depthHeight / 3) beenToTopHalfOfScreen = true;
             }
             else
             {

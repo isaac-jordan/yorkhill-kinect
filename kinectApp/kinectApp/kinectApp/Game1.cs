@@ -29,6 +29,7 @@ namespace kinectApp
         int millisecondSpawnTimer = 1000;
         double lastSpawnTimeStamp = -1;
         Random rand = new Random();
+        double millisecondsLeftOfGame = 60 * 1000;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,10 +37,13 @@ namespace kinectApp
         Texture2D jointMarker;
         Texture2D overlay;
         Texture2D room;
+        Texture2D cloth;
         RenderTarget2D colorRenderTarget;
         SpriteFont font;
         public int screenHeight;
         public int screenWidth;
+        public int depthHeight;
+        public int depthWidth;
 
         public KinectAdapter iKinect;
         GestureResultView gestureRV;
@@ -66,6 +70,9 @@ namespace kinectApp
 
             screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+
+            screenHeight = 1080;
+            screenWidth = 1304;
 
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.PreferredBackBufferWidth = screenWidth;
@@ -113,12 +120,14 @@ namespace kinectApp
 
             //Show Main menu
             iSceneManager.SetScene(new Entities.Scenes.GameInstance());
-            colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, KinectAdapter.kWidth, KinectAdapter.kHeight);
+            colorRenderTarget = new RenderTarget2D(graphics.GraphicsDevice, 512, 424);
 
             //gestureRV = new GestureResultView(0, false, false, 0);
             //gestureDet = new GestureDetector(iKinect.iSensor, gestureRV);
 
             iKinect.OpenSensor();
+            depthHeight = iKinect.iSensor.DepthFrameSource.FrameDescription.Height;
+            depthWidth = iKinect.iSensor.DepthFrameSource.FrameDescription.Width;
 
             base.Initialize();
         }
@@ -139,6 +148,7 @@ namespace kinectApp
             overlay = Content.Load<Texture2D>("overlay");
             room = Content.Load<Texture2D>("room");
             font = Content.Load<SpriteFont>("SpriteFont1");
+            cloth = Content.Load<Texture2D>("cleaningcloth");
         }
 
         /// <summary>
@@ -166,8 +176,9 @@ namespace kinectApp
                 this.Exit();
             }
 
-            if (iKinect.IsAvailable)
+            if (iKinect.IsAvailable && millisecondsLeftOfGame > 0)
             {
+                millisecondsLeftOfGame -= gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer || lastSpawnTimeStamp < 0)
                 {
                     // Small germs are inivisible, so lets only create big ones currently.
@@ -194,13 +205,12 @@ namespace kinectApp
                     foreach (Point p in joints)
                     {
                         // Check X bounds
-                        if (germ.PosX - 12 < p.X && p.X < germ.PosX + 12)
+                        if (germ.PosX < p.X && p.X < germ.PosX + germ.Width + 30)
                         {
                             // Check Y bounds
-                            if (germ.PosY + 40 > p.Y &&
-                                p.Y < germ.PosY + 88)
+                            if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height + 30)
                             {
-                                germ.Health -= 10000;
+                                germ.Health -= 100;
                             }
                         }
                     }
@@ -248,31 +258,34 @@ namespace kinectApp
 
             GraphicsDevice.SetRenderTarget(colorRenderTarget);
 
-            int depthHeight = iKinect.iSensor.DepthFrameSource.FrameDescription.Height;
-            int depthWidth = iKinect.iSensor.DepthFrameSource.FrameDescription.Width;
-
             spriteBatch.Begin();
-            spriteBatch.Draw(room, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
+            spriteBatch.Draw(room, new Rectangle(0, 0, depthWidth, depthHeight), Color.White);
             if (iKinect.KinectRGBVideo != null)
             {
-                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, KinectAdapter.kWidth, KinectAdapter.kHeight), Color.White);
+                spriteBatch.Draw(iKinect.KinectRGBVideo, new Rectangle(0, 0, depthWidth, depthHeight), Color.White);
             }
-            if (joints != null)
-            {
-                foreach (var J in joints)
-                {
-                    spriteBatch.Draw(createCircleTexture(30), new Rectangle(J.X, J.Y, 30, 30), Color.White);
-                }
-            }
+            
 
             foreach (GermBase germ in germs)
             {
                 germ.Draw(spriteBatch);
             }
 
-            Entities.UI.BigLabel lab = new Entities.UI.BigLabel("Score: " + score, "label", 50, 50, 50);
-            lab.Load(Content);
-            lab.Draw(spriteBatch);
+            if (joints != null)
+            {
+                foreach (var J in joints)
+                {
+                    spriteBatch.Draw(cloth, new Rectangle(J.X - 15, J.Y - 15, 30, 30), Color.White);
+                }
+            }
+
+            Entities.UI.Label lab1 = new Entities.UI.Label("Score: " + score, "label", 5, 5, 0);
+            lab1.Load(Content);
+            lab1.Draw(spriteBatch);
+
+            Entities.UI.Label lab2 = new Entities.UI.Label("Time Left: " + (int)(millisecondsLeftOfGame / 1000), "label", depthWidth - 300, 5, 0);
+            lab2.Load(Content);
+            lab2.Draw(spriteBatch);
 
             if (!spriteBatch.IsDisposed)
                 spriteBatch.End();
