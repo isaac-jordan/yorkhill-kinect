@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Kinect;
 
+using System.Threading.Tasks;
 using SForms = System.Windows.Forms;
 using SDrawing = System.Drawing;
 
@@ -35,8 +36,6 @@ namespace kinectApp
         Texture2D jointMarker;
         Texture2D overlay;
         Texture2D room;
-        Texture2D smallGermTexture;
-        Texture2D bigGermTexture;
         RenderTarget2D colorRenderTarget;
         SpriteFont font;
         public int screenHeight;
@@ -140,12 +139,6 @@ namespace kinectApp
             overlay = Content.Load<Texture2D>("overlay");
             room = Content.Load<Texture2D>("room");
             font = Content.Load<SpriteFont>("SpriteFont1");
-            smallGermTexture = Content.Load<Texture2D>("SmallGerm");
-            bigGermTexture = Content.Load<Texture2D>("SmallGerm"); // TODO: BigGerm texture?
-
-
-            // TODO: use this.Content to load your game content here#
-            //entityManager.Load(Content);
         }
 
         /// <summary>
@@ -175,8 +168,11 @@ namespace kinectApp
 
             if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer)
             {
-                // Small germs are inivisible, so lets only create big ones currently.
-                germs.Add(rand.Next(100) < 150 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
+                // Small germs are inivisible, so lets only create big ones currently
+                var germ = (rand.Next(300) < 150) ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm();
+                germ.Load(Content);
+
+                germs.Add(germ);
                 lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
@@ -201,11 +197,13 @@ namespace kinectApp
                         if (germs[i].PosY + 40 > p.Y &&
                             p.Y < germs[i].PosY + 88)
                         {
+                            //Free the textures from the germ before it's GC'd
+                            var germ = germs[i];
+                            Task.Factory.StartNew(() => germ.Unload());
                             germs.RemoveAt(i);
                             score += 10;
                             break;
-                        }
-                        
+                        }                        
                     }
                 }
             }
@@ -214,7 +212,6 @@ namespace kinectApp
 
             iSceneManager.DoKeys(iInputHelper);
             iSceneManager.UpdateScene(gameTime);
-            //entityManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -254,15 +251,6 @@ namespace kinectApp
 
             foreach (GermBase germ in germs)
             {
-                if (germ is SmallGerm)
-                {
-                    germ.Texture = smallGermTexture;
-                }
-                else if (germ is BigGerm)
-                {
-                    germ.Texture = bigGermTexture;
-                }
-
                 germ.Draw(spriteBatch);
             }
 
