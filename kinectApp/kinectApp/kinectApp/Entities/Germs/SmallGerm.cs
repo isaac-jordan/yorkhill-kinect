@@ -48,9 +48,7 @@ namespace kinectApp.Entities.Germs
             DirX = Rand.Next(0, 5) - 2;
 
             PosY += DirY;
-            PosX += DirX;
-
-            
+            PosX += DirX;            
         }
 
         public override void Draw(SpriteBatch aSpriteBatch)
