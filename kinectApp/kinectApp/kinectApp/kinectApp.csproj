@@ -117,6 +117,7 @@
     <Compile Include="Entities\UI\BigLabel.cs" />
     <Compile Include="Entities\UI\Button.cs" />
     <Compile Include="Entities\UI\Label.cs" />
+    <Compile Include="Entities\UI\ScoreLabel.cs" />
     <Compile Include="GestureDetector.cs" />
     <Compile Include="GestureResultView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
