@@ -94,18 +94,18 @@ namespace kinect_mouse_mapper
                                 //Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
                                 Console.WriteLine(body.HandRightState);
 
-                                int lasttime = 0;
+                                long lasttime = (long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds;
         
-                                if (body.HandRightState != HandState.NotTracked && ((DateTime.UtcNow.Millisecond - lasttime) >= 1000))
+                                if (body.HandRightState != HandState.NotTracked && (((long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds - lasttime) >= 1000))
                                 {
                                     if (body.HandRightState == HandState.Closed)
                                     {
-                                        lasttime = DateTime.UtcNow.Millisecond;
+                                        lasttime = (long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds;
                                         VirtualMouse.LeftClick();
                                     }
                                     if (body.HandRightState == HandState.Lasso)
                                     {
-                                        lasttime = DateTime.UtcNow.Millisecond;
+                                        lasttime = (long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds;
                                         VirtualMouse.RightClick();
                                     }
                                 }
