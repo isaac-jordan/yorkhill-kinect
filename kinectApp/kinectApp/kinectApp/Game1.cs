@@ -29,6 +29,7 @@ namespace kinectApp
         int millisecondSpawnTimer = 1000;
         double lastSpawnTimeStamp = -1;
         Random rand = new Random();
+        double millisecondsLeftOfGame = 60 * 1000;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -36,6 +37,7 @@ namespace kinectApp
         Texture2D jointMarker;
         Texture2D overlay;
         Texture2D room;
+        Texture2D cloth;
         RenderTarget2D colorRenderTarget;
         SpriteFont font;
         public int screenHeight;
@@ -146,6 +148,7 @@ namespace kinectApp
             overlay = Content.Load<Texture2D>("overlay");
             room = Content.Load<Texture2D>("room");
             font = Content.Load<SpriteFont>("SpriteFont1");
+            cloth = Content.Load<Texture2D>("cleaningcloth");
         }
 
         /// <summary>
@@ -173,8 +176,9 @@ namespace kinectApp
                 this.Exit();
             }
 
-            if (iKinect.IsAvailable)
+            if (iKinect.IsAvailable && millisecondsLeftOfGame > 0)
             {
+                millisecondsLeftOfGame -= gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer || lastSpawnTimeStamp < 0)
                 {
                     // Small germs are inivisible, so lets only create big ones currently.
@@ -201,10 +205,10 @@ namespace kinectApp
                     foreach (Point p in joints)
                     {
                         // Check X bounds
-                        if (germ.PosX < p.X && p.X < germ.PosX + germ.Width)
+                        if (germ.PosX < p.X && p.X < germ.PosX + germ.Width + 30)
                         {
                             // Check Y bounds
-                            if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height)
+                            if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height + 30)
                             {
                                 germ.Health -= 10000;
                             }
@@ -263,13 +267,17 @@ namespace kinectApp
             {
                 foreach (var J in joints)
                 {
-                    spriteBatch.Draw(createCircleTexture(30), new Rectangle(J.X, J.Y, 30, 30), Color.White);
+                    spriteBatch.Draw(cloth, new Rectangle(J.X - 15, J.Y - 15, 30, 30), Color.White);
                 }
             }
 
-            Entities.UI.BigLabel lab = new Entities.UI.BigLabel("Score: " + score, "label", 5, 5, 0);
-            lab.Load(Content);
-            lab.Draw(spriteBatch);
+            Entities.UI.Label lab1 = new Entities.UI.Label("Score: " + score, "label", 5, 5, 0);
+            lab1.Load(Content);
+            lab1.Draw(spriteBatch);
+
+            Entities.UI.Label lab2 = new Entities.UI.Label("Time Left: " + (int)(millisecondsLeftOfGame / 1000), "label", depthWidth - 300, 5, 0);
+            lab2.Load(Content);
+            lab2.Draw(spriteBatch);
 
             if (!spriteBatch.IsDisposed)
                 spriteBatch.End();
