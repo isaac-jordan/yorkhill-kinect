@@ -220,7 +220,15 @@ namespace kinectApp
                     {
                         Task.Factory.StartNew(() => germ.Unload());
                         germs.RemoveAt(i);
-                        score += 10;
+
+                        if (germ is BigGerm)
+                        {
+                            score += 25;
+                        }
+                        else
+                        {
+                            score += 10;
+                        }
                         break;
                     }
                 }
