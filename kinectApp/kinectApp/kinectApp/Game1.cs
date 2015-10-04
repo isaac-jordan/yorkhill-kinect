@@ -16,6 +16,7 @@ using SDrawing = System.Drawing;
 
 using kinectApp.Entities;
 using kinectApp.Utilities;
+using kinectApp.Entities.UI;
 using kinectApp.Entities.Scenes;
 using kinectApp.Entities.Germs;
 
@@ -279,11 +280,11 @@ namespace kinectApp
                 }
             }
 
-            Entities.UI.Label lab1 = new Entities.UI.Label("Score: " + score, "label", 5, 5, 0);
+            Label lab1 = new Label("Score: " + score, "label", 5, 5, 0);
             lab1.Load(Content);
             lab1.Draw(spriteBatch);
 
-            Entities.UI.Label lab2 = new Entities.UI.Label("Time Left: " + (int)(millisecondsLeftOfGame / 1000), "label", depthWidth - 300, 5, 0);
+            ScoreLabel lab2 = new ScoreLabel("Time Left: " + (int)(millisecondsLeftOfGame / 1000), "label", depthWidth - 300, 5, 0);
             lab2.Load(Content);
             lab2.Draw(spriteBatch);
 
