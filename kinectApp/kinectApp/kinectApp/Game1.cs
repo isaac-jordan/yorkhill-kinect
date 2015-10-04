@@ -170,7 +170,7 @@ namespace kinectApp
 
             if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer)
             {
-                germs.Add(rand.Next(100) < 20 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
+                germs.Add(rand.Next(100) < 100 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
                 lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
@@ -180,14 +180,18 @@ namespace kinectApp
                 joints = iKinect.KinectJoints.ToArray();
             }
 
+            if (germs.Count > 0)
+                Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
+
             for (int i=germs.Count - 1; i >= 0; i--)
             {
                 germs[i].Update(gameTime);
                 foreach (Point p in joints)
                 {
-                    if (germs[i].PosX + 20 > p.X && germs[i].PosX < p.X && germs[i].PosY + 20 > p.Y && germs[i].PosY < p.Y)
+                    if (germs[i].PosX - 32 < p.X && germs[i].PosX + 12 > p.X && germs[i].PosY - 12 > p.Y && germs[i].PosY + 12 > p.Y)
                     {
                         germs.RemoveAt(i);
+                        break;
                     }
                 }
             }

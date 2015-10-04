@@ -38,15 +38,16 @@ namespace kinectApp.Entities.Germs
         public override void Update(GameTime aGameTime)
         {
             int DirX, DirY;
-            if (beenToTopHalfOfScreen)
+            if (!beenToTopHalfOfScreen)
             {
-                DirY = Rand.Next(100) < 80 ? Rand.Next(3) * -1 : Rand.Next(2);
+                DirY = Rand.Next(100) < 80 ? Rand.Next(8) * -1 : Rand.Next(2);
+                if (PosY < Program.game.screenHeight/3) beenToTopHalfOfScreen = true;
             }
             else
             {
-                DirY = Rand.Next(100) < 20 ? Rand.Next(3) * -1 : Rand.Next(2);
+                DirY = Rand.Next(100) < 20 ? Rand.Next(2) * -1 : Rand.Next(8);
             }
-            DirX = Rand.Next(0, 4);
+            DirX = Rand.Next(0, 5) - 2;
 
             PosY += DirY;
             PosX += DirX;

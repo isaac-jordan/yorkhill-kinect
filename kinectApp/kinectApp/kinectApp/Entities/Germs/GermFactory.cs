@@ -43,7 +43,7 @@ namespace kinectApp.Entities.Germs
         public static IEntity CreateBigGerm()
         {
             float x = (float)(Rand.NextDouble() * Program.game.screenWidth);
-            float y = Program.game.screenHeight;
+            float y = Program.game.screenHeight - 100;
 
             return new BigGerm("BigGerm", new Vector3(x, y, 0));
         }

@@ -296,6 +296,7 @@ namespace kinectApp.Entities
         {
             CameraSpacePoint skeletonPoint = joint.Position;
             ColorSpacePoint colorPoint = iSensor.CoordinateMapper.MapCameraPointToColorSpace(skeletonPoint);
+            
             // 2D coordinates in pixels
 
             // Skeleton-to-Color mapping
