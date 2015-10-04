@@ -17,12 +17,14 @@ namespace kinectApp.Entities.Germs
 
         const int HEIGHT = 128;
         const int WIDTH = 128;
+        const int BASEHEALTH = 250;
 
         public BigGerm(string aAssetName, Vector3 aPos) : this(aAssetName, aPos.X, aPos.Y, aPos.Z) { }
 
         public BigGerm(string aAssetName, float aX, float aY, float aZ) : base(aAssetName, aX, aY, aZ)
         {
             Id = BaseId++;
+            Health = BASEHEALTH;
         }
 
         public override void Load(ContentManager aContentManager)
@@ -37,6 +39,12 @@ namespace kinectApp.Entities.Germs
 
         public override void Update(GameTime aGameTime)
         {
+            if ((PosX < -65 || PosX > 1950) || (PosY < -65 || PosY > 1200) || Health < 0)
+            {
+                IsDead = true;
+                return;
+            }
+
             int DirX, DirY;
             if (!beenToTopHalfOfScreen)
             {

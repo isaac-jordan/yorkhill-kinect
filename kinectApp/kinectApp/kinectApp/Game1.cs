@@ -187,24 +187,30 @@ namespace kinectApp
 
             for (int i=germs.Count - 1; i >= 0; i--)
             {
-                germs[i].Update(gameTime);
+                var germ = (GermBase)germs[i];
+                germ.Update(gameTime);
+
                 foreach (Point p in joints)
                 {
                     // Check X bounds
-                    if (germs[i].PosX - 12 < p.X && p.X < germs[i].PosX + 12)
+                    if (germ.PosX - 12 < p.X && p.X < germ.PosX + 12)
                     {
                         // Check Y bounds
-                        if (germs[i].PosY + 40 > p.Y &&
-                            p.Y < germs[i].PosY + 88)
+                        if (germ.PosY + 40 > p.Y &&
+                            p.Y < germ.PosY + 88)
                         {
-                            //Free the textures from the germ before it's GC'd
-                            var germ = germs[i];
-                            Task.Factory.StartNew(() => germ.Unload());
-                            germs.RemoveAt(i);
-                            score += 10;
-                            break;
+                            germ.Health -= 100;
                         }                        
                     }
+                }
+
+                //If the germ is off the screen or has been killed - kill it off.
+                if (germ.IsDead)
+                {
+                    Task.Factory.StartNew(() => germ.Unload());
+                    germs.RemoveAt(i);
+                    score += 10;
+                    break;
                 }
             }
 
