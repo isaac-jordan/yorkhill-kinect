@@ -37,6 +37,7 @@ namespace kinectApp.Entities.Germs
         {
             Id = BaseId++;
             Health = BASEHEALTH;
+            HasBeenHit = false;
         }
 
         public override void Load(ContentManager aContentManager)

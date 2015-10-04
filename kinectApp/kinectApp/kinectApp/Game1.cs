@@ -200,7 +200,7 @@ namespace kinectApp
                             if (germ.PosY + 40 > p.Y &&
                                 p.Y < germ.PosY + 88)
                             {
-                                germ.Health -= 100;
+                                germ.Health -= 10000;
                             }
                         }
                     }

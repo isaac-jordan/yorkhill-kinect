@@ -15,6 +15,8 @@ namespace kinectApp.Entities.Germs
         static int BaseId = 20223;
         static Random Rand = new Random((int)DateTime.Now.Ticks);
 
+        private GameTime iHitTime;
+
         public override int Height
         {
             get
@@ -38,6 +40,7 @@ namespace kinectApp.Entities.Germs
         {
             Id = BaseId++;
             Health = BASEHEALTH;
+            HasBeenHit = false;
         }
 
         public override void Load(ContentManager aContentManager)
@@ -60,10 +63,20 @@ namespace kinectApp.Entities.Germs
 
             if (HasBeenHit)
             {
-                if ((DateTime.Now - iHitTime).Milliseconds > WAITTIME)
+                if (iHitTime == null)
                 {
-                    HasBeenHit = false;
+                    iHitTime = aGameTime;
                 }
+                else
+                {
+                    if ((aGameTime.TotalGameTime - iHitTime.TotalGameTime).TotalMilliseconds > WAITTIME)
+                    {
+                        HasBeenHit = false;
+                        iHitTime = null;
+                    }
+                }
+
+                
             }
 
             int DirX, DirY;
@@ -91,7 +104,7 @@ namespace kinectApp.Entities.Germs
 
             if (HasBeenHit)
             {
-                //aSpriteBatch.Draw(Texture, rec, Color.DarkOrange);
+                aSpriteBatch.Draw(Texture, rec, Color.Black);
             }
             else
             {
