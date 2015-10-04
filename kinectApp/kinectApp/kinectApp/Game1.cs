@@ -173,50 +173,53 @@ namespace kinectApp
                 this.Exit();
             }
 
-            if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer)
+            if (iKinect.IsAvailable)
             {
-                // Small germs are inivisible, so lets only create big ones currently.
-                germs.Add(rand.Next(100) < 150 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
-                lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
-            }
-
-            Point[] joints;
-            lock (iKinect.KinectJoints)
-            {
-                joints = iKinect.KinectJoints.ToArray();
-            }
-
-            if (germs.Count > 0)
-                Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
-
-            for (int i=germs.Count - 1; i >= 0; i--)
-            {
-                germs[i].Update(gameTime);
-                foreach (Point p in joints)
+                if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer || lastSpawnTimeStamp < 0)
                 {
-                    // Check X bounds
-                    if (germs[i].PosX - 12 < p.X && p.X < germs[i].PosX + 12)
+                    // Small germs are inivisible, so lets only create big ones currently.
+                    germs.Add(rand.Next(100) < 150 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
+                    lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
+                Point[] joints;
+                lock (iKinect.KinectJoints)
+                {
+                    joints = iKinect.KinectJoints.ToArray();
+                }
+
+                if (germs.Count > 0)
+                    Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
+
+                for (int i = germs.Count - 1; i >= 0; i--)
+                {
+                    germs[i].Update(gameTime);
+                    foreach (Point p in joints)
                     {
-                        // Check Y bounds
-                        if (germs[i].PosY + 40 > p.Y &&
-                            p.Y < germs[i].PosY + 88)
+                        // Check X bounds
+                        if (germs[i].PosX - 12 < p.X && p.X < germs[i].PosX + 12)
                         {
-                            germs.RemoveAt(i);
-                            score += 10;
-                            break;
+                            // Check Y bounds
+                            if (germs[i].PosY + 40 > p.Y &&
+                                p.Y < germs[i].PosY + 88)
+                            {
+                                germs.RemoveAt(i);
+                                score += 10;
+                                break;
+                            }
+
                         }
-                        
                     }
                 }
+
+                iInputHelper.Update();
+
+                iSceneManager.DoKeys(iInputHelper);
+                iSceneManager.UpdateScene(gameTime);
+                //entityManager.Update(gameTime);
+
+                base.Update(gameTime);
             }
-
-            iInputHelper.Update();
-
-            iSceneManager.DoKeys(iInputHelper);
-            iSceneManager.UpdateScene(gameTime);
-            //entityManager.Update(gameTime);
-
-            base.Update(gameTime);
         }
 
         /// <summary>
@@ -274,7 +277,7 @@ namespace kinectApp
 
             // Reset the device to the back buffer
             GraphicsDevice.SetRenderTarget(null);
-            
+
 
             spriteBatch.Begin();
 
@@ -282,8 +285,8 @@ namespace kinectApp
             //Drawing the video feed if we have one available.
             spriteBatch.Draw(colorRenderTarget, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
 
-            
-           
+
+
             //No longer displaying the connection status on the screen because we have the title bar now >=]
             //Now we draw whatever scene is currently in the game!
             //iSceneManager.DrawScene(gameTime, spriteBatch);
