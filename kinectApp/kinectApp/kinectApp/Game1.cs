@@ -50,6 +50,7 @@ namespace kinectApp
         readonly EntityManager entityManager;
 
         List<IEntity> germs = new List<IEntity>();
+        int score = 0;
 
         static bool iCancelRequested = false;
 
@@ -201,6 +202,7 @@ namespace kinectApp
                             p.Y < germs[i].PosY + 88)
                         {
                             germs.RemoveAt(i);
+                            score += 10;
                             break;
                         }
                         
@@ -263,6 +265,10 @@ namespace kinectApp
 
                 germ.Draw(spriteBatch);
             }
+
+            Entities.UI.BigLabel lab = new Entities.UI.BigLabel("Score: " + score, "label", 50, 50, 50);
+            lab.Load(Content);
+            lab.Draw(spriteBatch);
 
             spriteBatch.End();
 
