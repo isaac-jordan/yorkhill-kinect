@@ -27,7 +27,7 @@ namespace kinectApp.Entities.Germs
         private int iHealth = 0;
         protected DateTime iHitTime = new DateTime();
 
-        protected const int WAITTIME = 2500;
+        protected const int WAITTIME = 750;
         /// <summary>
         /// Create new Germ with position 0,0,0
         /// </summary>
