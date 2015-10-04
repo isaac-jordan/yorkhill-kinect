@@ -57,7 +57,7 @@ namespace kinectApp.Entities.Germs
         {
             int x1 = (int)PosX;
             int y1 = (int)PosY;
-            var rec = new Rectangle(x1, y1, HEIGHT, WIDTH);
+            var rec = new Rectangle(x1, y1, WIDTH, HEIGHT);
 
             aSpriteBatch.Draw(Texture, rec, Color.White);
         }

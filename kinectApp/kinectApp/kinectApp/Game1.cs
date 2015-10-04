@@ -25,7 +25,7 @@ namespace kinectApp
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        int millisecondSpawnTimer = 5000;
+        int millisecondSpawnTimer = 1000;
         double lastSpawnTimeStamp = -1;
         Random rand = new Random();
 
@@ -171,12 +171,25 @@ namespace kinectApp
             if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer)
             {
                 germs.Add(rand.Next(100) < 20 ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm());
-                lastSpawnTimeStamp = gameTime.TotalGameTime.Milliseconds;
+                lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
-            foreach (GermBase germ in germs)
+            Point[] joints;
+            lock (iKinect.KinectJoints)
             {
-                germ.Update(gameTime);
+                joints = iKinect.KinectJoints.ToArray();
+            }
+
+            for (int i=germs.Count - 1; i >= 0; i--)
+            {
+                germs[i].Update(gameTime);
+                foreach (Point p in joints)
+                {
+                    if (germs[i].PosX + 20 > p.X && germs[i].PosX < p.X && germs[i].PosY + 20 > p.Y && germs[i].PosY < p.Y)
+                    {
+                        germs.RemoveAt(i);
+                    }
+                }
             }
 
             iInputHelper.Update();

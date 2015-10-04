@@ -50,19 +50,14 @@ namespace kinectApp.Entities.Germs
             PosY += DirY;
             PosX += DirX;
 
-            foreach(Point p in Program.game.iKinect.KinectJoints)
-            {
-                if ( this.PosX +20 > p.X  && p.X < this.PosX + 20  &&this.PosY + 20 > p.Y && p.Y < this.PosY + 20 ) {
-                    this.Unload();
-                }
-            }
+            
         }
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
             int x1 = (int)PosX;
             int y1 = (int)PosY;
-            var rec = new Rectangle(x1, y1,HEIGHT, WIDTH);
+            var rec = new Rectangle(x1, y1,WIDTH, HEIGHT);
 
             aSpriteBatch.Draw(Texture, rec, Color.White);
         }

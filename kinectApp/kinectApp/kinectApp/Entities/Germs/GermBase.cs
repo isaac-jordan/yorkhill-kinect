@@ -68,11 +68,11 @@ namespace kinectApp.Entities.Germs
 
         public override void Unload()
         {
-            if (Texture != null)
+            /*if (Texture != null)
             {
                 Texture.Dispose();
             }
-            Texture = null;
+            Texture = null;*/
         }
 
         public abstract override void Update(GameTime aGameTime);
