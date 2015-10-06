@@ -13,6 +13,9 @@ The project also used .NET Tasks to allow parallel processing of the several sen
 ## Demo
 There is a video demo of our application on [YouTube](https://www.youtube.com/watch?v=6Gfgfw0Kw1U).
 
+## Developers
+Created by Isaac Jordan ([Github](https://github.com/sheepzez), [LinkedIn](https://uk.linkedin.com/in/ijordan)), Dylan Stevenson ([Github](https://github.com/Dillnot)), and Ewan McCartney ([Github](https://github.com/projectgoav)).
+
 ## Installation
 
 ### To Play
