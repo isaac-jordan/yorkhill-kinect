@@ -1,6 +1,6 @@
 # GUTS Hackathon Winner 2015
 
-Morgan Stanley challenge winner, and top prize overall winner of Glasgow University Tech Society Hackathon 2015.
+Morgan Stanley challenge winner, and top prize overall winner of [Glasgow University Tech Society](http://gutechsoc.com/) Hackathon 2015.
 
 Challenge was to create an application that helped the Yorkhill Childrens hospital in some way, taking into account the situation of the children, and also uses the Microsoft Kinect 2.0.
 
