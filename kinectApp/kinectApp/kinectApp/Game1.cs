@@ -327,10 +327,6 @@ namespace kinectApp
                 }
             }
 
-            Label lab1 = new Label("Score: " + score, "label", 5, 5, 0);
-            lab1.Load(Content);
-            lab1.Draw(spriteBatch);
-
             ScoreLabel lab2 = new ScoreLabel("Time Left: " + (int)(millisecondsLeftOfGame / 1000), "label", depthWidth - 300, 5, 0);
             lab2.Load(Content);
             lab2.Draw(spriteBatch);
@@ -338,8 +334,17 @@ namespace kinectApp
             if (millisecondsLeftOfGame <= 0)
             {
                 var RestartLabel = new Label("Restart?", string.Empty, depthWidth - 100, 5, 0);
+                var FinalScoreLabel = new BigLabel(String.Format("Score: {0}", score), string.Empty, depthWidth / 3, depthHeight / 3, 0);
+                FinalScoreLabel.Load(Content);
+                FinalScoreLabel.Draw(spriteBatch);
                 RestartLabel.Load(Content);
                 RestartLabel.Draw(spriteBatch);
+            }
+            else
+            {
+                Label lab1 = new Label("Score: " + score, "label", 5, 5, 0);
+                lab1.Load(Content);
+                lab1.Draw(spriteBatch);
             }
 
 

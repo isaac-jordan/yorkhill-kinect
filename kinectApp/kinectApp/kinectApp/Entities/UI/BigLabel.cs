@@ -38,7 +38,7 @@ namespace kinectApp.Entities.UI
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.DrawString(iFont, iText, new Vector2(Pos.X, Pos.Y), Color.White);
+            aSpriteBatch.DrawString(iFont, iText, new Vector2(Pos.X, Pos.Y), Color.Gold);
         }
 
         public override void Load(ContentManager aContentManager)
