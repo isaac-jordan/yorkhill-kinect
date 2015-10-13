@@ -280,6 +280,7 @@ namespace kinectApp
             }
         }
 
+        //Resets the current game state
         private void Restart()
         {
             millisecondsLeftOfGame = 60 * 1000;
