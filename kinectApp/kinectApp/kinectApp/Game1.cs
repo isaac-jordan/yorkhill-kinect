@@ -180,7 +180,7 @@ namespace kinectApp
                 this.Exit();
             }
 
-            if (iKinect.IsAvailable && millisecondsLeftOfGame > 0)
+            if (iKinect.IsAvailable && iKinect.KinectJoints.Count > 0 && millisecondsLeftOfGame > 0)
             {
                 millisecondsLeftOfGame -= gameTime.ElapsedGameTime.TotalMilliseconds;
                 if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer || lastSpawnTimeStamp < 0)
