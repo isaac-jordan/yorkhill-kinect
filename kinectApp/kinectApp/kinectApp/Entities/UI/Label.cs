@@ -12,8 +12,8 @@ namespace kinectApp.Entities.UI
     public class Label : BaseEntity
     {
         private string iText;
-
         private SpriteFont iFont;
+        private Texture2D iTexture;
 
         public override int Height
         {
@@ -38,7 +38,7 @@ namespace kinectApp.Entities.UI
 
         public override void Draw(SpriteBatch aSpriteBatch)
         {
-            aSpriteBatch.DrawString(iFont, iText, new Vector2(Pos.X, Pos.Y), Color.White);
+            aSpriteBatch.DrawString(iFont, iText, new Vector2(Pos.X, Pos.Y), Color.Purple);
         }
 
         public override void Load(ContentManager aContentManager)

@@ -26,6 +26,7 @@ namespace kinectApp
         double lastSpawnTimeStamp = -1;
         Random rand = new Random();
         double millisecondsLeftOfGame = 60 * 1000;
+        double restartTimer = 0.0;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -43,8 +44,8 @@ namespace kinectApp
 
         public KinectAdapter iKinect;
 
-        readonly SceneManager iSceneManager;
-        readonly EntityManager entityManager;
+        SceneManager iSceneManager;
+        EntityManager entityManager;
 
         List<IEntity> germs = new List<IEntity>();
         int score = 0;
@@ -74,11 +75,6 @@ namespace kinectApp
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.PreferredBackBufferWidth = screenWidth;
             Content.RootDirectory = "Content";
-
-            entityManager = new EntityManager();
-            iSceneManager = new SceneManager(Content);
-
-            iInputHelper = new InputHelper();
         }
 
         /// <summary>
@@ -89,6 +85,11 @@ namespace kinectApp
         /// </summary>
         protected override void Initialize()
         {
+            entityManager = new EntityManager();
+            iSceneManager = new SceneManager(Content);
+
+            iInputHelper = new InputHelper();
+
             iKinect = new KinectAdapter(graphics.GraphicsDevice, (isAvail) =>
             {
                 string title = null;
@@ -170,19 +171,32 @@ namespace kinectApp
             if (Keyboard.GetState().GetPressedKeys().Contains(Keys.Escape) || iCancelRequested)
             //Dectect a close, from outwith this class!
             {
-                this.Exit();
+               this.Exit();
             }
 
-            if (iKinect.IsAvailable && iKinect.KinectJoints.Count > 0 && millisecondsLeftOfGame > 0)
+            if (iKinect.IsAvailable && iKinect.KinectJoints.Count > 0)
             {
                 //A restart once the player has ended!
                 if (millisecondsLeftOfGame <= 0)
                 {
+                    Point[] joints;
+                    bool IsJointIn = false;
 
+                    lock(iKinect.KinectJoints)  { joints = iKinect.KinectJoints.ToArray(); }
+                    foreach (var j in joints)
+                    {
+                        //If the joint is in the corner
+                        if ((j.X > depthWidth - depthWidth / 5) && (j.Y < screenHeight / 10)) {  IsJointIn = true; }
+                    }
 
-
-
-
+                    if (IsJointIn)
+                    {
+                        if ((gameTime.TotalGameTime.TotalMilliseconds - restartTimer) > 1500)
+                        {
+                            Restart();
+                        }
+                    }
+                    else { restartTimer = gameTime.TotalGameTime.TotalMilliseconds; }
                 }
                 else
                 {
@@ -253,12 +267,27 @@ namespace kinectApp
 
                 iInputHelper.Update();
 
+                if (iInputHelper.IsNewPress(Keys.E))
+                {
+                    millisecondsLeftOfGame = 0;
+                }
+
                 iSceneManager.DoKeys(iInputHelper);
                 iSceneManager.UpdateScene(gameTime);
 
                 base.Update(gameTime);
 
             }
+        }
+
+        //Resets the current game state
+        private void Restart()
+        {
+            millisecondsLeftOfGame = 60 * 1000;
+            score = 0;
+            germs.Clear();
+            lastSpawnTimeStamp = -1;
+            millisecondSpawnTimer = 1000;
         }
 
         /// <summary>
@@ -305,6 +334,14 @@ namespace kinectApp
             ScoreLabel lab2 = new ScoreLabel("Time Left: " + (int)(millisecondsLeftOfGame / 1000), "label", depthWidth - 300, 5, 0);
             lab2.Load(Content);
             lab2.Draw(spriteBatch);
+
+            if (millisecondsLeftOfGame <= 0)
+            {
+                var RestartLabel = new Label("Restart?", string.Empty, depthWidth - 100, 5, 0);
+                RestartLabel.Load(Content);
+                RestartLabel.Draw(spriteBatch);
+            }
+
 
             if (!spriteBatch.IsDisposed)
                 spriteBatch.End();
