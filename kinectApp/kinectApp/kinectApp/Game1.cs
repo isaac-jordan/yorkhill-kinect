@@ -284,6 +284,9 @@ namespace kinectApp
         {
             millisecondsLeftOfGame = 60 * 1000;
             score = 0;
+            germs.Clear();
+            lastSpawnTimeStamp = -1;
+            millisecondSpawnTimer = 1000;
         }
 
         /// <summary>
