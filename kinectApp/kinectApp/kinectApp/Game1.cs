@@ -47,8 +47,6 @@ namespace kinectApp
         public int depthWidth;
 
         public KinectAdapter iKinect;
-        //GestureResultView gestureRV;
-        //GestureDetector gestureDet;
 
         readonly SceneManager iSceneManager;
         readonly EntityManager entityManager;
@@ -118,7 +116,7 @@ namespace kinectApp
 
                 Window.Title = string.Format("Germz | Dynamic Dorks [{0}]", title);
                 var filename = string.Format("Res/{0}", file);
-                ((System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(Window.Handle)).Icon = new SDrawing.Icon(filename);
+                ((SForms.Form)SForms.Form.FromHandle(Window.Handle)).Icon = new SDrawing.Icon(filename);
             });
             iKinect.OpenSensor();
 
