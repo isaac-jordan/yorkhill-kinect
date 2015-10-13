@@ -20,7 +20,6 @@ namespace kinect_mouse_mapper
         private static Rectangle screenX;
 
         static void Main(string[] args)
-
         {
             sensor = KinectSensor.GetDefault();
 

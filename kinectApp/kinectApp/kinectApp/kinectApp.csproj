@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>kinectApp</RootNamespace>
-    <AssemblyName>kinectApp</AssemblyName>
+    <AssemblyName>Germz Kinect by DynamicDorks</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -20,7 +20,7 @@
     <ApplicationIcon>Germz.Icon.ico</ApplicationIcon>
     <Thumbnail>Germz.Icon.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\isaac.jordan\Documents\workspace\yorkhill-kinect\kinectApp\kinectApp\kinectApp\\..\..\obj\publish</PublishUrl>
+    <PublishUrl>C:\Users\innovator\Documents\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -30,7 +30,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>5</ApplicationRevision>
+    <SupportUrl>https://github.com/Sheepzez/yorkhill-kinect</SupportUrl>
+    <ProductName>Germz Kinect by DynamicDorks</ProductName>
+    <PublisherName>Dynamic Dorks</PublisherName>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
