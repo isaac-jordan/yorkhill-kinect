@@ -14,6 +14,8 @@ namespace kinectApp.Entities.Germs
         static int BaseId = 2000;
         static Random Rand = new Random(DateTime.UtcNow.TimeOfDay.Milliseconds);
 
+        float movementScale = 1.0f;
+
         public override int Height
         {
             get
@@ -61,17 +63,18 @@ namespace kinectApp.Entities.Germs
             int DirX, DirY;
             if (!beenToTopHalfOfScreen)
             {
-                DirY = Rand.Next(100) < 80 ? Rand.Next(2,5) * -1 : Rand.Next(2,6);
+                DirY = Rand.Next(100) < 80 ? Rand.Next(2,5) * -1 : Rand.Next(2,6); //80% chance to move up
                 if (PosY < Program.game.depthHeight / 3) beenToTopHalfOfScreen = true;
             }
             else
             {
-                DirY = Rand.Next(100) < 20 ? Rand.Next(3) * -1 : Rand.Next(4);
+                DirY = Rand.Next(100) < 20 ? Rand.Next(2,3) * -1 : Rand.Next(2,4); // 20% chance to move up
             }
             DirX = Rand.Next(0, 5) - 2;
 
-            PosY += DirY;
-            PosX += DirX;
+            PosY += (float)DirY * movementScale;
+            PosX += (float)DirX * movementScale;
+            movementScale += 0.01f;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch)

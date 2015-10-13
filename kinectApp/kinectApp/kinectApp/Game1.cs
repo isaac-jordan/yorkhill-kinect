@@ -186,7 +186,7 @@ namespace kinectApp
                     foreach (var j in joints)
                     {
                         //If the joint is in the corner
-                        if ((j.X > screenWidth / 2) && (j.Y < 50)) {  IsJointIn = true; }
+                        if ((j.X > depthWidth - depthWidth / 5) && (j.Y < screenHeight / 10)) {  IsJointIn = true; }
                     }
 
                     if (IsJointIn)
