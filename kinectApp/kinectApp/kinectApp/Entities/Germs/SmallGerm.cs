@@ -66,12 +66,12 @@ namespace kinectApp.Entities.Germs
             }
             else
             {
-                DirY = Rand.Next(100) < 20 ? Rand.Next(3) * -1 : Rand.Next(2);
+                DirY = Rand.Next(100) < 20 ? Rand.Next(3) * -1 : Rand.Next(4);
             }
             DirX = Rand.Next(0, 5) - 2;
 
             PosY += DirY;
-            PosX += DirX;            
+            PosX += DirX;
         }
 
         public override void Draw(SpriteBatch aSpriteBatch)
