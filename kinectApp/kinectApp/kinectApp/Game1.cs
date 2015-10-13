@@ -2,13 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Kinect;
 
 using System.Threading.Tasks;
 using SForms = System.Windows.Forms;
@@ -215,6 +210,8 @@ namespace kinectApp
                         germ.Load(Content);
                         germs.Add(germ);
                         lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
+
+                        millisecondSpawnTimer -= 9; // Reduce germ spawn timer by 0.09s each time one is spawned. 
                     }
 
                     //Get all the joints from the Kinect
