@@ -61,7 +61,7 @@ namespace kinectApp.Entities.Germs
             int DirX, DirY;
             if (!beenToTopHalfOfScreen)
             {
-                DirY = Rand.Next(100) < 80 ? Rand.Next(3) * -1 : Rand.Next(2);
+                DirY = Rand.Next(100) < 80 ? Rand.Next(2,5) * -1 : Rand.Next(2,6);
                 if (PosY < Program.game.depthHeight / 3) beenToTopHalfOfScreen = true;
             }
             else
