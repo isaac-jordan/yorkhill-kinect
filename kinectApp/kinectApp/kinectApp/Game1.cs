@@ -178,7 +178,7 @@ namespace kinectApp
                 this.Exit();
             }
 
-            if (iKinect.IsAvailable)
+            if (iKinect.IsAvailable && iKinect.KinectJoints.Count > 0 && millisecondsLeftOfGame > 0)
             {
                 //A restart once the player has ended!
                 if (millisecondsLeftOfGame <= 0)

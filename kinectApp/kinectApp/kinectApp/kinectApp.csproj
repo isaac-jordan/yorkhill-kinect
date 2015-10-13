@@ -48,7 +48,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>false</XnaCompressContent>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -116,8 +116,6 @@
     <Compile Include="Entities\UI\Button.cs" />
     <Compile Include="Entities\UI\Label.cs" />
     <Compile Include="Entities\UI\ScoreLabel.cs" />
-    <Compile Include="GestureDetector.cs" />
-    <Compile Include="GestureResultView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
