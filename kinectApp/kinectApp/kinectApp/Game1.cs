@@ -178,64 +178,79 @@ namespace kinectApp
                 this.Exit();
             }
 
-            if (iKinect.IsAvailable && millisecondsLeftOfGame > 0)
+            if (iKinect.IsAvailable)
             {
-                millisecondsLeftOfGame -= gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer || lastSpawnTimeStamp < 0)
+                //A restart once the player has ended!
+                if (millisecondsLeftOfGame <= 0)
                 {
-                    // Small germs are inivisible, so lets only create big ones currently.
-                    var germ = (rand.NextDouble() < 0.2) ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm();
-                    germ.Load(Content);
-                    germs.Add(germ);
-                    lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
+
+
+
+
+
                 }
-
-                Point[] joints;
-                lock (iKinect.KinectJoints)
+                else
                 {
-                    joints = iKinect.KinectJoints.ToArray();
-                }
+                    //Update gametime
+                    millisecondsLeftOfGame -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if (germs.Count > 0)
-                    Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
-
-                for (int i = germs.Count - 1; i >= 0; i--)
-                {
-                    var germ = (GermBase)germs[i];
-                    germ.Update(gameTime);
-
-                    foreach (Point p in joints)
+                    //Spawn some newbs
+                    if (gameTime.TotalGameTime.TotalMilliseconds > lastSpawnTimeStamp + millisecondSpawnTimer || lastSpawnTimeStamp < 0)
                     {
-                        // Check X bounds
-                        if (germ.PosX < p.X && p.X < germ.PosX + germ.Width + 30)
-                        {
-                            // Check Y bounds
-                            if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height + 30)
-                            {
-                                germ.Health -= 100;
+                        var germ = (rand.NextDouble() < 0.2) ? GermFactory.CreateBigGerm() : GermFactory.CreateSmallGerm();
+                        germ.Load(Content);
+                        germs.Add(germ);
+                        lastSpawnTimeStamp = gameTime.TotalGameTime.TotalMilliseconds;
+                    }
 
-                                if (germ.IsDead)
+                    //Get all the joints from the Kinect
+                    Point[] joints;
+                    lock (iKinect.KinectJoints)
+                    {
+                        joints = iKinect.KinectJoints.ToArray();
+                    }
+
+                    if (germs.Count > 0)
+                        Console.WriteLine("Last germ at: x:" + germs.Last().PosX + ", y:" + germs.Last().PosY);
+
+                    //Process all germs for hitting as well as killing them off
+                    for (int i = germs.Count - 1; i >= 0; i--)
+                    {
+                        var germ = (GermBase)germs[i];
+                        germ.Update(gameTime);
+
+                        foreach (Point p in joints)
+                        {
+                            // Check X bounds
+                            if (germ.PosX < p.X && p.X < germ.PosX + germ.Width + 30)
+                            {
+                                // Check Y bounds
+                                if (germ.PosY < p.Y && p.Y < germ.PosY + germ.Height + 30)
                                 {
-                                    if (germ is BigGerm)
+                                    germ.Health -= 100;
+
+                                    if (germ.IsDead)
                                     {
-                                        score += 25;
-                                    }
-                                    else
-                                    {
-                                        score += 10;
+                                        if (germ is BigGerm)
+                                        {
+                                            score += 25;
+                                        }
+                                        else
+                                        {
+                                            score += 10;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    //If the germ is off the screen or has been killed - kill it off.
-                    if (germ.IsDead)
-                    {
-                        Task.Factory.StartNew(() => germ.Unload());
-                        germs.RemoveAt(i);
-                        
-                        break;
+                        //If the germ is off the screen or has been killed - kill it off.
+                        if (germ.IsDead)
+                        {
+                            Task.Factory.StartNew(() => germ.Unload());
+                            germs.RemoveAt(i);
+                            break;
+                        }
                     }
                 }
 
@@ -245,6 +260,7 @@ namespace kinectApp
                 iSceneManager.UpdateScene(gameTime);
 
                 base.Update(gameTime);
+
             }
         }
 
