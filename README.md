@@ -10,6 +10,8 @@ The game shows players' bodies inside a hospital environment (involved low-level
 
 The project also used .NET Tasks to allow parallel processing of the several sensors in the  which allowed our game to run at a smooth 60 frames-per-second.
 
+The game now has exponential germ spawning (gets crazy towards the end), and a restart button, and clearer score display.
+
 ## Demo
 There is a video demo of our application on [YouTube](https://www.youtube.com/watch?v=6Gfgfw0Kw1U).
 
@@ -19,9 +21,9 @@ Created by Isaac Jordan ([Github](https://github.com/sheepzez), [LinkedIn](https
 ## Installation
 
 ### To Play
-Download the built version from [here](http://www.filedropper.com/germz-dynamicdorks_1), and extract to a folder. Then install to run. 
+Download the built version from [here](https://drive.google.com/file/d/0B4XWPcc2mZMjd0ltdzVPRlVNS1k/view?usp=sharing), and extract to a folder. Then install to run. 
 
-If the game doesn't run then you may need to install XNA using [this](http://www.filedropper.com/xnagamestudio404forvs2015) archive. Install items 1 - 4, but not the Visual Studio extension.
+If the game doesn't run then you may need to install XNA using [this](https://drive.google.com/file/d/0B4XWPcc2mZMjMlVPVEtZVTlhckE/view?usp=sharing) archive. Install items 1 - 4, but not the Visual Studio extension.
 
 ### To Develop
-To set up the project to run in Visual Studio 2015 (community or enterpirse), download the [Kinect SDK 2](http://www.microsoft.com/en-gb/download/details.aspx?id=44561) and install the XNA Framework and VS Extension using the binaries contained in [this](http://www.filedropper.com/xnagamestudio404forvs2015) archive.
+To set up the project to run in Visual Studio 2015 (community or enterpirse), download the [Kinect SDK 2](http://www.microsoft.com/en-gb/download/details.aspx?id=44561) and install the XNA Framework and VS Extension using the link in the paragraph above.
