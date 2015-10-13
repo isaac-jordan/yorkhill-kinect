@@ -309,6 +309,14 @@ namespace kinectApp
             lab2.Load(Content);
             lab2.Draw(spriteBatch);
 
+            if (millisecondsLeftOfGame <= 0)
+            {
+                var RestartLabel = new Label("Restart?", string.Empty, screenWidth / 2, screenHeight / 2, 0);
+                RestartLabel.Load(Content);
+                RestartLabel.Draw(spriteBatch);
+            }
+
+
             if (!spriteBatch.IsDisposed)
                 spriteBatch.End();
 
