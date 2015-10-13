@@ -94,7 +94,7 @@ namespace kinect_mouse_mapper
                                
                                 VirtualMouse.MoveTo(point.X, point.Y);
                                 //Console.WriteLine(string.Format("\r{0},{1}", Cursor.Position.X, Cursor.Position.Y));
-                                Console.WriteLine(body.HandRightState);    
+                                //Console.WriteLine(body.HandRightState);    
         
                                 if (body.HandRightState != HandState.NotTracked && (((long)DateTime.UtcNow.TimeOfDay.TotalMilliseconds - lasttime) >= 1000))
                                 {
