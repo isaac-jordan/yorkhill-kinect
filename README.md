@@ -2,6 +2,8 @@
 
 Morgan Stanley challenge winner, and top prize overall winner of [Glasgow University Tech Society](http://gutechsoc.com/) Hackathon 2015.
 
+Blog post about the weekend online at [isaacjordan.me](http://isaacjordan.me/blog/2015/12/glasgow-uni-hackathon-winner/).
+
 Challenge was to create an application that helped the Yorkhill Childrens hospital in some way, taking into account the situation of the children, and also uses the Microsoft Kinect 2.0.
 
 Our project consisted of a game in which players can work collaboratively to clean up germs, as well as a background program that allowed users to control their PC using the Kinect by mapping hand movement and gestures to mouse movement and clicks.
